@@ -40,4 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Local files - Sten
 proposalfraBard.md
+proposalSten.md
+proposal2.md
