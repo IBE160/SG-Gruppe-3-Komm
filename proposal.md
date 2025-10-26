@@ -193,6 +193,10 @@ The system will automatically distribute topics, schedule repetitions, and dynam
 - **Authorization**: Row Level Security (RLS) policies in Supabase + role-based middleware (student/teacher/admin roles)
 - **ORM**: SQLAlchemy for database operations and type safety
 - **Database Migrations**: Alembic for version-controlled schema changes
+- - **AI Integration**:
+  - OpenAI GPT-4 API for users of "AI-Powered Study Planner" to generate calendar and activities
+  - Custom prompt engineering for consistent AI behavior
+  - Fallback logic for API failures
 - **Email Service**: Supabase Auth for authentication emails + SendGrid for custom transactional emails
 - **API Documentation**: FastAPI automatic OpenAPI/Swagger documentation
 - **Testing**: Pytest for unit and integration tests
