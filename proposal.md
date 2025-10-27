@@ -41,61 +41,48 @@ The system will automatically distribute topics, schedule repetitions, and dynam
 |--------|-------------|-------------|
 | **User** | name, email, hashed_password, preferences | Authentication and settings |
 | **Course** | name, system_prompt, topic, syllabus_content, json | Course in study |
-| **Activity** | activity_topic, starttime, endtime, progress_status | Daily activity with progress status types: Not Started - Completed - Not Completed |
+| **Activity** | activity_topic, starttime, endtime, progress_status | Daily activity with progress three status types: Not Started - Completed - Not Completed |
 
 **Relationships:** one-to-many — each **Users** → multiple **Courses** → multiple **Activities**.
 
 ## User Flows
 
-### Flow 1: Student Adds New User In Webapplication
+### Flow 1: Student Logs In And Watches His Calendar Activities In The "AI-Powered Personal Study Planner" Web Application
+
 **Entry Point**: Student lands on homepage
 
-1. **Dashboard Page**
-   - If not logged in - go to point 2. Authentication
-   - Student views the dashboard that shows the calender content 
-
-2. **Authentication**
+1. **Landing Page**
+   - Student views the webpage "AI-Powered Personal Study Planner"
    - If not logged in: Redirects to registration/login page
    - Student registers with email and password
    - Receives verification email and clicks verification link if new user
    - Redirected back to platform and automatically logged in
-  
 
-### Flow 2: Student Adds New Course And Content (based on this course content the AI is generating the calender activity JSON file as input to the LLM)
-**Entry Point**: Student are logged inn to Dashboard
+2. **Student views the dashboard**
+   -  If the student has added syllabus course content the activities is shown in the calender in the user dashboard
+   -  The students dashboard is also showing progress bars on every course in his "AI-Powered Personal Study Planner" calendar since it can contain multiple courses
 
-1. **Dashboard**
-   - Student clicks "Add course" button in Dashboard
-   - Moves to "New Course" page
-   - 
-2. **Student Adds Course And Syllaby Content**
-   - Student enters title, topic, sullabus content, JSON format and relevant dates into mandertory fields
-   - Clicks "Save" button
-   - Optional: Clicks "Generate AI Powered calendar" button (after "Save" is pressed) if the Student wants to create the calendar "on the fly"
-   - Moves back to Dashboard
+3. **Student Adds New Course**
+   - If the Student wants to add a new course he clicks the "New Course" button from the Dashboard
+   - Student enters relevant data in the fields Title, Topic, JSON and Syllabus (the syllabus field contains plain text of the course overview/syllabus. Is Syllabus field also contains important dates and fixed dates that are not suitable for studies)
+   - Clicks "Save" button and the content is saved to the "Course" entity
 
-### Flow 3: Student Updates Activity Status
+4. **Generate AI Powered Calendar When Course Content Is Finished Being Posted**
+   - When all course content is in place the student can click the "Generate AI Powered calendar" button and activity is AI generated via the LLM and saved to the "Activity" entity and made ready to be viewed in the calendar.
+   - Exit to Dashboard" - returns to user dashboard
+
+### Flow 2: Student Updates Activity Status
 **Entry Point**: Student are logged inn to Dashboard
 
 1. **Dashboard**
    - Student clicks the calender activity
   
 2. **Student updates activity content**
-   - Student updates status on activity (Ex: Completed or Not Completed)
+   - Student updates progress_status on activity (Ex: Completed or Not Completed)
    - Student clicks "Save" button to update info
-   - Moves back to Dashboard
-  
-### Flow 4 EXTRA: Student AI Generates New Date For Not Performed Activity
-**Entry Point**: Student are logged inn to Dashboard
+   - "Exit to Dashboard" - returns to user dashboard
 
-1. **Dashboard**
-   - Student locates the past activity
-
-2. **Student AI generates new date for activity**
-   - Student clicks "AI locate new date" button on activity
-   - Moves back to Dashboard
-
-### Flow 5 EXTRA: Student Deletes Course
+### Flow 3: Student Deletes Course
 **Entry Point**: Student are logged inn to Dashboard
 
 1. **Dashboard**
@@ -105,25 +92,28 @@ The system will automatically distribute topics, schedule repetitions, and dynam
    - Student clicks the "Delete" button in the course "Edit" window
    - Ask if the Student is sure if the Course should be deleted
    - Student clicks "Yes" button and the course and all course calender activities is deleted
-   - Moves back to Dashboard 
+   - "Exit to Dashboard" - returns to user dashboard
 
 3. **Student Confirms Not to Deletes Course**
    - Student is sure the Course should be deleted
    - Clicks "No" button 
-   - Moves back to Dashboard without any action
+   - "Exit to Dashboard" - returns to user dashboard
 
-### Flow 5 EXTRA: Show All Courses
+### Flow 4: CRUD (Create, Read, Update, Delete) Functionality On the Courses  
 **Entry Point**: Student are logged inn to Dashboard
 
 1. **Dashboard**
-   - Student clicks the "Course" button on Dashboard
+   - Student clicks the "Course" button from the Dashboard
   
-2. **Student Select One The Courses**
-   - Student clicks on one of the courses in the Courselist
-   - Student can now Edit, Read, Delete or Add a new course (CRUD - Create, Read, Update and Delete)
-   - Student clicks "Save" button when content is added or updated
-   - Moves back to Dashboard
-
+2. **Student Selects A Courses And Updates The Content**
+   - Student clicks one of the courses in the overview course list
+   - Student can now Read, Edit and Delete the selected course
+   - Student clicks "Save" button when content is updated and return to the course list page
+  
+ 3. **Student Adds New Course**
+  - The Student can add a new course by clicking the "Add Course" button from this course list page
+  - "Exit to Dashboard" - when the student has finished the add or update work
+  
 ---
 
 ## Technical Constraints
@@ -290,8 +280,26 @@ This timeline follows the 4-phase model of the BMAD-methodology, where phases 1 
 | Phase 3: Solution Architecture and UI/UX Design | 2 weeks | Technical architecture, database design, UI/UX mockups, API design |
 | Phase 4: Development and Deployment | 2 weeks | Implementation, testing, deployment |
 
-### BMAD-Methodology Alignment
 
+### Phase 1 & 2: Analyze and Planning (1 WEEK)
+**Lead Agents**: Analyst, Researcher
+**Supporting Agents**: PM, PO
+**WEEK 1**: Analyze and Planning
+
+### Phase 3: Solution Architecture and UI/UX Design (2 WEEKS)
+**Lead Agents**: Architect
+**Supporting Agents**: PM, Tech Lead
+**WEEK 1**: Technical Architecture
+**WEEK 2**: UI/UX Design
+
+### Phase 4: Development and Deployment (2 WEEKS)
+**Lead Agents**: Scrum Master (SM), Developer (DEV)
+**Supporting Agents**: SR, PM (for course correction)
+**Week 1**: Core Development Sprint 1
+**Week 2**: Core Development Sprint 2 & Launch
+
+
+### BMAD-Methodology Alignment
 **Phase 1 (Analyze)**: Deep understanding of business problem, user needs, and constraints
 **Phase 2 (Planning)**: Strategic planning of solution approach with clear milestones
 **Phase 3 (Architecture & Design)**: Complete technical and visual blueprint before coding
