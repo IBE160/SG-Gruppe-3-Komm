@@ -204,6 +204,7 @@ The system will automatically distribute topics, schedule repetitions, and dynam
 **Implementation**:
 - **Model**: Gemini 2.5 pro/flash
 - **Rate Limiting**: Implement request queuing and caching for cost optimization
+- **Library**: Pydantic AI see research reports: @research-session-results-1.md and @research-session-results-2.md
 
 **API Integration Architecture**:
 - Separate service layer for AI calls
