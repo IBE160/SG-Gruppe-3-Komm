@@ -8,32 +8,50 @@
 
 ## Executive Summary
 
-Many students struggle to structure their study time effectively before exams. Balancing multiple courses, deadlines, and limited energy often leads to inefficient study habits and stress. The goal of this project is to create a web-based application that generates a personalized, adaptive study plan based on exam dates, syllabus content, the user’s available study time, and their progress updates and preferences. The system will automatically distribute topics, schedule repetitions, and dynamically reschedule sessions when users fall behind or complete topics early.
+This document outlines the project brief for the AI-Powered Personal Study Planner, a web-based application designed to help students effectively structure their study time. The application will generate personalized and adaptive study plans based on exam dates, syllabus content, and user progress. By automating scheduling and dynamically adjusting to the user's performance, the planner aims to reduce stress, improve learning efficiency, and provide a data-driven approach to academic preparation.
 
 ### What Makes This Special
 
-The AI-Powered Personal Study Planner's magic lies in its ability to transform the chaotic and stressful process of exam preparation into a structured, automated, and personalized journey. It removes the cognitive load of "what should I study next?" and replaces it with a clear, data-driven path to success, adapting in real-time to the user's life and progress.
+- **Dynamic Rescheduling:** Automatically adapts the study plan based on real-time user progress.
+- **AI-Powered Syllabus Parsing:** Intelligently extracts topics and deadlines from user-provided syllabus content.
+- **Personalized & Adaptive:** Tailors the plan to individual study habits, availability, and topic difficulty.
+- **"Welcome Back" Wizard:** Proactively helps users who have been away to triage overdue tasks and get back on track without feeling overwhelmed.
 
 ---
 
 ## Project Classification
 
-**Technical Type:** Web Application (Next.js 14+, FastAPI Backend)
+**Technical Type:** Web Application
 **Domain:** EdTech
 **Complexity:** Medium
 
-The project is a modern web application utilizing a Next.js frontend for a responsive user experience and a Python-based FastAPI backend for high-performance API services and AI integration. The database is a managed Supabase (PostgreSQL) instance, which also handles authentication and real-time features.
+The project is a modern web application utilizing a Next.js 14+ frontend with App Router, TypeScript, Tailwind CSS, Shadcn UI, and Zustand for state management. The backend is built with FastAPI (Python), Supabase (PostgreSQL) for database and authentication, and integrates with OpenAI GPT-4 for AI capabilities.
 
 ---
 
 ## Success Criteria
 
-- **Performance:** Study plan generation must complete in under 10 seconds.
-- **Core User Journey:** Users must be able to successfully upload a syllabus, customize their study plan, and save their progress.
-- **Adaptability:** The system must demonstrate dynamic rescheduling of study sessions based on user-reported progress (completed or missed sessions).
-- **Data Integrity:** User data and study plans must be persistent and securely stored across sessions.
-- **Timeline:** The Minimum Viable Product (MVP) must be deployed within the 6-week project timeline.
-- **Optional Goals:** Successful integration with external calendars (Google/Outlook) and AI-powered quiz generation are key stretch goals.
+### Business Objectives
+
+- Achieve a high rate of user adoption and satisfaction within the target student demographic.
+- Reduce the manual planning effort required by students by at least 75%.
+- Establish a platform that can be extended with future premium features.
+
+### Key Performance Indicators
+
+- **Adoption:** Number of active users and new sign-ups per week.
+- **Engagement:** Daily/Weekly active users, average number of sessions per user.
+- **Retention:** Percentage of users who continue to use the app after the first week and first month.
+- **Task Completion Rate:** Percentage of study tasks marked as "Completed."
+- **Plan Generation Speed:** Study plan generation should take under 10 seconds.
+
+### MVP Success Criteria
+
+- Users can successfully generate a study plan in under 10 seconds.
+- Users can upload a syllabus, customize the plan, and save their progress.
+- The dynamic rescheduling feature correctly adjusts the plan when a session is marked as missed.
+- User data persists securely across sessions.
+- The MVP is successfully deployed within the 6-week timeline.
 
 ---
 
@@ -41,53 +59,59 @@ The project is a modern web application utilizing a Next.js frontend for a respo
 
 ### MVP - Minimum Viable Product
 
-- **User Authentication:** Secure user registration and login system with email verification.
-- **Dashboard:** A central hub featuring a calendar view of study activities, a "My Courses" section, and progress bars for each course.
-- **AI-Generated Study Plan:** The core feature to automatically generate a day-by-day study schedule from an uploaded syllabus and specified exam dates.
-- **Customization:** Allow users to adjust their available study hours, designate weekends or off-days, and set priorities for different topics.
-- **Dynamic Rescheduling:** The study plan automatically updates in real-time when a user marks a session as missed or completed.
-- **Data Persistence:** All user data, including courses and personalized plans, must be securely saved and retrievable.
+- **Login:** User registration and authentication system with email verification.
+- **Dashboard:** A central view containing a calendar of activities, a list of "My Courses," and progress bars for each course.
+- **AI-Generated Study Plan:** Automatically generate a day-by-day study schedule from uploaded syllabus and exam dates.
+- **Customization:** Users can adjust available hours, weekends, and topic priorities.
+- **Dynamic Rescheduling:** Missed or completed sessions trigger real-time updates to the plan.
+- **Authentication & Data Persistence:** Each user securely saves and retrieves their personalized plan.
 
-### Growth Features (Post-MVP)
+### Out of Scope for MVP
 
-- **Calendar Integration:** Sync study sessions with external calendars like Google Calendar or Outlook.
-- **Quiz/Flashcard Generation:** An AI-powered feature to generate short review quizzes or flashcards for each study topic.
-- **Progress Visualization:** Enhanced dashboard with visual charts, motivational streaks, and achievement badges to encourage user engagement.
-- **Admin Panel:** A management interface for administrators to handle user accounts and resolve login issues, including the removal of inactive users.
-- **PWA Features:** Progressive Web App capabilities for offline access and the ability to install the app on a device's home screen.
+- **Calendar Integration:** Syncing sessions with Google or Outlook calendar.
+- **Quiz/Flashcard Generation:** AI-generated review quizzes per topic.
+- **Progress Visualization:** Advanced progress charts, motivational streaks, and badges.
+- **Admin Panel:** A dedicated interface for managing users and handling login issues.
+- **PWA Features:** Offline access and home-screen installation.
 
 ---
 
 ## Functional Requirements
 
-The system will be designed around the following key user flows:
+The user journey is designed to be intuitive, from onboarding to daily use. Key refinements from brainstorming sessions have been incorporated:
 
-1.  **Onboarding and Plan Generation:** New users will register, verify their email, and log in. From the dashboard, they can add a new course by providing a title, topic, and syllabus content. Upon saving the course, they can trigger the "Generate AI Powered Calendar" function, which populates their calendar with a personalized study plan.
-2.  **Daily Interaction:** Logged-in users will view their daily study activities on the dashboard calendar. They can click on an activity to update its status (e.g., "Completed," "Not Completed") and save the change, which may trigger the dynamic rescheduling feature.
-3.  **Course Management:** From the dashboard, users can navigate to a course overview page where they can view, edit, or delete existing courses. All changes are saved, and deletions will remove the course and all associated calendar activities after a confirmation prompt.
+1.  **Onboarding:** A new user is greeted with a welcoming dashboard that guides them to add their first course. The system includes a "Resend Verification Email" option to handle email delivery issues.
+2.  **Course Creation:** The user adds a course by providing a title and syllabus content. The technical `JSON` field is abstracted away. The application will proactively ask to generate a study plan immediately after course creation.
+3.  **Plan Generation:** The AI parses the syllabus, and the user confirms the extracted topics before the plan is generated. The UI includes loading indicators and clear error messages if the AI fails. A manual input option is available as a fallback.
+4.  **Daily Interaction:** The user views their daily tasks on a calendar dashboard. They update the status of activities using clear labels (`Not Started`, `In Progress`, `Completed`, `Missed`). An auto-save feature simplifies this interaction.
+5.  **Course Management:** All course CRUD (Create, Read, Update, Delete) operations are consolidated into a single, centralized management page. Deleting a course is a "soft delete," allowing users to restore it within 30 days.
 
 ---
 
 ## Non-Functional Requirements
 
-- **Platform:**
-    - Must be a web-based application accessible via modern browsers (Chrome, Firefox, Safari, Edge).
-    - Must be responsive and functional on desktop, laptop, and tablet devices (min. screen width: 768px).
-- **Performance:**
-    - Application must load within 3 seconds on a standard broadband connection.
-- **Security:**
-    - Must use Supabase Auth for secure user authentication with JWT tokens and Row Level Security (RLS) for data access control.
-    - Passwords and other sensitive data must be encrypted at rest and in transit.
-- **Integration:**
+- **Platform Requirements:**
+    - Must be web-based and accessible via modern browsers (Chrome, Firefox, Safari, Edge).
+    - Must be responsive and functional on desktop, laptop, and tablet devices (minimum screen width: 768px).
+    - Mobile phone support is optional for MVP but should be considered in design.
+- **Performance Requirements:**
+    - Application must load within 3 seconds on standard broadband connection.
+- **Security Requirements:**
+    - Must use Supabase Auth for secure user authentication with JWT tokens.
+    - Must leverage Supabase Row Level Security (RLS) for data access control.
+    - Must encrypt sensitive data (passwords handled by Supabase, payment info by Stripe) at rest and in transit.
+- **Integration Requirements:**
     - Must integrate with Supabase for database, authentication, and real-time features.
-    - Must integrate with an OpenAI API (or similar LLM) for AI-driven plan generation.
-- **Data:**
-    - Must support data export in CSV or PDF formats.
-    - The platform must implement regular database backups and have a disaster recovery plan.
-- **Development:**
-    - Development must be completed within a 6-week timeline using AI-assisted development tools.
-    - The technology stack must be proven and well-documented (Next.js, FastAPI, Supabase).
-    - API documentation must be comprehensive and automatically generated.
+    - Must integrate with OpenAI API or similar LLM service for AI decision-making and question generation.
+    - Supabase Auth handles email delivery for authentication (verification, password resets).
+    - API design must support future mobile app development.
+- **Data Requirements:**
+    - Must support data export in common formats (CSV, PDF).
+    - Must implement database backups and disaster recovery.
+- **Development Constraints:**
+    - Must complete development within 6 weeks with AI-assisted development tools.
+    - Must use proven, well-documented technologies suitable for AI-assisted coding.
+    - Must include comprehensive API documentation.
 
 ---
 
@@ -104,6 +128,7 @@ Requirements must be decomposed into epics and bite-sized stories.
 ## References
 
 - proposal.md
+- product-brief-2025-11-10.md
 
 ---
 
