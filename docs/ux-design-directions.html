@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Planner - Design Direction</title>
+    <style>
+        :root {
+            --background: 210 40% 98%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --primary: 222.2 47.4% 11.2%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --destructive: 0 84.2% 60.2%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 222.2 84% 4.9%;
+            --radius: 0.5rem;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1, h2, h3, h4 {
+            color: hsl(var(--foreground));
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 1px solid hsl(var(--border));
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: hsl(var(--muted-foreground));
+            max-width: 75ch;
+        }
+
+        .mockup-wrapper {
+            background-color: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        /* Simplified Tailwind-like classes for mockups */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+        .p-6 { padding: 1.5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .rounded-lg { border-radius: var(--radius); }
+        .border { border: 1px solid hsl(var(--border)); }
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+        .text-lg { font-size: 1.125rem; }
+        .font-semibold { font-weight: 600; }
+        .text-sm { font-size: 0.875rem; }
+        .text-muted-foreground { color: hsl(var(--muted-foreground)); }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+        .btn-primary {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+        .btn-secondary {
+            background-color: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+            border-color: hsl(var(--border));
+        }
+        .input, .textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--input));
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+        }
+        .label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Design Direction Showcase</h1>
+        
+        <section id="philosophy">
+            <h2>Design Philosophy: Clarity and Focus</h2>
+            <p>
+                The recommended design direction is minimalist, component-driven, and focused on clarity. This approach aligns with the application's purpose: to provide a calm, organized, and efficient tool for students. By prioritizing content and functionality over ornamentation, we create a user experience that reduces cognitive load and helps users focus on their primary goal of planning their studies.
+            </p>
+            <p>
+                The aesthetic is clean, modern, and spacious, built upon the solid foundation of Shadcn UI and Tailwind CSS. A consistent typographic scale, a clear visual hierarchy, and generous use of white space guide the user's attention naturally through the interface.
+            </p>
+        </section>
+
+        <section id="mockups">
+            <h2>Key Screen Mockups</h2>
+
+            <h3>Dashboard</h3>
+            <p>The central hub for the user, providing an at-a-glance view of their schedule and courses. The layout is a simple two-column grid, prioritizing the weekly calendar and course progress.</p>
+            <div class="mockup-wrapper">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                    <!-- Left Column: Calendar -->
+                    <div class="flex flex-col gap-6">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-lg font-semibold">This Week's Schedule</h4>
+                            <div class="flex gap-4">
+                                <span class="btn btn-secondary py-2 px-4">&lt; Prev</span>
+                                <span class="btn btn-secondary py-2 px-4">Next &gt;</span>
+                            </div>
+                        </div>
+                        <div class="p-6 border rounded-lg h-full">
+                            <!-- Simplified calendar view -->
+                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; text-align: center;">
+                                <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                                <div class="p-2 border rounded-lg h-24"></div>
+                                <div class="p-2 border rounded-lg h-24 flex flex-col gap-2">
+                                    <div class="p-1 text-sm rounded-lg" style="background-color: hsl(var(--accent));">Calculus Ch. 3</div>
+                                </div>
+                                <div class="p-2 border rounded-lg h-24"></div>
+                                <div class="p-2 border rounded-lg h-24"></div>
+                                <div class="p-2 border rounded-lg h-24"></div>
+                                <div class="p-2 border rounded-lg h-24"></div>
+                                <div class="p-2 border rounded-lg h-24"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Column: Courses -->
+                    <div class="flex flex-col gap-6">
+                        <h4 class="text-lg font-semibold">My Courses</h4>
+                        <div class="flex flex-col gap-4">
+                            <div class="p-6 border rounded-lg flex flex-col gap-4">
+                                <h4 class="font-semibold">Advanced Calculus</h4>
+                                <div class="text-sm text-muted-foreground">75% Complete</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5" style="background-color: hsl(var(--secondary));"><div style="width: 75%; background-color: hsl(var(--primary));" class="h-2.5 rounded-full"></div></div>
+                            </div>
+                            <div class="p-6 border rounded-lg flex flex-col gap-4">
+                                <h4 class="font-semibold">History of Science</h4>
+                                <div class="text-sm text-muted-foreground">40% Complete</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5" style="background-color: hsl(var(--secondary));"><div style="width: 40%; background-color: hsl(var(--primary));" class="h-2.5 rounded-full"></div></div>
+                            </div>
+                            <span class="btn btn-primary w-full">Add New Course</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Course Creation Modal</h3>
+            <p>A focused, single-purpose interface for adding a new course. The form is simple, with a large text area for the syllabus, abstracting the complexity of AI parsing from the user.</p>
+            <div class="mockup-wrapper" style="max-width: 600px; margin-left: auto; margin-right: auto;">
+                <div class="flex flex-col gap-6">
+                    <h4 class="text-lg font-semibold">Add a New Course</h4>
+                    <div class="flex flex-col gap-2">
+                        <label for="course-title" class="label">Course Title</label>
+                        <input id="course-title" class="input" type="text" placeholder="e.g., Introduction to Psychology">
+                    </div>
+                     <div class="flex flex-col gap-2">
+                        <label for="syllabus" class="label">Syllabus Content</label>
+                        <textarea id="syllabus" class="textarea" rows="10" placeholder="Paste your course syllabus here..."></textarea>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="btn btn-secondary">Cancel</span>
+                        <span class="btn btn-primary">Generate Study Plan</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Login Page</h3>
+            <p>A minimal, centered login form that removes all distractions, guiding the user to the single action of signing in.</p>
+            <div class="mockup-wrapper" style="max-width: 400px; margin-left: auto; margin-right: auto;">
+                 <div class="flex flex-col gap-6 items-center text-center">
+                    <h4 class="text-lg font-semibold">Welcome to the AI Study Planner</h4>
+                    <p class="text-sm text-muted-foreground">Sign in to access your personalized study plan.</p>
+                     <div class="w-full flex flex-col gap-4">
+                        <div class="flex flex-col gap-2 text-left">
+                            <label for="email" class="label">Email</label>
+                            <input id="email" class="input" type="email" placeholder="you@example.com">
+                        </div>
+                        <div class="flex flex-col gap-2 text-left">
+                            <label for="password" class="label">Password</label>
+                            <input id="password" class="input" type="password">
+                        </div>
+                     </div>
+                    <span class="btn btn-primary w-full">Sign In</span>
+                    <div class="text-sm text-muted-foreground">
+                        Don't have an account? <a href="#" style="color: hsl(var(--primary));">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</body>
+</html>
