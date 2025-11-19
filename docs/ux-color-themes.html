@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Planner - Color Themes</title>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 222.2 47.4% 11.2%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 222.2 84% 4.9%;
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: 222.2 84% 4.9%;
+            --foreground: 210 40% 98%;
+            --card: 222.2 84% 4.9%;
+            --card-foreground: 210 40% 98%;
+            --popover: 222.2 84% 4.9%;
+            --popover-foreground: 210 40% 98%;
+            --primary: 210 40% 98%;
+            --primary-foreground: 222.2 47.4% 11.2%;
+            --secondary: 217.2 32.6% 17.5%;
+            --secondary-foreground: 210 40% 98%;
+            --muted: 217.2 32.6% 17.5%;
+            --muted-foreground: 215 20.2% 65.1%;
+            --accent: 217.2 32.6% 17.5%;
+            --accent-foreground: 210 40% 98%;
+            --destructive: 0 62.8% 30.6%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 217.2 32.6% 17.5%;
+            --input: 217.2 32.6% 17.5%;
+            --ring: 212.7 26.8% 83.9%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.6;
+            padding: 2rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            color: hsl(var(--foreground));
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 1px solid hsl(var(--border));
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .theme-toggle {
+            padding: 0.5rem 1rem;
+            border: 1px solid hsl(var(--border));
+            background-color: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+        .theme-toggle:hover {
+            background-color: hsl(var(--accent));
+        }
+
+        .palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .swatch {
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .swatch-color {
+            height: 100px;
+        }
+
+        .swatch-info {
+            padding: 1rem;
+            background-color: hsl(var(--card));
+        }
+        
+        .swatch-info h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            font-weight: 500;
+            color: hsl(var(--card-foreground));
+        }
+
+        .swatch-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .component-card {
+            background-color: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+        
+        .component-card h4 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: opacity 0.2s;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+        .button:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-primary {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+        
+        .btn-secondary {
+            background-color: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+        }
+        
+        .btn-destructive {
+            background-color: hsl(var(--destructive));
+            color: hsl(var(--destructive-foreground));
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--border));
+            background-color: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>
+            <span>Color Theme Visualizer</span>
+            <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+        </h1>
+        <p>
+            Interactive HTML showing the color theme options for the AI-Powered Personal Study Planner.
+            The palette is based on Shadcn UI's default theme, designed to be calm, focused, and professional.
+        </p>
+
+        <h2>Core Palette</h2>
+        <div class="palette" id="palette-container">
+            <!-- Swatches will be injected here by JavaScript -->
+        </div>
+
+        <h2>Component Examples</h2>
+        <div class="components-grid">
+            <div class="component-card">
+                <h4>Buttons</h4>
+                <a class="button btn-primary">Primary Action</a>
+                <a class="button btn-secondary">Secondary</a>
+                <a class="button btn-destructive">Delete</a>
+            </div>
+            <div class="component-card">
+                <h4>Alerts & Notifications</h4>
+                <div class="alert">
+                    <strong>Heads up!</strong> Your study plan has been updated.
+                </div>
+            </div>
+            <div class="component-card">
+                <h4>Card Component</h4>
+                <p style="color: hsl(var(--muted-foreground));">This is an example of a card, which will be used to display courses, tasks, and other information modules.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const colorConfig = [
+            { name: "Background", var: "--background", description: "Page background color." },
+            { name: "Foreground", var: "--foreground", description: "Default text color." },
+            { name: "Card", var: "--card", description: "Card component background." },
+            { name: "Primary", var: "--primary", description: "Primary interactive elements." },
+            { name: "Primary FG", var: "--primary-foreground", description: "Text on primary elements." },
+            { name: "Secondary", var: "--secondary", description: "Secondary interactive elements." },
+            { name: "Secondary FG", var: "--secondary-foreground", description: "Text on secondary elements." },
+            { name: "Muted", var: "--muted", description: "Muted elements and backgrounds." },
+            { name: "Muted FG", var: "--muted-foreground", description: "Muted text color." },
+            { name: "Accent", var: "--accent", description: "Accented elements for attention." },
+            { name: "Destructive", var: "--destructive", description: "Destructive actions (e.g., delete)." },
+            { name: "Border", var: "--border", description: "Borders and dividers." },
+            { name: "Ring", var: "--ring", description: "Focus rings for accessibility." },
+        ];
+
+        function renderPalette() {
+            const container = document.getElementById('palette-container');
+            container.innerHTML = '';
+            const styles = getComputedStyle(document.documentElement);
+
+            colorConfig.forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.classList.add('swatch');
+                
+                const colorValue = styles.getPropertyValue(color.var).trim();
+
+                swatch.innerHTML = `
+                    <div class="swatch-color" style="background-color: hsl(${colorValue});"></div>
+                    <div class="swatch-info">
+                        <h4>${color.name}</h4>
+                        <p>${color.description}</p>
+                    </div>
+                `;
+                container.appendChild(swatch);
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark');
+            // Re-render palette to get updated CSS variable values
+            renderPalette();
+        }
+
+        // Initial render
+        document.addEventListener('DOMContentLoaded', renderPalette);
+    </script>
+
+</body>
+</html>
