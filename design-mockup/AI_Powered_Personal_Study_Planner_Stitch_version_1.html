@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Komm Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4b8ae2",
+              "background-light": "#f6f7f8",
+              "background-dark": "#121820",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-[#0e131a] dark:text-gray-200">
+<div class="flex h-screen w-full">
+<aside class="flex w-72 flex-col border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-background-dark p-4">
+<div class="flex items-center gap-3 px-2 py-4">
+<div class="size-6 text-primary">
+<svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h1 class="text-[#0e131a] dark:text-white text-xl font-bold">Komm</h1>
+</div>
+<nav class="mt-8 flex flex-1 flex-col justify-between">
+<div>
+<h2 class="text-[#0e131a] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-2 pb-3 pt-5">My Courses</h2>
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-3 p-4 rounded-lg bg-primary/10 dark:bg-primary/20">
+<div class="flex gap-6 justify-between items-center">
+<p class="text-[#0e131a] dark:text-white text-base font-medium leading-normal">Computer Science 101</p>
+<p class="text-primary text-sm font-bold leading-normal">75%</p>
+</div>
+<div class="rounded bg-gray-200 dark:bg-gray-700">
+<div class="h-2 rounded bg-primary" style="width: 75%;"></div>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between items-center">
+<p class="text-[#0e131a] dark:text-gray-300 text-base font-medium leading-normal">Art History</p>
+<p class="text-[#0e131a] dark:text-gray-300 text-sm font-normal leading-normal">40%</p>
+</div>
+<div class="rounded bg-gray-200 dark:bg-gray-700">
+<div class="h-2 rounded bg-primary" style="width: 40%;"></div>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between items-center">
+<p class="text-[#0e131a] dark:text-gray-300 text-base font-medium leading-normal">Advanced Mathematics</p>
+<p class="text-[#0e131a] dark:text-gray-300 text-sm font-normal leading-normal">95%</p>
+</div>
+<div class="rounded bg-gray-200 dark:bg-gray-700">
+<div class="h-2 rounded bg-primary" style="width: 95%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-[#0e131a] dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#0e131a] dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium leading-normal">Log Out</p>
+</a>
+</div>
+</nav>
+</aside>
+<main class="flex-1 flex flex-col bg-background-light dark:bg-background-dark">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-gray-700 px-10 py-3 bg-white dark:bg-background-dark">
+<div class="flex-1">
+<label class="flex flex-col min-w-40 !h-10 max-w-sm">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-gray-500 dark:text-gray-400 flex bg-gray-100 dark:bg-gray-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0e131a] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-none bg-gray-100 dark:bg-gray-800 h-full placeholder:text-gray-500 dark:placeholder:text-gray-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search courses, assignments..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 w-10 bg-gray-100 dark:bg-gray-800 text-[#0e131a] dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBCxf3p63ml_ybsrOMOthISeW5GxC8u-4qkBJ2MPwp7LaiLtpGvq0yQWpX4vYt8Y91qrB87uDZO7xL362mzd-yLr8DutGRqUOyptur2E3hInzy0c8ItDAkECURrK_RKsA_uC8pRKRDRxq9aT03VBPpmx4pE85n74VEqFgF2Y9-CGPeCoWdFx3UZXRrMgcLWbAUnIwnu9RsrMHuh-BkpCz7brDvpmIDsQRv8ypMr8ADvh7SApd30hx2aO1BjlZAU-u_6QnXRIS-GD4E");'></div>
+</div>
+</header>
+<div class="flex-1 overflow-auto p-8">
+<div class="max-w-7xl mx-auto w-full">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-bold text-[#0e131a] dark:text-white">Weekly Calendar</h2>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<span class="font-semibold text-lg text-gray-700 dark:text-gray-300">November 17 - 23, 2025</span>
+<button class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-px bg-gray-200 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+<div class="text-center py-3 bg-white dark:bg-background-dark font-semibold text-gray-600 dark:text-gray-400">Mon</div>
+<div class="text-center py-3 bg-white dark:bg-background-dark font-semibold text-gray-600 dark:text-gray-400">Tue</div>
+<div class="text-center py-3 bg-white dark:bg-background-dark font-semibold text-gray-600 dark:text-gray-400">Wed</div>
+<div class="text-center py-3 bg-white dark:bg-background-dark font-semibold text-gray-600 dark:text-gray-400">Thu</div>
+<div class="text-center py-3 bg-white dark:bg-background-dark font-semibold text-gray-600 dark:text-gray-400">Fri</div>
+<div class="text-center py-3 bg-white dark:bg-background-dark font-semibold text-gray-600 dark:text-gray-400">Sat</div>
+<div class="text-center py-3 bg-white dark:bg-background-dark font-semibold text-gray-600 dark:text-gray-400">Sun</div>
+<div class="min-h-64 p-2 bg-background-light dark:bg-background-dark/50">
+<p class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">17</p>
+<div class="flex flex-col gap-2">
+<div class="bg-green-100 dark:bg-green-900/40 border-l-4 border-green-500 rounded-r-lg p-3">
+<p class="font-bold text-sm text-green-800 dark:text-green-200">Intro to Algorithms</p>
+<p class="text-xs text-green-600 dark:text-green-300">CS-101</p>
+<div class="flex items-center gap-1 mt-1 text-green-600 dark:text-green-300">
+<span class="material-symbols-outlined !text-sm">slideshow</span>
+<span class="text-xs">Lecture</span>
+</div>
+</div>
+</div>
+</div>
+<div class="min-h-64 p-2 bg-white dark:bg-background-dark border-2 border-primary rounded-md">
+<p class="text-sm font-bold text-primary mb-2">18</p>
+<div class="flex flex-col gap-2">
+<div class="bg-orange-100 dark:bg-orange-900/40 border-l-4 border-orange-500 rounded-r-lg p-3">
+<p class="font-bold text-sm text-orange-800 dark:text-orange-200">History Essay Due</p>
+<p class="text-xs text-orange-600 dark:text-orange-300">HIST-240</p>
+<div class="flex items-center gap-1 mt-1 text-orange-600 dark:text-orange-300">
+<span class="material-symbols-outlined !text-sm">assignment</span>
+<span class="text-xs">Assignment</span>
+</div>
+</div>
+</div>
+</div>
+<div class="min-h-64 p-2 bg-background-light dark:bg-background-dark/50">
+<p class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">19</p>
+</div>
+<div class="min-h-64 p-2 bg-background-light dark:bg-background-dark/50">
+<p class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">20</p>
+<div class="flex flex-col gap-2">
+<div class="bg-purple-100 dark:bg-purple-900/40 border-l-4 border-purple-500 rounded-r-lg p-3">
+<p class="font-bold text-sm text-purple-800 dark:text-purple-200">Calculus Mid-term</p>
+<p class="text-xs text-purple-600 dark:text-purple-300">MATH-101</p>
+<div class="flex items-center gap-1 mt-1 text-purple-600 dark:text-purple-300">
+<span class="material-symbols-outlined !text-sm">quiz</span>
+<span class="text-xs">Quiz</span>
+</div>
+</div>
+<div class="bg-green-100 dark:bg-green-900/40 border-l-4 border-green-500 rounded-r-lg p-3">
+<p class="font-bold text-sm text-green-800 dark:text-green-200">Data Structures</p>
+<p class="text-xs text-green-600 dark:text-green-300">CS-101</p>
+<div class="flex items-center gap-1 mt-1 text-green-600 dark:text-green-300">
+<span class="material-symbols-outlined !text-sm">slideshow</span>
+<span class="text-xs">Lecture</span>
+</div>
+</div>
+</div>
+</div>
+<div class="min-h-64 p-2 bg-background-light dark:bg-background-dark/50">
+<p class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">21</p>
+</div>
+<div class="min-h-64 p-2 bg-background-light dark:bg-background-dark/50">
+<p class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">22</p>
+</div>
+<div class="min-h-64 p-2 bg-background-light dark:bg-background-dark/50">
+<p class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">23</p>
+<div class="flex flex-col gap-2">
+<div class="bg-orange-100 dark:bg-orange-900/40 border-l-4 border-orange-500 rounded-r-lg p-3">
+<p class="font-bold text-sm text-orange-800 dark:text-orange-200">Math Homework</p>
+<p class="text-xs text-orange-600 dark:text-orange-300">MATH-101</p>
+<div class="flex items-center gap-1 mt-1 text-orange-600 dark:text-orange-300">
+<span class="material-symbols-outlined !text-sm">assignment</span>
+<span class="text-xs">Assignment</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 group bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl">
+<div class="flex items-center justify-between p-4 cursor-pointer">
+<label class="flex items-center gap-3 cursor-pointer" for="notes-toggle">
+<h3 class="text-xl font-bold text-[#0e131a] dark:text-white">Week 47 - Quick Notes</h3>
+<input class="sr-only peer" id="notes-toggle" type="checkbox"/>
+<span class="material-symbols-outlined text-2xl text-gray-500 dark:text-gray-400 peer-checked:rotate-180 transition-transform">expand_more</span>
+</label>
+<div class="flex items-center gap-2 group-has-[input:checked]:hidden">
+<button class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-xl">description</span>
+</button>
+<button class="p-2 rounded-lg text-white bg-primary hover:bg-primary/90">
+<span class="material-symbols-outlined text-xl">add</span>
+</button>
+</div>
+</div>
+<div class="flex-1 flex-col group-has-[input:checked]:hidden flex p-4 pt-0">
+<textarea class="form-textarea flex-1 w-full p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border-gray-200 dark:border-gray-700 focus:ring-primary focus:border-primary placeholder:text-gray-400 dark:placeholder:text-gray-500 resize-none h-40" placeholder="Type a new note here..."></textarea>
+<div class="flex justify-end mt-4">
+<button class="py-2 px-6 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark">
+Save Note
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
