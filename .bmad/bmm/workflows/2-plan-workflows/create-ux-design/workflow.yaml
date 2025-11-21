@@ -45,6 +45,11 @@ input_file_patterns:
     sharded: "{output_folder}/index.md"
     load_strategy: "INDEX_GUIDED"
 
+  validation_report:
+    description: "Validation report to improve content"
+    whole: "c:\\Users\\Eier\\SG-Gruppe-3-Komm\\docs\\validation-report-20251121.md"
+    load_strategy: "FULL_LOAD"
+
 # Module path and component files
 installed_path: "{project-root}/.bmad/bmm/workflows/2-plan-workflows/create-ux-design"
 instructions: "{installed_path}/instructions.md"

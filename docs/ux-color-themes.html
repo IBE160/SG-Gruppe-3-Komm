@@ -3,290 +3,607 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Study Planner - Color Themes</title>
+    <title>UX Color Theme Visualizer</title>
     <style>
         :root {
-            --background: 0 0% 100%;
-            --foreground: 222.2 84% 4.9%;
-            --card: 0 0% 100%;
-            --card-foreground: 222.2 84% 4.9%;
-            --popover: 0 0% 100%;
-            --popover-foreground: 222.2 84% 4.9%;
-            --primary: 222.2 47.4% 11.2%;
-            --primary-foreground: 210 40% 98%;
-            --secondary: 210 40% 96.1%;
-            --secondary-foreground: 222.2 47.4% 11.2%;
-            --muted: 210 40% 96.1%;
-            --muted-foreground: 215.4 16.3% 46.9%;
-            --accent: 210 40% 96.1%;
-            --accent-foreground: 222.2 47.4% 11.2%;
-            --destructive: 0 84.2% 60.2%;
-            --destructive-foreground: 210 40% 98%;
-            --border: 214.3 31.8% 91.4%;
-            --input: 214.3 31.8% 91.4%;
-            --ring: 222.2 84% 4.9%;
-            --radius: 0.5rem;
-        }
-
-        .dark {
-            --background: 222.2 84% 4.9%;
-            --foreground: 210 40% 98%;
-            --card: 222.2 84% 4.9%;
-            --card-foreground: 210 40% 98%;
-            --popover: 222.2 84% 4.9%;
-            --popover-foreground: 210 40% 98%;
-            --primary: 210 40% 98%;
-            --primary-foreground: 222.2 47.4% 11.2%;
-            --secondary: 217.2 32.6% 17.5%;
-            --secondary-foreground: 210 40% 98%;
-            --muted: 217.2 32.6% 17.5%;
-            --muted-foreground: 215 20.2% 65.1%;
-            --accent: 217.2 32.6% 17.5%;
-            --accent-foreground: 210 40% 98%;
-            --destructive: 0 62.8% 30.6%;
-            --destructive-foreground: 210 40% 98%;
-            --border: 217.2 32.6% 17.5%;
-            --input: 217.2 32.6% 17.5%;
-            --ring: 212.7 26.8% 83.9%;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: hsl(var(--background));
-            color: hsl(var(--foreground));
-            line-height: 1.6;
-            padding: 2rem;
-            transition: background-color 0.3s, color 0.3s;
+            font-family: var(--font-sans);
+            background-color: #f8f9fa;
+            color: #212529;
+            margin: 0;
+            padding: 24px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
         h1, h2, h3 {
-            color: hsl(var(--foreground));
             font-weight: 600;
         }
         
         h1 {
-            font-size: 2.5rem;
-            border-bottom: 1px solid hsl(var(--border));
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
+            text-align: center;
+            margin-bottom: 32px;
+            color: #343a40;
+        }
+
+        .controls {
+            background-color: #fff;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 32px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+        .controls label {
+            font-weight: 500;
+        }
+        .controls select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            font-size: 16px;
         }
 
-        h2 {
-            font-size: 2rem;
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        h3 {
-            font-size: 1.5rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
+        .comparison-grid {
+            display: grid;
+            gap: 32px;
+            transition: all 0.3s ease;
         }
 
-        .theme-toggle {
-            padding: 0.5rem 1rem;
-            border: 1px solid hsl(var(--border));
-            background-color: hsl(var(--secondary));
-            color: hsl(var(--secondary-foreground));
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
+        .theme-column {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
         }
-        .theme-toggle:hover {
-            background-color: hsl(var(--accent));
+
+        .theme-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .theme-header h2 {
+            margin: 0 0 4px;
+            color: var(--foreground);
+        }
+
+        .theme-header p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--muted-foreground);
+        }
+
+        .theme-content {
+            padding: 24px;
+            background-color: var(--background);
+            color: var(--foreground);
         }
 
         .palette {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .swatch {
-            border: 1px solid hsl(var(--border));
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
         }
 
         .swatch-color {
-            height: 100px;
+            width: 100%;
+            height: 60px;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
-        .swatch-info {
-            padding: 1rem;
-            background-color: hsl(var(--card));
-        }
-        
-        .swatch-info h4 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1rem;
+        .swatch-label {
+            font-size: 13px;
             font-weight: 500;
-            color: hsl(var(--card-foreground));
+            margin-top: 8px;
+            color: var(--muted-foreground);
+        }
+        .swatch-hex {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--muted-foreground);
         }
 
-        .swatch-info p {
-            margin: 0;
-            font-size: 0.85rem;
-            color: hsl(var(--muted-foreground));
-        }
-
-        .components-grid {
+        .components {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            align-items: start;
+            gap: 24px;
         }
 
-        .component-card {
-            background-color: hsl(var(--card));
-            border: 1px solid hsl(var(--border));
-            border-radius: var(--radius);
-            padding: 1.5rem;
+        .component-group h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--foreground);
         }
-        
-        .component-card h4 {
-            font-size: 1.2rem;
-            margin-top: 0;
-            margin-bottom: 1rem;
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        
-        .button {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
+
+        .btn {
+            font-family: var(--font-sans);
             font-weight: 500;
+            font-size: 14px;
+            padding: 10px 16px;
+            border-radius: 6px;
+            border: 1px solid transparent;
             cursor: pointer;
-            text-align: center;
-            transition: opacity 0.2s;
-            margin-right: 1rem;
-            margin-bottom: 1rem;
+            transition: all 0.2s ease;
         }
-        .button:hover {
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+        .btn-primary:hover {
             opacity: 0.9;
         }
         
-        .btn-primary {
-            background-color: hsl(var(--primary));
-            color: hsl(var(--primary-foreground));
-        }
-        
         .btn-secondary {
-            background-color: hsl(var(--secondary));
-            color: hsl(var(--secondary-foreground));
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            border-color: var(--border);
+        }
+        .btn-secondary:hover {
+            background-color: var(--accent);
+        }
+
+        .btn-destructive {
+            background-color: var(--destructive);
+            color: var(--destructive-foreground);
+        }
+         .btn-destructive:hover {
+            opacity: 0.9;
         }
         
-        .btn-destructive {
-            background-color: hsl(var(--destructive));
-            color: hsl(var(--destructive-foreground));
+        .btn-disabled {
+            background-color: var(--muted);
+            color: var(--muted-foreground);
+            cursor: not-allowed;
+            opacity: 0.7;
         }
 
         .alert {
-            padding: 1rem;
-            border-radius: var(--radius);
-            border: 1px solid hsl(var(--border));
-            background-color: hsl(var(--accent));
-            color: hsl(var(--accent-foreground));
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid;
+            font-size: 14px;
         }
 
+        .alert-success {
+            background-color: var(--success-bg);
+            border-color: var(--success-border);
+            color: var(--success-fg);
+        }
+
+        .alert-destructive {
+            background-color: var(--destructive-bg);
+            border-color: var(--destructive-border);
+            color: var(--destructive-fg);
+        }
+
+        .card {
+            background-color: var(--card);
+            padding: 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .card h4 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            color: var(--card-foreground);
+        }
+        .card p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--muted-foreground);
+        }
+        
+        .input {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background-color: var(--background);
+            color: var(--foreground);
+            box-sizing: border-box;
+        }
+        .input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-focus);
+        }
+
+        /* Themes */
+        .theme-calm-focused {
+            --background: #ffffff;
+            --foreground: #0f172a;
+            --muted: #f1f5f9;
+            --muted-foreground: #64748b;
+            --card: #ffffff;
+            --card-foreground: #0f172a;
+            --border: #e2e8f0;
+            --primary: #3b82f6;
+            --primary-foreground: #ffffff;
+            --primary-focus: rgba(59, 130, 246, 0.2);
+            --secondary: #f1f5f9;
+            --secondary-foreground: #0f172a;
+            --accent: #e2e8f0;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --destructive-bg: #fee2e2;
+            --destructive-border: #fca5a5;
+            --destructive-fg: #991b1b;
+            --success-bg: #dcfce7;
+            --success-border: #86efac;
+            --success-fg: #166534;
+        }
+        .theme-calm-focused.dark-mode {
+            --background: #020617;
+            --foreground: #f8fafc;
+            --muted: #1e293b;
+            --muted-foreground: #94a3b8;
+            --card: #0f172a;
+            --card-foreground: #f8fafc;
+            --border: #334155;
+            --primary: #60a5fa;
+            --primary-foreground: #020617;
+            --primary-focus: rgba(96, 165, 250, 0.2);
+            --secondary: #1e293b;
+            --secondary-foreground: #f8fafc;
+            --accent: #334155;
+            --destructive: #f87171;
+            --destructive-foreground: #020617;
+            --destructive-bg: #450a0a;
+            --destructive-border: #b91c1c;
+            --destructive-fg: #fecaca;
+            --success-bg: #14532d;
+            --success-border: #22c55e;
+            --success-fg: #bbf7d0;
+        }
+
+        .theme-academic-traditional {
+            --background: #fdfbf7;
+            --foreground: #2d3748;
+            --muted: #edf2f7;
+            --muted-foreground: #718096;
+            --card: #ffffff;
+            --card-foreground: #2d3748;
+            --border: #e2e8f0;
+            --primary: #2b3a67;
+            --primary-foreground: #ffffff;
+            --primary-focus: rgba(43, 58, 103, 0.2);
+            --secondary: #edf2f7;
+            --secondary-foreground: #2d3748;
+            --accent: #d8dee7;
+            --destructive: #9b2c2c;
+            --destructive-foreground: #ffffff;
+            --destructive-bg: #fed7d7;
+            --destructive-border: #f56565;
+            --destructive-fg: #742a2a;
+            --success-bg: #c6f6d5;
+            --success-border: #68d391;
+            --success-fg: #2f855a;
+        }
+        .theme-academic-traditional.dark-mode {
+             --background: #1a202c;
+            --foreground: #edf2f7;
+            --muted: #2d3748;
+            --muted-foreground: #a0aec0;
+            --card: #2d3748;
+            --card-foreground: #edf2f7;
+            --border: #4a5568;
+            --primary: #8da4d0;
+            --primary-foreground: #1a202c;
+            --primary-focus: rgba(141, 164, 208, 0.2);
+            --secondary: #2d3748;
+            --secondary-foreground: #edf2f7;
+            --accent: #4a5568;
+            --destructive: #e57373;
+            --destructive-foreground: #1a202c;
+            --destructive-bg: #5f2121;
+            --destructive-border: #c53030;
+            --destructive-fg: #fed7d7;
+            --success-bg: #254e3a;
+            --success-border: #38a169;
+            --success-fg: #c6f6d5;
+        }
+
+        .theme-modern-energetic {
+            --background: #ffffff;
+            --foreground: #111827;
+            --muted: #f3f4f6;
+            --muted-foreground: #6b7280;
+            --card: #ffffff;
+            --card-foreground: #111827;
+            --border: #e5e7eb;
+            --primary: #10b981;
+            --primary-foreground: #ffffff;
+            --primary-focus: rgba(16, 185, 129, 0.2);
+            --secondary: #f3f4f6;
+            --secondary-foreground: #111827;
+            --accent: #e5e7eb;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --destructive-bg: #fee2e2;
+            --destructive-border: #fca5a5;
+            --destructive-fg: #991b1b;
+            --success-bg: #d1fae5;
+            --success-border: #6ee7b7;
+            --success-fg: #065f46;
+        }
+        .theme-modern-energetic.dark-mode {
+            --background: #111827;
+            --foreground: #f9fafb;
+            --muted: #374151;
+            --muted-foreground: #9ca3af;
+            --card: #1f2937;
+            --card-foreground: #f9fafb;
+            --border: #4b5563;
+            --primary: #34d399;
+            --primary-foreground: #111827;
+            --primary-focus: rgba(52, 211, 153, 0.2);
+            --secondary: #374151;
+            --secondary-foreground: #f9fafb;
+            --accent: #4b5563;
+            --destructive: #f87171;
+            --destructive-foreground: #111827;
+            --destructive-bg: #450a0a;
+            --destructive-border: #b91c1c;
+            --destructive-fg: #fecaca;
+            --success-bg: #064e3b;
+            --success-border: #10b981;
+            --success-fg: #a7f3d0;
+        }
+
+        .theme-minimal-clean {
+            --background: #ffffff;
+            --foreground: #000000;
+            --muted: #f2f2f2;
+            --muted-foreground: #666666;
+            --card: #ffffff;
+            --card-foreground: #000000;
+            --border: #eaeaea;
+            --primary: #007aff;
+            --primary-foreground: #ffffff;
+            --primary-focus: rgba(0, 122, 255, 0.2);
+            --secondary: #f2f2f2;
+            --secondary-foreground: #000000;
+            --accent: #e5e5e5;
+            --destructive: #ff3b30;
+            --destructive-foreground: #ffffff;
+            --destructive-bg: #ffe5e5;
+            --destructive-border: #ff8a80;
+            --destructive-fg: #c50000;
+            --success-bg: #e5f5e5;
+            --success-border: #80d580;
+            --success-fg: #006400;
+        }
+        .theme-minimal-clean.dark-mode {
+            --background: #000000;
+            --foreground: #ffffff;
+            --muted: #1c1c1e;
+            --muted-foreground: #8e8e93;
+            --card: #1c1c1e;
+            --card-foreground: #ffffff;
+            --border: #3a3a3c;
+            --primary: #0a84ff;
+            --primary-foreground: #ffffff;
+            --primary-focus: rgba(10, 132, 255, 0.3);
+            --secondary: #1c1c1e;
+            --secondary-foreground: #ffffff;
+            --accent: #3a3a3c;
+            --destructive: #ff453a;
+            --destructive-foreground: #ffffff;
+            --destructive-bg: #5c0000;
+            --destructive-border: #ff6e66;
+            --destructive-fg: #ffc2bf;
+            --success-bg: #003b00;
+            --success-border: #30d158;
+            --success-fg: #b2f2bb;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>
-            <span>Color Theme Visualizer</span>
-            <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
-        </h1>
-        <p>
-            Interactive HTML showing the color theme options for the AI-Powered Personal Study Planner.
-            The palette is based on Shadcn UI's default theme, designed to be calm, focused, and professional.
-        </p>
+        <h1>UX Color Theme Visualizer</h1>
 
-        <h2>Core Palette</h2>
-        <div class="palette" id="palette-container">
-            <!-- Swatches will be injected here by JavaScript -->
+        <div class="controls">
+            <label for="column-select">Compare Themes:</label>
+            <select id="column-select">
+                <option value="1">Single Column</option>
+                <option value="2" selected>Two Columns</option>
+                <option value="3">Three Columns</option>
+                <option value="4">Four Columns</option>
+            </select>
+            <label for="mode-select">Mode:</label>
+            <select id="mode-select">
+                <option value="light-mode" selected>Light</option>
+                <option value="dark-mode">Dark</option>
+            </select>
         </div>
 
-        <h2>Component Examples</h2>
-        <div class="components-grid">
-            <div class="component-card">
-                <h4>Buttons</h4>
-                <a class="button btn-primary">Primary Action</a>
-                <a class="button btn-secondary">Secondary</a>
-                <a class="button btn-destructive">Delete</a>
-            </div>
-            <div class="component-card">
-                <h4>Alerts & Notifications</h4>
-                <div class="alert">
-                    <strong>Heads up!</strong> Your study plan has been updated.
-                </div>
-            </div>
-            <div class="component-card">
-                <h4>Card Component</h4>
-                <p style="color: hsl(var(--muted-foreground));">This is an example of a card, which will be used to display courses, tasks, and other information modules.</p>
-            </div>
+        <div id="comparison-grid" class="comparison-grid">
+            <!-- Theme columns will be inserted here by JavaScript -->
         </div>
     </div>
 
     <script>
-        const colorConfig = [
-            { name: "Background", var: "--background", description: "Page background color." },
-            { name: "Foreground", var: "--foreground", description: "Default text color." },
-            { name: "Card", var: "--card", description: "Card component background." },
-            { name: "Primary", var: "--primary", description: "Primary interactive elements." },
-            { name: "Primary FG", var: "--primary-foreground", description: "Text on primary elements." },
-            { name: "Secondary", var: "--secondary", description: "Secondary interactive elements." },
-            { name: "Secondary FG", var: "--secondary-foreground", description: "Text on secondary elements." },
-            { name: "Muted", var: "--muted", description: "Muted elements and backgrounds." },
-            { name: "Muted FG", var: "--muted-foreground", description: "Muted text color." },
-            { name: "Accent", var: "--accent", description: "Accented elements for attention." },
-            { name: "Destructive", var: "--destructive", description: "Destructive actions (e.g., delete)." },
-            { name: "Border", var: "--border", description: "Borders and dividers." },
-            { name: "Ring", var: "--ring", description: "Focus rings for accessibility." },
+        const themes = [
+            {
+                id: 'theme-calm-focused',
+                name: 'Calm & Focused',
+                description: 'Trustworthy, classic, and easy on the eyes. Evokes focus and serenity.',
+                palettes: {
+                    'Primary': '#3b82f6',
+                    'Secondary': '#f1f5f9',
+                    'Background': '#ffffff',
+                    'Foreground': '#0f172a',
+                    'Card': '#ffffff',
+                    'Border': '#e2e8f0',
+                    'Destructive': '#ef4444',
+                    'Success': '#16a34a'
+                }
+            },
+            {
+                id: 'theme-academic-traditional',
+                name: 'Academic & Traditional',
+                description: 'A sophisticated, prestigious palette. Evokes a university feel.',
+                palettes: {
+                    'Primary': '#2b3a67',
+                    'Secondary': '#edf2f7',
+                    'Background': '#fdfbf7',
+                    'Foreground': '#2d3748',
+                    'Card': '#ffffff',
+                    'Border': '#e2e8f0',
+                    'Destructive': '#9b2c2c',
+                    'Success': '#2f855a'
+                }
+            },
+            {
+                id: 'theme-modern-energetic',
+                name: 'Modern & Energetic',
+                description: 'Vibrant, friendly, and motivating. Feels fresh and action-oriented.',
+                palettes: {
+                    'Primary': '#10b981',
+                    'Secondary': '#f3f4f6',
+                    'Background': '#ffffff',
+                    'Foreground': '#111827',
+                    'Card': '#ffffff',
+                    'Border': '#e5e7eb',
+                    'Destructive': '#ef4444',
+                    'Success': '#065f46'
+                }
+            },
+            {
+                id: 'theme-minimal-clean',
+                name: 'Minimal & Clean',
+                description: 'High-contrast and stark. Designed for ultimate focus with no distractions.',
+                palettes: {
+                    'Primary': '#007aff',
+                    'Secondary': '#f2f2f2',
+                    'Background': '#ffffff',
+                    'Foreground': '#000000',
+                    'Card': '#ffffff',
+                    'Border': '#eaeaea',
+                    'Destructive': '#ff3b30',
+                    'Success': '#006400'
+                }
+            }
         ];
 
-        function renderPalette() {
-            const container = document.getElementById('palette-container');
-            container.innerHTML = '';
-            const styles = getComputedStyle(document.documentElement);
-
-            colorConfig.forEach(color => {
-                const swatch = document.createElement('div');
-                swatch.classList.add('swatch');
-                
-                const colorValue = styles.getPropertyValue(color.var).trim();
-
-                swatch.innerHTML = `
-                    <div class="swatch-color" style="background-color: hsl(${colorValue});"></div>
-                    <div class="swatch-info">
-                        <h4>${color.name}</h4>
-                        <p>${color.description}</p>
+        function createThemeColumn(theme) {
+            return `
+                <div class="theme-column ${theme.id}" id="${theme.id}">
+                    <div class="theme-header">
+                        <h2>${theme.name}</h2>
+                        <p>${theme.description}</p>
                     </div>
-                `;
-                container.appendChild(swatch);
+                    <div class="theme-content">
+                        <div class="palette">
+                            ${Object.entries(theme.palettes).map(([name, hex]) => `
+                                <div class="swatch">
+                                    <div class="swatch-color" style="background-color: ${hex};"></div>
+                                    <div class="swatch-label">${name}</div>
+                                    <div class="swatch-hex">${hex}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="components">
+                            <div class="component-group">
+                                <h3>Buttons</h3>
+                                <div class="button-group">
+                                    <button class="btn btn-primary">Primary Action</button>
+                                    <button class="btn btn-secondary">Secondary</button>
+                                    <button class="btn btn-destructive">Delete</button>
+                                    <button class="btn btn-disabled">Disabled</button>
+                                </div>
+                            </div>
+                            <div class="component-group">
+                                <h3>Alerts</h3>
+                                <div class="alert alert-success" role="alert">
+                                    <strong>Success!</strong> Your study plan has been updated.
+                                </div>
+                                <div class="alert alert-destructive" role="alert">
+                                    <strong>Error!</strong> Could not parse the uploaded syllabus.
+                                </div>
+                            </div>
+                            <div class="component-group">
+                                <h3>Card</h3>
+                                <div class="card">
+                                    <h4>My First Course</h4>
+                                    <p>A short description of the course goes here. Progress: 25%</p>
+                                </div>
+                            </div>
+                             <div class="component-group">
+                                <h3>Form Input</h3>
+                                <input type="text" class="input" placeholder="Enter course name...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const grid = document.getElementById('comparison-grid');
+        const columnSelect = document.getElementById('column-select');
+        const modeSelect = document.getElementById('mode-select');
+
+        function renderGrid() {
+            grid.innerHTML = themes.map(createThemeColumn).join('');
+            updateColumns();
+            updateMode();
+        }
+
+        function updateColumns() {
+            const columns = columnSelect.value;
+            grid.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+        }
+
+        function updateMode() {
+            const mode = modeSelect.value;
+            document.querySelectorAll('.theme-column').forEach(col => {
+                if (mode === 'dark-mode') {
+                    col.classList.add('dark-mode');
+                } else {
+                    col.classList.remove('dark-mode');
+                }
             });
+             if (mode === 'dark-mode') {
+                document.body.style.backgroundColor = '#111827';
+                document.querySelector('h1').style.color = '#f9fafb';
+            } else {
+                document.body.style.backgroundColor = '#f8f9fa';
+                 document.querySelector('h1').style.color = '#343a40';
+            }
         }
 
-        function toggleTheme() {
-            const body = document.body;
-            body.classList.toggle('dark');
-            // Re-render palette to get updated CSS variable values
-            renderPalette();
-        }
+        columnSelect.addEventListener('change', updateColumns);
+        modeSelect.addEventListener('change', updateMode);
 
-        // Initial render
-        document.addEventListener('DOMContentLoaded', renderPalette);
+        renderGrid();
     </script>
-
 </body>
 </html>
