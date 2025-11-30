@@ -7,7 +7,7 @@
 **Gruppemedlemmer:**
 - [Bjørnar Jensen 1] - [241595-ID/Bjornar.jensen@himolde.no]
 - [Sten Otto Eilertsen 2] - [160808-ID/E-post]
-- [Tobias André Torbergsen 3] - [Student-ID/E-post]
+- [Tobias André Torbergsen 3] - [241813/E-post]
 
 **Dato:** [DD.MM.ÅÅÅÅ]
 
