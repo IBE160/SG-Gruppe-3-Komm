@@ -7,7 +7,7 @@
 **Gruppemedlemmer:**
 - [Bjørnar Jensen 1] - [241595-ID/Bjornar.jensen@himolde.no]
 - [Sten Otto Eilertsen 2] - [160808-ID/E-post]
-- [TobiasTobias André Torbergsen 3] - [Student-ID/E-post]
+- [Tobias André Torbergsen 3] - [241813/E-post]
 
 **Dato:** [DD.MM.ÅÅÅÅ]
 
@@ -26,6 +26,9 @@ Målet med prosjektet er å utvikle en nettbasert applikasjon som genererer en p
 - Hvilke verktøy brukte dere for samarbeid og hvordan det fungerte? (f.eks. Git, og Teams) Vi har brukt Git hub versjonshåndtering og branch. I teams har vi brukt gruppe 
 - Hvordan brukte dere KI-verktøy i prosessen? Vi har brukt gemini integrert i VScode. Vi har vært et kritisk øye til LLMen og følgt nøye med på hva den. Vi har også forbedret våre prompts ved å loope promptene vår i LLMen. 
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ### 2.3 Teknologi og verktøy
 [Liste over de viktigste teknologiene og verktøyene dere brukte]
 - Frontend: [f.eks. NextJS, HTML/CSS]
@@ -36,15 +39,17 @@ Målet med prosjektet er å utvikle en nettbasert applikasjon som genererer en p
 
 ### 2.4 Utviklingsfaser
 [Beskriv de ulike fasene i utviklingen]
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 **Fase 1: Planlegging**
 - [Hva gjorde dere i denne fasen?] Vi startet med å beste hva applikasjon vi ønsket å lage og deretter lagte vi et propsal utkast vi sendt til faglærer. Vi hadde et fagmøte med faglærer og assisten for innput forbedret vi propsolat til noe vi syntes var bra. Vi brukte AI til å lage komme med forslag til tekniske løsninger og å gi oss innsikt til hvordan et utviklings proposal skal se ut og innholde. 
 - [Hvordan brukte dere KI her? Husk å lagre promptene deres! Inkluder ALLE stegene dere gjorde.]
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 **Fase 2: Utvikling**
 - [Hva gjorde dere i denne fasen?]
 - [Hvordan brukte dere KI her? Husk å lagre promptene deres! Inkluder ALLE stegene dere gjorde.] Vi følgte i faglærer sin spor så godt vi kunne, men hadde utfordringer med Gemini. Ofte forstod ikke gemini BMAD metodikken og rollen den skulle innta. Det tok til tider flere forsøk for å overbevise den eller for å tvingen den til å gjøre det vi viste den skulle gjøre.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ---
 
 ## 3. Utfordringer og løsninger
@@ -196,46 +201,103 @@ For vår egen fremtidige karriere ser vi at det blir avgjørende å kunne bruke 
 - Potensielle risikoer ved å dele kode og data med KI
 - Hvordan skal man tenke på sikkerhet når man bruker KI?
 
+### 5.5 Datasikkerhet og personvern
+
+I prosjektet vårt delte vi i hovedsak tekniske beskrivelser, kodeutkast og BMAD-relaterte dokumenter med KI-verktøyene. Vi unngikk bevisst å legge inn sensitiv informasjon, personopplysninger eller data som kunne kobles til enkeltpersoner. Dette var viktig fordi KI-modeller lagrer og analyserer innhold midlertidig, og det er ikke alltid full oversikt over hvordan data brukes internt i systemene.
+
+Det eksisterer reelle risikoer knyttet til å dele kode og prosjektdata med KI. For eksempel kan man utilsiktet dele proprietær informasjon, eller KI kan generere forslag basert på materiale den har sett i treningsdata som er lisensbelagt eller ikke ment for videre bruk. Det er også risiko for at KI kan “lekke” mønstre fra innhold andre brukere har skrevet, selv om dette normalt er redusert i moderne modeller.
+
+For å tenke riktig om sikkerhet bør man alltid behandle KI som en ekstern tjeneste: del kun det som er nødvendig, unngå sensitive data, og sørg for at alt innhold som sendes til KI er noe man komfortabelt kunne vist offentlig. I tillegg bør man kvalitetssikre all KI-generert kode for å unngå at det introduseres sikkerhetshull eller utrygge løsninger. En bevisst og kritisk tilnærming er nødvendig for å balansere effektiv KI-bruk med ansvarlig håndtering av data.
+
 ---
 
 ## 6. Teknologiske implikasjoner
 
 ### 6.1 Kodekvalitet og vedlikehold
-- Hvordan påvirker KI-generert kode langsiktig vedlikehold?
-- Er KI-kode like forståelig som menneskeskrevet kode?
-- Utfordringer med å debugge KI-generert kode
 
+KI-generert kode kan være effektiv i starten av et prosjekt, men den skaper også utfordringer for langsiktig vedlikehold. Selv om KI ofte produserer kode som fungerer, er den ikke alltid skrevet med tanke på struktur, lesbarhet eller beste praksis. Dette kan gjøre det vanskeligere å forstå og videreutvikle koden i etterkant. KI genererer gjerne løsninger som er logiske for modellen, men som ikke nødvendigvis følger et konsistent mønster som er lett for mennesker å jobbe videre med.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Når det gjelder forståelighet, opplevde vi at KI-kode noen ganger var godt strukturert, men like ofte var den enten for kompakt, unødvendig kompleks eller manglet forklarende kommentarer. Dette kan føre til ekstra arbeid for utviklere som senere skal lese og bruke koden. Det blir derfor viktig å manuelt rydde opp, kommentere og gjøre koden mer pedagogisk før man tar den videre i prosjektet.
+
+Debugging av KI-generert kode kan også være utfordrende. KI kan lage kode som ser korrekt ut, men som skjuler små logiske feil eller avvik fra kravene. Dette gjør det vanskelig å identifisere hva som faktisk gikk galt, siden modellen ikke alltid følger menneskelig tankegang i utformingen. Man kan derfor bruke mer tid på å feilsøke og forstå hva KI har forsøkt å gjøre, enn om man hadde skrevet koden selv. Erfaringen vår var at KI er et godt verktøy for å produsere utkast, men at kvalitet og vedlikehold krever grundig manuell oppfølging.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ### 6.2 Standarder og beste praksis
-- Følger KI alltid beste praksis og industristandarder?
-- Eksempler på hvor KI foreslo utdaterte eller dårlige løsninger
-- Viktigheten av å validere KI sine forslag
+
+KI følger ikke alltid beste praksis eller etablerte industristandarder. Selv om modellen ofte foreslår løsninger som fungerer teknisk, kan koden være unødvendig komplisert, mindre sikker eller basert på rammeverk og mønstre som ikke lenger er anbefalt. Dette skyldes at KI-modeller trener på store mengder historisk data, som også inneholder utdaterte eller suboptimale eksempler.
+
+I prosjektet opplevde vi flere situasjoner der KI foreslo løsninger som var mindre hensiktsmessige, der den ikke følgte BMAD rammetverket som forventet. Noen ganger genererte KI også kode som ikke harmonerte med moderne praksis innenfor rammeverkene vi jobbet med. Selv om dette ga oss et utgangspunkt, krevde det ofte at vi manuelt måtte redesigne eller forenkle løsningen.
+
+Dette viser viktigheten av å validere alle KI-forslag før de tas inn i prosjektet. KI er et sterkt støtteverktøy, men det krever at vi som utviklere har nok forståelse til å vurdere hva som faktisk er riktig og framtidsrettet. Å gjennomgå forslag kritisk, sammenligne med oppdaterte kilder og kvalitetssikre valgene våre er avgjørende for å sikre at prosjektet holder god teknisk standard.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
 
 ### 6.3 Fremtidig utvikling
-- Hvordan tror dere KI vil påvirke programvareutvikling fremover?
-- Hvilke ferdigheter blir viktigere for utviklere?
-- Deres anbefalinger for hvordan man bør bruke KI i utviklingsprosesser
+
+Vi tror KI vil få en stadig større rolle i programvareutvikling fremover. Mange av oppgavene som tidligere krevde mye tid, som dokumentasjon, generering av kodeutkast, testing og feilsøking, kan delvis automatiseres eller støttes av KI. Utviklere vil i større grad fungere som arkitekter og kvalitetskontrollører, der de styrer prosessen, vurderer løsninger og sørger for at programmene følger krav og standarder. KI vil ikke erstatte utviklere, men den vil endre måten vi jobber på og hvilke oppgaver som forventes utført manuelt.
+
+Dette betyr at nye ferdigheter blir viktigere for utviklere. Kritisk tenkning, systemforståelse og evnen til å evaluere KI-generert innhold vil være sentralt. I tillegg blir samarbeid mellom mennesker og KI en kjernedel av kompetansen i fremtiden, der prompt engineering og evnen til å definere gode instruksjoner blir en naturlig del av verktøykassen. Samtidig vil klassiske ferdigheter som feilsøking, sikkerhet og arkitektur være viktige for å sikre kvalitet og robusthet i løsninger KI bidrar til.
+
+Basert på våre erfaringer anbefaler vi at KI brukes bevisst og strukturert i utviklingsprosesser. Den bør fungere som et supplement som sparer tid og gir forslag, men aldri som en erstatning for egen vurdering eller faglig forståelse. Alle KI-forslag bør kvalitetssikres, forbedres og tilpasses av mennesker. Med riktig bruk kan KI gi betydelig verdi, men det krever at man forblir aktiv, kritisk og ansvarlig gjennom hele utviklingsarbeidet.
+
 
 ---
 
 ## 7. Konklusjon og læring
 
 ### 7.1 Viktigste lærdommer
-[Liste de 3-5 viktigste tingene dere lærte gjennom prosjektet]
-1. [Lærdom 1]
-2. [Lærdom 2]
-3. [Lærdom 3]
 
+1. **Bruk av KI som utviklingsverktøy:**  
+   Vi lærte hvordan KI kan brukes effektivt som støtte i både planlegging, dokumentasjon og koding. Prosjektet ga oss god erfaring i å formulere presise prompts, styre KI i riktig retning og bruke den som et samarbeidspartner i utviklingsprosessen.
+
+2. **Forståelse av utviklingsprosessen:**  
+   Vi fikk bedre innsikt i hvordan en strukturert utviklingsprosess fungerer, spesielt gjennom bruken av BMAD-metodikken. Dette gjorde oss mer bevisste på sammenhengen mellom behov, mål, arkitektur og implementasjon.
+
+3. **Forståelse av begrensningene til KI**  
+   Vi lærte at KI ikke alltid leverer korrekte eller relevante svar, og at det derfor er nødvendig å forstå modellens begrensninger. Dette ga oss bedre innsikt i når vi kan stole på KI og når vi må være ekstra kritiske.
+
+4. **Viktigheten av overordnet faglig forståelse:**  
+   Prosjektet viste at man ikke trenger å kunne alle tekniske detaljer i dybden for å jobbe effektivt, så lenge man har en god overordnet forståelse. Ved å forstå prinsippene, strukturen og målene i prosjektet, kunne vi bruke KI til å fylle inn detaljer uten å miste kontrollen over helheten.
+
+5. **Bedre samarbeid gjennom tydelig kommunikasjon:**  
+   Prosjektet viste hvor viktig det er med tydelig og jevnlig kommunikasjon i teamet, spesielt når vi jobber digitalt og asynkront. Klare forventninger, statusoppdateringer og aktiv bruk av Teams og Messenger gjorde at vi kunne koordinere bedre og unngå misforståelser.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ### 7.2 Hva ville dere gjort annerledes?
-[Reflekter over hva dere ville endret hvis dere skulle startet på nytt]
-- [Tekniske valg]
-- [Bruk av KI]
-- [Samarbeid og organisering]
+
+Når det gjelder bruken av KI, ville vi vært mer bevisste fra starten på hvordan vi formulerte prompts og hvordan vi skulle styre modellen. Vi erfarte etter hvert at kvaliteten på KI-svarene var sterkt avhengig av hvor presise og konkrete instruksjonene våre var. Ved å etablere tydeligere retningslinjer for KI-bruken tidligere, kunne vi unngått flere av feilene som førte til at vi måtte starte deler av BMAD-prosessen på nytt.
+
+I samarbeid og organisering ville vi satt opp en mer strukturert plan for kommunikasjon, rollefordeling og oppfølging. Selv om samarbeidet fungerte godt, kunne vi ha hatt nytte av hyppigere og mer formelle statusmøter, samt en tydeligere arbeidsfordeling. Dette kunne gjort fremdriften enda jevnere og redusert behovet for avklaringer underveis.
+
+Alt i alt ville disse endringene gitt en mer effektiv prosess og et enda bedre sluttresultat, samtidig som vi kunne jobbet mer systematisk og forutsigbart gjennom hele prosjektet.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 ### 7.3 Anbefalinger
-[Deres anbefalinger til andre studenter som skal bruke KI i utvikling]
-- [Råd om effektiv bruk av KI]
-- [Fallgruver å unngå]
-- [Beste praksis dere oppdaget]
+
+Vår hovedanbefaling til andre studenter som skal bruke KI i utviklingsprosjekter, er å være tydelige og presise i måten dere gir instrukser på. God prompt­skriving er avgjørende for å få nyttige og konsistente svar. Start gjerne med å bruke KI til å lage utkast, ideer og struktur, men sørg for å revidere og kvalitetssikre alt innhold før det tas i bruk. KI fungerer best når det brukes som en støtte, ikke som en fasit.
+
+En viktig fallgruve å unngå er å bli for avhengig av KI. Det kan være fristende å la modellen løse alt, men dette kan hemme læringen og føre til at man mister oversikt over hva som faktisk skjer i prosjektet. I tillegg kan KI gi feil svar, misforstå oppgaven eller gå i en helt annen retning enn forventet. Når dette skjer, er det ofte bedre å starte en ny samtale i stedet for å fortsette en tråd som allerede har gått seg fast.
+
+Som beste praksis anbefaler vi å lagre gode prompts underveis, jobbe med korte og avgrensede spørsmål, og alltid kombinere KI-forslag med egen faglig vurdering samt å ofte "Commmite" i GitHub og ofte bruk av "git pull". KI kan gi stor verdi i utviklingsprosjekter, så lenge man bruker det bevisst, kritisk og strukturert.
+
 
 ### 7.4 Personlig refleksjon (individuelt)
 
