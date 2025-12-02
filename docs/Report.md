@@ -36,20 +36,60 @@ Målet med prosjektet er å utvikle en nettbasert applikasjon som genererer en p
 - Database: [f.eks. Supabase, MongoDB, PostgreSQL]
 - KI-verktøy: [Gemini-flash, Gemini-pro, ChatGPT,Stich]
 - Andre verktøy: [VS Code, BMAD-metodikk]
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ### 2.4 Utviklingsfaser
 [Beskriv de ulike fasene i utviklingen]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-**Fase 1: Planlegging**
-- [Hva gjorde dere i denne fasen?] Vi startet med å beste hva applikasjon vi ønsket å lage og deretter lagte vi et propsal utkast vi sendt til faglærer. Vi hadde et fagmøte med faglærer og assisten for innput forbedret vi propsolat til noe vi syntes var bra. Vi brukte AI til å lage komme med forslag til tekniske løsninger og å gi oss innsikt til hvordan et utviklings proposal skal se ut og innholde. 
+
+**Fase 0: Planlegging**  
+Fase 0 bestod av å etablere et solid fundament for prosjektet gjennom strukturerte KI-drevne arbeidsprosesser. Vi startet med et *workflow-init* steg, der KI genererte en første versjon av `bmm-workflow-status.yaml`. Dette ga oss en tydelig oversikt over hvilke aktiviteter, dokumenter og arbeidsfaser prosjektet ville kreve videre i BMAD-løpet.
+
+Deretter gjennomførte vi flere omfattende *brainstorming sessions* ved hjelp av `/run-agent-task analyst *brainstorm`. Hver brainstorming-økt resulterte i egne markdown-dokumenter som oppsummerte funn, innsikt og mulige løsningsretninger. KI hjalp oss her med å strukturere tankene våre, avdekke problemområder og identifisere funksjonelle muligheter vi ikke nødvendigvis ville kommet på alene.
+
+Vi gjennomførte også en dedikert *research session* ved hjelp av `/run-agent-task analyst *research`, der vi undersøkte tekniske alternativer for hvordan vi burde orchestrate LLM-interactions i prosjektet. Dette ga oss et bedre grunnlag for teknologivalg og videre arkitektur.
+
+Til slutt samlet vi alle innsiktene i et helhetlig *product brief* gjennom `/run-agent-task analyst *product-brief`. KI analyserte brainstorming-dokumentene, research-resultatene og vårt proposal-utkast, og genererte et konsolidert dokument (`product-brief.md`). Dette beskrev prosjektets mål, brukerbehov, funksjonelle krav og videre retning, og fungerte som et viktig referansepunkt for det videre arbeidet i BMAD-prosessen.
+
+
 - [Hvordan brukte dere KI her? Husk å lagre promptene deres! Inkluder ALLE stegene dere gjorde.]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-**Fase 2: Utvikling**
-- [Hva gjorde dere i denne fasen?]
-- [Hvordan brukte dere KI her? Husk å lagre promptene deres! Inkluder ALLE stegene dere gjorde.] Vi følgte i faglærer sin spor så godt vi kunne, men hadde utfordringer med Gemini. Ofte forstod ikke gemini BMAD metodikken og rollen den skulle innta. Det tok til tider flere forsøk for å overbevise den eller for å tvingen den til å gjøre det vi viste den skulle gjøre.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+**Fase 1: Requirements and UX Design**  
+I fase 1 gikk vi videre fra idé- og informasjonsinnsamling til å konkretisere prosjektets krav og brukeropplevelse. Arbeidet startet med en *Planning*-fase der vi brukte KI til å generere en fullstendig Product Requirements Document (PRD) ved hjelp av `/run-agent-task pm *prd`. Dette dokumentet (PRD.md) beskrev funksjonelle krav, målgrupper, brukerbehov og tekniske rammer som skulle styre resten av utviklingen.
+
+Deretter gjennomførte vi en egen valideringsrunde gjennom `/run-agent-task pm *validate-prd`, som resulterte i en *validation report*. Denne prosessen sikret at PRD-en var konsistent, gjennomførbar og i tråd med prosjektets mål. KI hjalp oss med å avdekke svakheter, uklare krav og manglende sammenhenger, noe som gjorde dokumentet mer robust.
+
+Neste del av fase 1 bestod av å utvikle det visuelle og konseptuelle brukergrensesnittet. Via `/run-agent-task ux-designer *create-ux-design` genererte KI omfattende UX-designmateriale, inkludert:
+- `ux-design-specification.md`
+- `ux-color-themes.html`
+- `ux-design-directions.html`
+
+Disse dokumentene inneholdt både layout-forslag, navigasjonsstrukturer, designretninger og fargepaletter som kunne brukes som grunnlag for frontend-utviklingen senere i prosjektet. KI hjalp oss med å tydeliggjøre hvordan produktet kunne se ut i praksis, og hvilke brukeropplevelser vi burde støtte.
+
+Fasen ble avsluttet med en designvalidering via `/run-agent-task ux-designer *validate-ux-design`, der KI vurderte konsistens, brukervennlighet og samsvar mellom UX-designene og kravene definert i PRD-en. Samlet ga fase 1 oss et klart, dokumentert og verifisert grunnlag for å gå videre til mer teknisk arkitektur og implementering.
+
+**Fase 2: Solutioning and Architecture**  
+Fase 2 handler om å definere hvordan løsningen faktisk skal bygges, og å omforme krav, innsikt og design fra tidligere faser til en konkret og gjennomførbar systemarkitektur. Dette innebærer å etablere tekniske strukturer, avklare avhengigheter og beskrive hvordan ulike deler av systemet skal fungere sammen.
+
+Et sentralt steg i denne fasen er *Solutioning*, hvor KI eller et arkitektverktøy brukes til å generere et foreslått arkitekturdokument via `/run-agent-task architect *create-architecture`. Dokumentet inneholder typisk systemkomponenter, datamodeller, API-struktur, informasjonsflyt og teknologistack. Målet er å skape et helhetlig bilde av hvordan systemet skal implementeres.
+
+Parallelt brukes prosjektledelsesverktøy til å bryte ned kravene i epics og user stories gjennom `/run-agent-task pm *create-epics-and-stories`. Dette konverterer funksjonelle behov til konkrete utviklingsoppgaver og gjør det tydelig hvilke deler av systemet som skal bygges og i hvilken rekkefølge. Resultatet er et overblikk over arbeidsstrukturen som utviklingen senere skal følge.
+
+Fasen inkluderer også en *test-design*-prosess via `/run-agent-task tea *test-design`, hvor det utarbeides forslag til teststrategi og testscenarier. Dette skaper et rammeverk for hvordan kvalitet skal sikres gjennom utviklingsløpet, før kode faktisk skrives.
+
+Til slutt gjennomføres en *Solutioning Gate Check* via `/run-agent-task architect *solutioning-gate-check`. Denne evalueringen vurderer om arkitekturen, epics og testgrunnlaget er tydelige, konsistente og tilstrekkelige til at utviklingen kan gå videre. Gate-checken fungerer som en kontrollmekanisme for å sikre at prosjektet har et solid fundament før implementasjonen starter.
+
+Fase 2 fungerer dermed som en bro mellom konsept og faktisk utvikling, og etablerer de strukturelle og organisatoriske rammene som gjør det mulig å bygge produktet på en systematisk og skalerbar måte.
+
+**Fase 3: Implementation**  
+Fase 3 handler om å omsette arkitektur og krav til faktisk funksjonalitet gjennom et sprint-basert utviklingsløp. Prosessen starter med `/run-agent-task sm *sprint-planning`, hvor KI genererer en sprintplan (`sprint-status.yaml`) som definerer hvilke epics og stories som skal utvikles.
+
+For hver epic opprettes en teknisk spesifikasjon via `/run-agent-task sm create-epic-tech-context`, etterfulgt av en validering. Dette gir et klart teknisk grunnlag før utviklingen starter. Epicene brytes deretter ned i user stories, som gjennomgår en strukturert prosess: story creation, validation, context creation, ready-for-dev–markering og til slutt utvikling.
+
+Under implementasjonen går hver story gjennom flere utviklings- og review-sykluser via `/run-agent-task dev *develop-story` og `/run-agent-task dev *code-review` til koden er godkjent. Deretter markeres storyen som ferdig og testes gjennom `/run-agent-task sm *test-review`.
+
+Når alle stories i en epic er fullført, avsluttes arbeidet med en `/run-agent-task sm *epic-retrospective`.  
+Fase 3 fokuserer dermed på praktisk utvikling, kvalitetssikring og kontinuerlig iterasjon gjennom en tydelig definert sprintworkflow.
+
 ---
 
 ## 3. Utfordringer og løsninger
