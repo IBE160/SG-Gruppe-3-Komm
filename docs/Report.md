@@ -354,8 +354,13 @@ Som beste praksis anbefaler vi å lagre gode prompts underveis, jobbe med korte 
 
 ## 8. Vedlegg (valgfritt)
 
-- Skjermbilder av applikasjonen
-- Lenke til GitHub repository
+Skjermbilder av applikasjonen - mockup laget i Stich:
+![alt text](../design-mockup/AI_Powered_Personal_Study_Planner_Stitch_version_1.png)
+
+
+Lenke til GitHub repository:
+https://github.com/IBE160/SG-Gruppe-3-Komm
+
 - Annen relevant dokumentasjon
 
 ---
