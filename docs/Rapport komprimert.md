@@ -9,7 +9,7 @@
 - [Sten Otto Eilertsen 2] - [160808-ID/sten.o.eilertsen@himolde.no]
 - [Tobias André Torbergsen 3] - [241813/totor7777@himolde.no]
 
-**Dato:** [DD.MM.ÅÅÅÅ]
+**Dato:** [05.12.2025]
 
 ---
 
@@ -295,7 +295,14 @@ Som beste praksis anbefaler vi å lagre gode prompts underveis, jobbe med korte 
 **[Navn på gruppemedlem 1]:**
 [Personlig refleksjon over egen læring og utvikling]
 
-**[Navn på gruppemedlem 2]:**
+**[Bjørnar]:**
+Jeg har vært en ivrig bruker av AI siden det ble et offentlig verktøy, men jeg har ikke før nå fått en skikkelig dybdeforståelse av AI, spesielt hvordan modeller tenker, begrensninger oppstår, og hvordan man styrer dem. Det mest interessante for meg har vært å få innsikt i hvordan AI kan utnyttes utover det å være en dyktig chatbot. Det har ikke alltid vært lett å følge med i emnet uten IT- eller utviklingskunnskap fra før; uten IT-bakgrunn ble noen deler krevende, særlig når KI leverte tekniske forslag jeg måtte tolke. Likevel har det gått fint fordi BMAD-rammeverket ber deg være en manager og ikke en spesialist. Samtidig kan jeg si at jeg setter pris på det jeg har lært om utvikling.
+
+Det har vært et veldig «hands-on» fag som til tider har vært utfordrende når teorien ikke har vært helt på plass. Likevel har jeg satt pris på en slik tilnærming, da kunnskapen man tar med seg sitter bedre. Samarbeidet i gruppen har fungert bra, og alle fikk bidratt med det de kunne. Jeg savner at vi ikke kom helt gjennom alle fasene i forelesningene; jeg skulle gjerne fått mer tid på de siste fasene i forelesningen, da dette ga noen utfordringer for den siste utviklingen av applikasjonen vår.
+
+Jeg føler uansett at jeg sitter igjen med å ha lært læringsmålene for faget.
+
+**[Sten Otto]:**
 Jeg har jobbet litt med tradisjonell programmer i bl.a. .NET og C#. Jeg har vært vant til å kode alt fra bunnen og er nå blitt fasinert av hva man kan gjøre med KI og BMAD rammeverket. Hadde ingen erfaring med bruk av KI i programmeringssammenheng og synes dette har blitt mer og mer interessant og svært lærerikt jo lengre vi har kom ut i studiet. Gemini CLI'en er spennende å bruke, men det gir også en del frustrasjon underveis, siden den ikke alltid kommer med det jeg og vi i gruppen har forventet. 
 Forsto tidlig at vi måtte være kritisk til prompt engineeringen for det ble svært viktig å skrive korte og gjennomtenkte prompts og gjerne være svært bestemt på hva vi skulle få fra KI'en. Når det gjelder versjonshåndteringen via GitHub, så er det svært nyttig når man jobber i team og bruke branch'er og svært viktig å ofte "Commite" ofte. Litt utfordrende å lære seg hvordan dette med branch'er fungerte men det gikk egentlig grei med bla. hjelp fra KI'en. Savner at vi ikke fikk kommet gjennom alle fasene med veiledning fra lærer da dette er helt nytt stoff for oss alle ville gjerne lært det skikkelig. Hadde også vært naturlig å gjennomført disse tingene før refleksjons rapporten skulle leveres. Alle i gruppen har vært opptatt på dagtid, så nettstudier har passet oss bra. Vi booket tidlig faste tidspunkt i ukene der vi satte av tid til felles arbeid og diskusjoner rundt ukens video opptak og gjennomgikk dette i våre samlinger.
 
