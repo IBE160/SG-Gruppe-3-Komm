@@ -7,7 +7,7 @@
 **Gruppemedlemmer:**
 - [Bjørnar Jensen 1] - [241595-ID/Bjornar.jensen@himolde.no]
 - [Sten Otto Eilertsen 2] - [160808-ID/sten.o.eilertsen@himolde.no]
-- [Tobias André Torbergsen 3] - [241813/E-post]
+- [Tobias André Torbergsen 3] - [241813/totor7777@himolde.no]
 
 **Dato:** [DD.MM.ÅÅÅÅ]
 
@@ -351,8 +351,8 @@ Som beste praksis anbefaler vi å lagre gode prompts underveis, jobbe med korte 
 
 ### 7.4 Personlig refleksjon (individuelt)
 
-**[Navn på gruppemedlem 1]:**
-[Personlig refleksjon over egen læring og utvikling]
+**[Tobias]:**
+Å jobbe med dette prosjektet har vært både lærerikt og utfordrende for meg. Vi brukte BMAD-metodikken og KI-agenter gjennom hele prosessen, og jeg oppdaget raskt hvor viktig gode og presise prompts var. Flere ganger opplevde jeg at agentene mistet kontekst eller ga feil retning, og det førte til at vi måtte forbedre promptene våre underveis – noe vi ble betydelig bedre på etter hvert. Det var spesielt interessant å se hvor stor forskjell en god prompt kunne gjøre for både struktur, innhold og hvor godt agentene fulgte BMAD-metodikken. Samarbeidet i gruppen fungerte bra, og arbeidsmøtene våre gjorde det lettere å ta avgjørelser og holde fokus. Gjennom prosjektet har jeg også blitt tryggere på GitHub og mer bevisst på at KI-generert innhold alltid må kvalitetssikres. Totalt sett føler jeg at prosjektet har gitt meg verdifull erfaring med KI-assistert utvikling, BMAD-metodikk og praktisk gruppearbeid.
 
 **[Navn på gruppemedlem 2]:**
 [Personlig refleksjon over egen læring og utvikling]
