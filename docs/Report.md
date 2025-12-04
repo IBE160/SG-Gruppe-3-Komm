@@ -6,7 +6,7 @@
 
 **Gruppemedlemmer:**
 - [Bjørnar Jensen 1] - [241595-ID/Bjornar.jensen@himolde.no]
-- [Sten Otto Eilertsen 2] - [160808-ID/E-post]
+- [Sten Otto Eilertsen 2] - [160808-ID/sten.o.eilertsen@himolde.no]
 - [Tobias André Torbergsen 3] - [241813/E-post]
 
 **Dato:** [DD.MM.ÅÅÅÅ]
@@ -49,9 +49,13 @@ Vi gjennomførte også en dedikert *research session* ved hjelp av `/run-agent-t
 
 Til slutt samlet vi alle innsiktene i et helhetlig *product brief* gjennom `/run-agent-task analyst *product-brief`. KI analyserte brainstorming-dokumentene, research-resultatene og vårt proposal-utkast, og genererte et konsolidert dokument (`product-brief.md`). Dette beskrev prosjektets mål, brukerbehov, funksjonelle krav og videre retning, og fungerte som et viktig referansepunkt for det videre arbeidet i BMAD-prosessen.
 
+Prompt eksempel i planleggingsfasen:
+
+/run-agent-task analyst *product-brief "Read our brainstorming sessions @Brainstorming session 2 technical specifications.md and the @proposal.md file, and create a product-brief.md file for the project"
+
+![alt text](images/image-2.png)
 
 - [Hvordan brukte dere KI her? Husk å lagre promptene deres! Inkluder ALLE stegene dere gjorde.]
-
 
 **Fase 1: Requirements and UX Design**  
 I fase 1 gikk vi videre fra idé- og informasjonsinnsamling til å konkretisere prosjektets krav og brukeropplevelse. Arbeidet startet med en *Planning*-fase der vi brukte KI til å generere en fullstendig Product Requirements Document (PRD) ved hjelp av `/run-agent-task pm *prd`. Dette dokumentet (PRD.md) beskrev funksjonelle krav, målgrupper, brukerbehov og tekniske rammer som skulle styre resten av utviklingen.
@@ -66,6 +70,12 @@ Neste del av fase 1 bestod av å utvikle det visuelle og konseptuelle brukergren
 Disse dokumentene inneholdt både layout-forslag, navigasjonsstrukturer, designretninger og fargepaletter som kunne brukes som grunnlag for frontend-utviklingen senere i prosjektet. KI hjalp oss med å tydeliggjøre hvordan produktet kunne se ut i praksis, og hvilke brukeropplevelser vi burde støtte.
 
 Fasen ble avsluttet med en designvalidering via `/run-agent-task ux-designer *validate-ux-design`, der KI vurderte konsistens, brukervennlighet og samsvar mellom UX-designene og kravene definert i PRD-en. Samlet ga fase 1 oss et klart, dokumentert og verifisert grunnlag for å gå videre til mer teknisk arkitektur og implementering.
+
+Prompt eksempel i designfasen:
+
+/run-agent-task ux-designer *create-ux-design "Use this files @PRD.md, @product-brief-2025-11-10.md and @Brainstorming session 2 technical specifications.md as substrate"  
+
+![alt text](images/image-3.png)
 
 **Fase 2: Solutioning and Architecture**  
 Fase 2 handler om å definere hvordan løsningen faktisk skal bygges, og å omforme krav, innsikt og design fra tidligere faser til en konkret og gjennomførbar systemarkitektur. Dette innebærer å etablere tekniske strukturer, avklare avhengigheter og beskrive hvordan ulike deler av systemet skal fungere sammen.
@@ -354,8 +364,63 @@ Som beste praksis anbefaler vi å lagre gode prompts underveis, jobbe med korte 
 
 ## 8. Vedlegg (valgfritt)
 
-Skjermbilder av applikasjonen - mockup laget i Stich:
+Skjermbilder av applikasjonen. Mockup laget i Stich:
 ![alt text](../design-mockup/AI_Powered_Personal_Study_Planner_Stitch_version_1.png)
+
+Ferdig prompt for å generere skjermbildet produsert av prompt i Gemini: [Stich_prompt_for_Mockup_Generation.md](Fase-1/Stich_prompt_for_Mockup_Generation.md)
+
+Prompt for Mockup Generation: Student Learning Dashboard
+1. Project Overview
+Application Name: "Komm" (Student Collaboration Platform) Purpose: A modern, intuitive platform for university students to manage their learning, track progress, and collaborate. This mockup focuses on the central student dashboard.
+
+2. User Persona
+User: Alex, a 20-year-old university student.
+Goals: Stay organized, keep track of all assignments and lectures for different courses, understand their progress at a glance, and never miss a deadline.
+Pain Points: Juggling multiple courses with different schedules is confusing. It's hard to visualize the week's workload and see how much progress has been made in each course without checking multiple different systems.
+3. Mockup Request: The Student Dashboard
+Create a mockup for the main dashboard page a student sees after logging in. The design should be clean, modern, and user-friendly.
+
+Core User Journey: Weekly Planning and Progress Check
+Alex logs in to see their schedule for the upcoming week and check their overall progress in their courses.
+
+4. Key Components & Features
+A. Main Header
+
+Left Side: Application Logo and Name ("Komm").
+Right Side: A search bar, a notifications icon (bell), and a user profile avatar.
+B. Main Content Area: The Weekly Calendar
+
+Layout: A prominent 7-day calendar view (Monday to Sunday). The current day should be visually highlighted (e.g., with a different background color or a border).
+Navigation: Simple "Previous Week" and "Next Week" arrow buttons. The current date range should be displayed (e.g., "November 17 - 23, 2025").
+Learning Activities:
+These are cards placed on the calendar days.
+Each card represents a learning activity (e.g., lecture, assignment, quiz, lab session).
+Card Content:
+Activity Title (e.g., "Calculus Mid-term Quiz", "History Essay Due")
+Course Name (e.g., "MATH-101", "HIST-240")
+Activity Type (indicated by a small icon and/or color code):
+Lecture: Use a "play" or "screen" icon.
+Assignment: Use a "document" or "pencil" icon.
+Quiz/Exam: Use a "checkmark" or "star" icon.
+Example: On Wednesday, there might be a blue card for a "History Essay Due" and a green card for a "Calculus Lecture".
+C. Left Sidebar: Courses and Progress
+
+Title: "My Courses".
+Layout: A vertical list of all courses the student is enrolled in.
+For each course in the list, display:
+Course Title: (e.g., "Computer Science 101", "Art History", "Advanced Mathematics").
+Progress Bar: A clearly visible progress bar showing the completion percentage for that course (e.g., 75%). The percentage should be displayed on or near the bar.
+The currently selected course could be highlighted.
+5. Visual Design & Style
+Aesthetic: Clean, minimalist, and modern. Use whitespace effectively to avoid a cluttered look.
+Color Palette:
+Primary: A professional and calm blue (e.g., #4A90E2).
+Background: A light, neutral color (e.g., off-white #F8F9FA or a very light grey).
+Accent Colors: Use a few distinct, harmonious colors for the different activity types on the calendar (e.g., a soft green for lectures, a gentle orange for assignments, a stronger red/purple for exams).
+Typography: Use a clean, sans-serif font like Inter, Lato, or Roboto for readability. Establish a clear type hierarchy (e.g., larger font for headers, smaller for details).
+Icons: Use simple, universally understood line icons.
+Summary of Mockup Scene:
+Create a single, comprehensive screen showing the student dashboard. The calendar should be populated with a few example learning activities across the week. The "My Courses" sidebar should list 3-4 courses with different progress percentages. The overall impression should be that of a well-organized and empowering tool for a busy student.
 
 
 Lenke til GitHub repository:
