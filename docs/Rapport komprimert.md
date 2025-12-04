@@ -6,8 +6,8 @@
 
 **Gruppemedlemmer:**
 - [Bjørnar Jensen 1] - [241595-ID/Bjornar.jensen@himolde.no]
-- [Sten Otto Eilertsen 2] - [160808-ID/E-post]
-- [Tobias André Torbergsen 3] - [241813/E-post]
+- [Sten Otto Eilertsen 2] - [160808-ID/sten.o.eilertsen@himolde.no]
+- [Tobias André Torbergsen 3] - [241813/totor7777@himolde.no]
 
 **Dato:** [DD.MM.ÅÅÅÅ]
 
@@ -41,6 +41,12 @@ Vi utførte også en målrettet *research session* med `/run-agent-task analyst 
 
 Til slutt konsoliderte vi arbeidet i et *product brief* via `/run-agent-task analyst *product-brief`, der KI analyserte brainstorming-materialet, research-funn og vårt proposal-utkast. Resultatet, `product-brief.md`, beskrev prosjektets mål, brukerbehov, funksjonelle krav og videre retning, og fungerte som et sentralt referansedokument for resten av BMAD-prosessen.
 
+Prompt eksempel i planleggingsfasen:
+
+/run-agent-task analyst *product-brief "Read our brainstorming sessions @Brainstorming session 2 technical specifications.md and the @proposal.md file, and create a product-brief.md file for the project"
+
+![alt text](images/image-2.png)
+
 
 **Fase 1: Requirements and UX Design**  
 I fase 1 gikk vi fra idé- og informasjonsinnsamling til å konkretisere prosjektets krav og brukeropplevelse. Vi startet med en *Planning*-fase der KI genererte et fullstendig Product Requirements Document (PRD) via `/run-agent-task pm *prd`. Dokumentet (PRD.md) beskrev funksjonelle krav, målgrupper, brukerbehov og tekniske rammer som skulle styre videre utvikling.
@@ -55,6 +61,13 @@ Den neste delen av fasen fokuserte på det visuelle og konseptuelle brukergrense
 Dokumentene inneholdt layout-forslag, navigasjonsstrukturer, designretninger og fargepaletter som dannet grunnlaget for senere frontend-utvikling. KI bidro til å tydeliggjøre hvordan produktet kunne se ut i praksis og hvilke brukeropplevelser som burde støttes.
 
 Fasen avsluttet med en designvalidering via `/run-agent-task ux-designer *validate-ux-design`, der KI vurderte konsistens, brukervennlighet og samsvar mellom UX-materialet og PRD-kravene. Samlet ga fase 1 et klart og verifisert grunnlag for videre arbeid med teknisk arkitektur og implementering.
+
+Prompt eksempel i designfasen:
+
+/run-agent-task ux-designer *create-ux-design "Use this files @PRD.md, @product-brief-2025-11-10.md and @Brainstorming session 2 technical specifications.md as substrate"  
+
+![alt text](images/image-3.png)
+
 
 **Fase 2: Solutioning and Architecture**  
 Fase 2 handler om å definere hvordan løsningen skal bygges og omforme krav, innsikt og design til en konkret, gjennomførbar systemarkitektur. Dette innebærer å etablere tekniske strukturer, avklare avhengigheter og beskrive hvordan systemets komponenter skal fungere sammen.
@@ -287,18 +300,23 @@ Som beste praksis anbefaler vi å lagre gode prompts underveis, jobbe med korte 
 [Personlig refleksjon over egen læring og utvikling]
 
 **[Navn på gruppemedlem 2]:**
-[Personlig refleksjon over egen læring og utvikling]
+Jeg har jobbet litt med tradisjonell programmer i bl.a. .NET og C#. Jeg har vært vant til å kode alt fra bunnen og er nå blitt fasinert av hva man kan gjøre med KI og BMAD rammeverket. Hadde ingen erfaring med bruk av KI i programmeringssammenheng og synes dette har blitt mer og mer interessant og svært lærerikt jo lengre vi har kom ut i studiet. Gemini CLI'en er spennende å bruke, men det gir også en del frustrasjon underveis, siden den ikke alltid kommer med det jeg og vi i gruppen har forventet. 
+Forsto tidlig at vi måtte være kritisk til prompt engineeringen for det ble svært viktig å skrive korte og gjennomtenkte prompts og gjerne være svært bestemt på hva vi skulle få fra KI'en. Når det gjelder versjonshåndteringen via GitHub, så er det svært nyttig når man jobber i team og bruke branch'er og svært viktig å ofte "Commite" ofte. Litt utfordrende å lære seg hvordan dette med branch'er fungerte men det gikk egentlig grei med bla. hjelp fra KI'en. Savner at vi ikke fikk kommet gjennom alle fasene med veiledning fra lærer da dette er helt nytt stoff for oss alle ville gjerne lært det skikkelig. Hadde også vært naturlig å gjennomført disse tingene før refleksjons rapporten skulle leveres. Alle i gruppen har vært opptatt på dagtid, så nettstudier har passet oss bra. Vi booket tidlig faste tidspunkt i ukene der vi satte av tid til felles arbeid og diskusjoner rundt ukens video opptak og gjennomgikk dette i våre samlinger.
 
-**[Navn på gruppemedlem 3]:**
-[Personlig refleksjon over egen læring og utvikling]
+**[Tobias]:**
+Å jobbe med dette prosjektet har vært både lærerikt og utfordrende for meg. Vi brukte BMAD-metodikken og KI-agenter aktivt i prosessen, og jeg oppdaget raskt hvor viktig gode og presise prompts var for å få agentene til å levere nyttige og strukturerte resultater. Flere ganger endte vi med å forbedre promptene våre fordi agentene mistet kontekst eller tolket oppgaven feil, men gjennom prosessen ble vi betydelig bedre på å formulere klare instruksjoner. Det var også interessant å se hvor stor forskjell riktige prompts gjorde for hvor godt agentene fulgte BMAD-strukturen. Samarbeidet i gruppen fungerte bra, og arbeidsmøtene våre gjorde det lettere å ta beslutninger og holde en jevn progresjon. Jeg har også blitt mer komfortabel med GitHub og synkronisering av endringer gjennom commit og push, noe som ga en tydelig og profesjonell arbeidsflyt. Totalt sett føler jeg at prosjektet har gitt meg nyttig erfaring med KI-assistert utvikling, BMAD-metodikk og praktisk gruppearbeid.
 
 ---
 
 ## 8. Vedlegg (valgfritt)
 
-- Skjermbilder av applikasjonen
-- Lenke til GitHub repository
-- Annen relevant dokumentasjon
+Skjermbilder av applikasjonen. Mockup laget i Stich:
+![alt text](../design-mockup/AI_Powered_Personal_Study_Planner_Stitch_version_1.png)
+
+Ferdig prompt til Stich for å generere skjermbildet produsert av prompt i Gemini: [Stich_prompt_for_Mockup_Generation.md](Fase-1/Stich_prompt_for_Mockup_Generation.md)
+
+Lenke til GitHub repository:
+https://github.com/IBE160/SG-Gruppe-3-Komm
 
 ---
 
