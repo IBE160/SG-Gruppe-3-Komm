@@ -149,10 +149,6 @@ Bruken av KI gjorde at vi kunne jobbe betydelig raskere enn manuelt. KI guidet o
 KI ga økt faglig innsikt ved å tilby forklaringer og eksempler når vi sto fast i tekniske eller metodiske spørsmål. Den fungerte til dels som en ekstra veileder ved å gi raske avklaringer og alternative perspektiver.
 
 
-**Kvalitet på koden:**
-- [Hvordan påvirket KI kodekvaliteten?]
-- [Eksempler på forbedringer KI foreslo]
-
 ### 4.2 Begrensninger og ulemper
 
 **Kvalitet og pålitelighet:**  
@@ -312,8 +308,6 @@ Forsto tidlig at vi måtte være kritisk til prompt engineeringen for det ble sv
 
 Skjermbilder av applikasjonen. Mockup laget i Stich:
 ![alt text](../design-mockup/AI_Powered_Personal_Study_Planner_Stitch_version_1.png)
-
-Ferdig prompt til Stich for å generere skjermbildet produsert av prompt i Gemini: [Stich_prompt_for_Mockup_Generation.md](Fase-1/Stich_prompt_for_Mockup_Generation.md)
 
 Lenke til GitHub repository:
 https://github.com/IBE160/SG-Gruppe-3-Komm
