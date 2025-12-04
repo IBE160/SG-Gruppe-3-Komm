@@ -281,3 +281,27 @@ En viktig fallgruve er å bli for avhengig av KI. Det kan være fristende å la 
 
 Som beste praksis anbefaler vi å lagre gode prompts underveis, jobbe med korte og avgrensede spørsmål, og alltid kombinere KI-forslag med egen faglig vurdering. Hyppig bruk av `commit` og `git pull` i GitHub bidrar også til bedre samarbeid og kontroll. KI kan gi stor verdi i utviklingsprosjekter, så lenge
 
+### 7.4 Personlig refleksjon (individuelt)
+
+**[Navn på gruppemedlem 1]:**
+[Personlig refleksjon over egen læring og utvikling]
+
+**[Navn på gruppemedlem 2]:**
+[Personlig refleksjon over egen læring og utvikling]
+
+**[Navn på gruppemedlem 3]:**
+[Personlig refleksjon over egen læring og utvikling]
+
+---
+
+## 8. Vedlegg (valgfritt)
+
+- Skjermbilder av applikasjonen
+- Lenke til GitHub repository
+- Annen relevant dokumentasjon
+
+---
+
+**Ordantall:** [Ca. antall ord]
+
+**Forventet lengde:** 3000-5000 ord (avhengig av gruppestørrelse og prosjektets kompleksitet)
