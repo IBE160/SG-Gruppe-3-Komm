@@ -1,0 +1,25 @@
+# Sprint Status Tracking
+# This file tracks the development status of all epics.
+#
+# Status Definitions:
+#   - backlog: The epic has been defined but no technical specification has been created.
+#   - contexted: The technical specification for the epic has been generated.
+#   - in_progress: Development has started on one or more stories within the epic.
+#   - completed: All stories within the epic are complete and the epic is done.
+
+development_status:
+  epic-1:
+    title: "User Authentication & Onboarding"
+    status: contexted
+  epic-2:
+    title: "Course Management"
+    status: contexted
+  epic-3:
+    title: "AI Study Plan Generation"
+    status: contexted
+  epic-4:
+    title: "Dashboard & Progress Tracking"
+    status: contexted
+  epic-5:
+    title: "Dynamic Plan Adaptation"
+    status: contexted
