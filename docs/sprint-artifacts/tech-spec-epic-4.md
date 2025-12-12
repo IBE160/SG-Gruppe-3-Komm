@@ -83,7 +83,7 @@ interface IDashboardManager {
     -   User navigates to the dashboard.
     -   `DashboardManager.getDashboardData` fetches all courses and study sessions for the user.
     -   The frontend renders the calendar view with `StudyTaskCard` components for each session.
-    -   `DashboardManager.onSessionsChange` subscribes to future updates on the `study_sessions` table.
+    -   `DashboardManager.onSessionsChange` subscribes to future updates on the `study_sessions` table.1
 
 2.  **Update Task Status:**
     -   User clicks on a `StudyTaskCard`.
