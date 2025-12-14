@@ -35,6 +35,9 @@ development_status:
   story-4-001:
     title: "Dashboard Initial Load and Basic Status Update"
     status: ready-for-dev
+  story-4-002:
+    title: "Display Course Progress Bars"
+    status: ready-for-dev
   epic-5:
     title: "Dynamic Plan Adaptation"
     status: contexted
