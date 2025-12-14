@@ -1,0 +1,194 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>003</storyId>
+    <title>View Study Activity Details</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-4-003.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>student</asA>
+    <iWant>to click on a study activity on the dashboard to view its details</iWant>
+    <soThat>I can get more information about the task and prepare for it.</soThat>
+    <tasks>
+      - Enhance `StudyTaskCard` to be clickable.
+        - Implement `onClick` handler for the `StudyTaskCard`.
+      - Implement a `StudyActivityDetailModal` component.
+        - Display details such as topic title, description, course name, scheduled date/time, estimated hours.
+        - Fetch additional details if not already available in the initial `study_sessions` data.
+      - Integrate `StudyActivityDetailModal` with the Dashboard view.
+        - Pass selected study activity data to the modal.
+      - Ensure data displayed is consistent with the data model.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. A user can click on a study activity to view its details (AC3 from Tech Spec).
+       - Clicking a study activity displays a modal or dedicated view with comprehensive details (e.g., topic, description, estimated time, associated course).
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Overview</section>
+        <snippet>This document provides the technical specification for Epic 4: Dashboard &amp; Progress Tracking, which includes viewing details of study tasks.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Objectives and Scope</section>
+        <snippet>In-Scope: The ability to click on a daily activity to view its details. This is a key objective for the Dashboard &amp; Progress Tracking epic.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>System Architecture Alignment</section>
+        <snippet>This epic realizes the "daily-use loop" described in the architecture and relies heavily on the frontend and its direct integration with Supabase. The Next.js Frontend will fetch study_sessions and syllabus_topics for the user.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Detailed Design - Data Models and Contracts</section>
+        <snippet>This epic primarily reads from the `study_sessions` and `syllabus_topics` tables. `study_sessions` stores information about individual study blocks, and `syllabus_topics` stores topic details.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Detailed Design - APIs and Interfaces</section>
+        <snippet>All interactions are via the `supabase-js` client. The `DashboardManager` service will be responsible for fetching detailed data for a study activity.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Acceptance Criteria (Authoritative)</section>
+        <snippet>AC3: A user can click on a study activity to view its details. This directly maps to the objective of story-4-003.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>4. Data Model (Supabase/PostgreSQL)</section>
+        <snippet>The data model defines `study_sessions` and `syllabus_topics` tables, which contain the details needed to be displayed for a study activity.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>6. Component Library - StudyTaskCard</section>
+        <snippet>The `StudyTaskCard` is the primary interactive component. Its behavior will need to be enhanced to trigger the display of detailed study activity information.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>src/components/StudyTaskCard.tsx</path>
+        <kind>component</kind>
+        <symbol>StudyTaskCard</symbol>
+        <lines></lines>
+        <reason>Will be enhanced to be clickable, triggering the display of study activity details.</reason>
+      </artifact>
+      <artifact>
+        <path>src/components/StudyActivityDetailModal.tsx</path>
+        <kind>component</kind>
+        <symbol>StudyActivityDetailModal</symbol>
+        <lines></lines>
+        <reason>New component to display comprehensive details of a selected study activity.</reason>
+      </artifact>
+      <artifact>
+        <path>src/app/dashboard/page.tsx</path>
+        <kind>component</kind>
+        <symbol>Dashboard</symbol>
+        <lines></lines>
+        <reason>The main dashboard component where `StudyActivityDetailModal` will be integrated and displayed.</reason>
+      </artifact>
+      <artifact>
+        <path>src/services/DashboardManager.ts</path>
+        <kind>service</kind>
+        <symbol>DashboardManager</symbol>
+        <lines></lines>
+        <reason>Client-side service that may need to be updated to fetch more detailed study session and topic data.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="Node">
+        <package name="@supabase/supabase-js" reason="For data fetching, updates, and real-time subscriptions."/>
+        <package name="zustand" reason="For managing the client-side state of the dashboard (courses, sessions)."/>
+        <package name="react-big-calendar" reason="A component library for rendering the main calendar view."/>
+        <package name="date-fns" reason="For date manipulation required by the calendar."/>
+        <package name="next" reason="Next.js framework for frontend."/>
+        <package name="react" reason="React library for UI."/>
+        <package name="react-dom" reason="React DOM for rendering."/>
+        <package name="shadcn-ui" reason="UI component library for consistent styling."/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Performance</type>
+      <description>The modal or dedicated view for study activity details should load quickly and be responsive to user interaction.</description>
+    </constraint>
+    <constraint>
+      <type>Performance</type>
+      <description>Data fetching for detailed study activity information should be efficient and not cause noticeable delays.</description>
+    </constraint>
+    <constraint>
+      <type>Security</type>
+      <description>All data fetching for study activity details is subject to the RLS policies on the `study_sessions` and `syllabus_topics` tables.</description>
+    </constraint>
+    <constraint>
+      <type>Reliability/Availability</type>
+      <description>The application should gracefully handle network issues during data fetching for activity details, providing appropriate user feedback.</description>
+    </constraint>
+    <constraint>
+      <type>Observability</type>
+      <description>Log any errors during data fetching or display of study activity details.</description>
+    </constraint>
+    <constraint>
+      <type>Architecture</type>
+      <description>Next.js Frontend direct integration with Supabase for data fetching and display of activity details.</description>
+    </constraint>
+    <constraint>
+      <type>Styling</type>
+      <description>Adhere to Shadcn UI components for a consistent and modern aesthetic for the detail modal/view.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>IDashboardManager</name>
+      <kind>Typescript Interface</kind>
+      <signature>
+        getDashboardData(): Promise&lt;{ courses, sessions, error }&gt;;
+        updateSessionStatus(sessionId: number, newStatus: 'Not Started' | 'In Progress' | 'Completed' | 'Missed'): Promise&lt;{ error }&gt;;
+        onSessionsChange(callback: (payload: RealtimePayload) => void): Subscription;
+        // May need to add a method for fetching detailed study activity data
+      </signature>
+      <path>src/services/DashboardManager.ts</path>
+    </interface>
+    <interface>
+      <name>Supabase RLS Policies</name>
+      <kind>Database Policy</kind>
+      <signature>auth.uid() = user_id (for `study_sessions` and `syllabus_topics` tables)</signature>
+      <path>supabase/migrations/*.sql</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit Tests: Test logic for fetching and preparing study activity details for display.
+      Component Tests: Test the `StudyActivityDetailModal` component in various visual states (e.g., with full details, minimal details, loading states).
+      Integration/E2E Tests: Verify that clicking a `StudyTaskCard` correctly opens the `StudyActivityDetailModal` and displays accurate, consistent information based on the data model.
+      Security Testing: Ensure RLS policies are enforced when fetching `study_sessions` and `syllabus_topics` data for display in the modal.
+    </standards>
+    <locations>
+      Typically `__tests__` or `tests` directories within relevant feature modules.
+    </locations>
+    <ideas>
+      <idea acId="1">Verify clicking a `StudyTaskCard` opens the `StudyActivityDetailModal`.</idea>
+      <idea acId="1">Test the `StudyActivityDetailModal` displays correct information for various study activities, including courses and topics.</idea>
+      <idea acId="1">Verify the modal's responsiveness and performance for quick loading.</idea>
+      <idea acId="security">Verify that a user can only view details for their own study activities.</idea>
+    </ideas>
+  </tests>
+</story-context>

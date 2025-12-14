@@ -1,0 +1,167 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>003</storyId>
+    <title>Implement Welcome Back Wizard Trigger and UI</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-5-003.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>student</asA>
+    <iWant>to be greeted by a "Welcome Back" wizard when I return to the app after a long absence</iWant>
+    <soThat>I can easily get back on track with my study plan without feeling overwhelmed.</soThat>
+    <tasks>
+      - Implement frontend logic to store and retrieve the date of last user activity (e.g., last login or interaction).
+      - Implement frontend logic on login to compare last activity date with current date and check for overdue tasks.
+      - Develop the "Welcome Back" wizard UI component.
+        - Design the full-screen, non-judgmental modal with supportive messaging.
+        - Implement initial display of overdue task count.
+      - Integrate the wizard to conditionally replace the dashboard view.
+      - Ensure the wizard handles cases where there are no overdue tasks despite a long absence (it should not be displayed).
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. On login, the frontend checks the date of the user's last activity (AC3 from Tech Spec).
+    2. If the last activity exceeds a defined threshold (e.g., 3 days) and there are overdue tasks, the "Welcome Back" wizard is displayed instead of the standard dashboard.
+    3. The wizard presents a user-friendly UI as described in the UX spec, with supportive messaging ("Welcome back! Life happens. Let's get you back on track.").
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Overview</section>
+        <snippet>This document specifies Epic 5: Dynamic Plan Adaptation, which implements the "Welcome Back" wizard designed to help users get back on track after a break.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Objectives and Scope</section>
+        <snippet>In-Scope: A "Welcome Back" wizard that triggers for users returning after a long absence (AC3 from Tech Spec).</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - Workflows and Sequencing</section>
+        <snippet>On login, the frontend checks the date of the last activity. If it exceeds a threshold (e.g., 3 days) and there are overdue tasks, it displays the wizard instead of the dashboard.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Acceptance Criteria (Authoritative)</section>
+        <snippet>AC3: A user returning to the app after a long absence is greeted by a "Welcome Back" wizard.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>3. Component Diagram</section>
+        <snippet>The Next.js Frontend manages client state and user interactions, including detecting triggers for the "Welcome Back" wizard on login.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>2.2 The Defining Experience: The "Welcome Back" Wizard</section>
+        <snippet>This section details the most defining feature: "Welcome Back" Wizard. Triggered on login after a multi-day absence and overdue tasks, it presents a supportive modal with strategic options.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>2.3 Core Experience Principles</section>
+        <snippet>The wizard adheres to principles like "Guidance over Control" and "Clarity over Clutter", turning anxiety into relief and empowerment by offering simple choices.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>src/components/WelcomeBackWizard.tsx</path>
+        <kind>component</kind>
+        <symbol>WelcomeBackWizard</symbol>
+        <lines></lines>
+        <reason>New UI component for the full-screen, non-judgmental modal that greets users after a long absence.</reason>
+      </artifact>
+      <artifact>
+        <path>src/utils/auth.ts</path>
+        <kind>logic</kind>
+        <symbol>loginCheckLogic</symbol>
+        <lines></lines>
+        <reason>Frontend logic to store last activity date, check for long absence, and detect overdue tasks to trigger the wizard.</reason>
+      </artifact>
+      <artifact>
+        <path>src/app/dashboard/page.tsx</path>
+        <kind>component</kind>
+        <symbol>Dashboard</symbol>
+        <lines></lines>
+        <reason>The Dashboard component will be responsible for conditionally rendering the `WelcomeBackWizard` or the standard dashboard.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="Node">
+        <package name="date-fns" reason="Frontend: For date calculations to determine last activity and overdue task thresholds."/>
+        <package name="@supabase/supabase-js" reason="Frontend: For fetching overdue tasks and user session management."/>
+        <package name="next" reason="Frontend: Next.js framework for frontend."/>
+        <package name="react" reason="Frontend: React library for UI."/>
+        <package name="zustand" reason="Frontend: For managing client-side state, including wizard visibility and overdue task count."/>
+        <package name="shadcn-ui" reason="Frontend: UI component library for consistent styling of the wizard."/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Trigger Logic</type>
+      <description>The "Welcome Back" wizard must trigger only under specific conditions: a defined long absence (e.g., &gt;3 days) AND the presence of overdue tasks.</description>
+    </constraint>
+    <constraint>
+      <type>User Experience</type>
+      <description>The wizard must be full-screen, non-judgmental, present supportive messaging, and offer clear, simple choices for rescheduling overdue tasks.</description>
+    </constraint>
+    <constraint>
+      <type>Performance</type>
+      <description>The trigger logic on login should be fast and efficient, not causing significant delays to the initial dashboard load time.</description>
+    </constraint>
+    <constraint>
+      <type>Security</type>
+      <description>Access to user activity data and overdue task information must be secure and comply with privacy policies.</description>
+    </constraint>
+    <constraint>
+      <type>Data Consistency</type>
+      <description>The count of overdue tasks displayed in the wizard must be accurate and reflect the current state of the user's plan.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>UserSessionData</name>
+      <kind>Typescript Interface</kind>
+      <signature>lastActivityDate: string; /* ISO date string */</signature>
+      <path>src/types/auth.ts</path>
+    </interface>
+    <interface>
+      <name>IWelcomeBackWizardProps</name>
+      <kind>Typescript Interface</kind>
+      <signature>overdueTaskCount: number; onOptionSelected: (option: 'spread' | 'intensive' | 'freshStart') => void;</signature>
+      <path>src/components/WelcomeBackWizard.tsx</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit Tests: Test frontend logic for storing/retrieving last activity date, calculating absence duration, and accurately detecting overdue tasks.
+      Component Tests: Test the `WelcomeBackWizard` UI component in isolation, verifying its presentation, supportive messaging, and initial display of overdue task count under different scenarios.
+      E2E Tests: Simulate user login after a long absence with varying numbers of overdue tasks to verify the wizard appears correctly. Also, test scenarios where the wizard should NOT appear (e.g., recent login, no overdue tasks).
+      UX/Usability Testing: Validate the non-judgmental tone, clarity of options, and overall user experience of the wizard as per UX design specifications.
+    </standards>
+    <locations>
+      Frontend: `src/tests/unit/auth_logic_test.ts`, `src/tests/components/WelcomeBackWizard_test.tsx`, `src/tests/e2e/welcome_back_flow_test.ts` (or similar).
+    </locations>
+    <ideas>
+      <idea acId="1">Unit test: Verify last activity date is correctly stored and retrieved from local storage or user session.</idea>
+      <idea acId="2">Unit test: Verify the wizard's trigger condition (e.g., &gt;3 days absence AND overdue tasks) is met/not met correctly.</idea>
+      <idea acId="3">Component test: Verify the `WelcomeBackWizard` UI displays the correct overdue task count and supportive message.</idea>
+      <idea acId="3">E2E test: Simulate a user logging in after a 5-day absence with 10 overdue tasks and verify the wizard appears.</idea>
+      <idea acId="3">E2E test: Simulate a user logging in after a 1-day absence with overdue tasks and verify the wizard does NOT appear, and the dashboard is shown.</idea>
+    </ideas>
+  </tests>
+</story-context>

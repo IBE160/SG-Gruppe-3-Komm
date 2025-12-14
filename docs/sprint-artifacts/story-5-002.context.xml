@@ -1,0 +1,199 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>002</storyId>
+    <title>Implement Automatic Plan Adjustment for Early Completion</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-5-002.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>student</asA>
+    <iWant>my study plan to automatically adjust when I complete a session ahead of schedule</iWant>
+    <soThat>I can make progress faster and optimize my study time.</soThat>
+    <tasks>
+      - Enhance the frontend's `updateSessionStatus` handler to detect early completion.
+        - If early completion is detected, make a `fire-and-forget` call to `POST /reschedule-plan` with `course_id` and `reason: "EARLY_COMPLETION"`.
+      - Enhance the `ReschedulingService` in the FastAPI Backend to handle `reason: "EARLY_COMPLETION"`.
+        - Implement logic to identify newly available time slots.
+        - Implement logic to pull future 'Not Started' tasks into these slots.
+        - Perform a bulk `UPDATE` on `scheduled_date` for affected `study_sessions` in Supabase.
+      - Ensure the backend rescheduling algorithm considers the impact of early completion on future tasks.
+      - Implement robust error handling and logging for this specific rescheduling scenario in the backend.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. When a user completes a study session ahead of schedule, the remaining 'Not Started' sessions for that course are automatically adjusted (AC2 from Tech Spec).
+       - The adjustment logic should attempt to pull future tasks forward into newly available time slots.
+       - This should also trigger the `POST /reschedule-plan` endpoint in the backend.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Overview</section>
+        <snippet>This document specifies Epic 5: Dynamic Plan Adaptation, which implements smart features like adjustment of the plan when a study session is completed ahead of schedule.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Objectives and Scope</section>
+        <snippet>In-Scope: Adjustment of the plan when a study session is completed ahead of schedule (AC2 from Tech Spec).</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>System Architecture Alignment</section>
+        <snippet>This epic leverages the backend-centric model for complex business logic. The Next.js Frontend sends requests to a FastAPI Backend, which contains the core rescheduling logic and interacts with the Supabase Database.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - Services and Modules</section>
+        <snippet>FastAPI Backend contains the core rescheduling algorithm and exposes an endpoint to trigger it. Next.js Frontend triggers rescheduling events based on user actions.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - APIs and Interfaces</section>
+        <snippet>The FastAPI Backend exposes a `POST /reschedule-plan` endpoint for triggering the rescheduling process, which will be called with `reason: "EARLY_COMPLETION"`.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - Workflows and Sequencing</section>
+        <snippet>The frontend detects early completion and calls `POST /reschedule-plan`. The backend adjusts the plan, and the dashboard updates via real-time subscription.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Acceptance Criteria (Authoritative)</section>
+        <snippet>AC2: When a user completes a study session ahead of schedule, the plan is adjusted (e.g., future tasks are pulled forward).</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>3. Component Diagram</section>
+        <snippet>The solution architecture highlights the FastAPI Backend's role in processing AI tasks and encapsulating complex business logic like dynamic plan adaptation.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>5.2 Dynamic Rescheduling</section>
+        <snippet>This flow is triggered when a user marks a task as 'Missed'. The same backend mechanisms will be leveraged for early completion adjustments.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>2.1 Defining Experience</section>
+        <snippet>The defining experience is intelligent, adaptive scheduling. The application serves as a dynamic and responsive guide, which early completion adjustments directly supports.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>src/backend/api/v1/reschedule.py</path>
+        <kind>endpoint</kind>
+        <symbol>POST /reschedule-plan</symbol>
+        <lines></lines>
+        <reason>Existing FastAPI backend endpoint to be enhanced to handle rescheduling due to `EARLY_COMPLETION`.</reason>
+      </artifact>
+      <artifact>
+        <path>src/backend/services/rescheduling_service.py</path>
+        <kind>service</kind>
+        <symbol>ReschedulingService</symbol>
+        <lines></lines>
+        <reason>Existing backend service to be enhanced with logic to identify and pull forward future tasks upon early completion.</reason>
+      </artifact>
+      <artifact>
+        <path>src/services/DashboardManager.ts</path>
+        <kind>handler</kind>
+        <symbol>updateSessionStatus</symbol>
+        <lines></lines>
+        <reason>Existing frontend handler that will be enhanced to detect early completion and call the `POST /reschedule-plan` endpoint with the appropriate reason.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="Node">
+        <package name="axios" reason="Frontend: For making API calls to the FastAPI backend (e.g., to /reschedule-plan)."/>
+        <package name="date-fns" reason="Frontend: For date calculations, potentially used in detecting early completion."/>
+        <package name="@supabase/supabase-js" reason="Frontend: For data fetching and status updates in `updateSessionStatus` handler."/>
+        <package name="next" reason="Frontend: Next.js framework for frontend."/>
+        <package name="react" reason="Frontend: React library for UI."/>
+        <package name="zustand" reason="Frontend: For managing client-side state."/>
+      </ecosystem>
+      <ecosystem type="Python">
+        <package name="fastapi" reason="Backend: For building the /reschedule-plan API endpoint."/>
+        <package name="psycopg2-binary" reason="Backend: For PostgreSQL database connection and interaction from FastAPI."/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Performance</type>
+      <description>The rescheduling algorithm on the backend must complete in under 5 seconds, even for a course with hundreds of study sessions, when adjusting for early completion.</description>
+    </constraint>
+    <constraint>
+      <type>Performance</type>
+      <description>The algorithm should be optimized to minimize the number of database queries when adjusting for early completion (fetch upfront, calculate in memory, bulk update).</description>
+    </constraint>
+    <constraint>
+      <type>Security</type>
+      <description>The `/reschedule-plan` endpoint must remain protected and verify that the requesting user owns the `course_id` when triggered by early completion.</description>
+    </constraint>
+    <constraint>
+      <type>Reliability/Availability</type>
+      <description>The rescheduling algorithm must be transactional. If any part of it fails during early completion adjustment, the user's study plan should not be left in a corrupted state.</description>
+    </constraint>
+    <constraint>
+      <type>Observability</type>
+      <description>Log the execution time of the rescheduling algorithm when triggered by early completion. If the algorithm fails, log the error with `course_id` and plan state.</description>
+    </constraint>
+    <constraint>
+      <type>Data Model Contract</type>
+      <description>The adjustment logic must effectively utilize the current state of `study_sessions` (e.g., 'Not Started' status) and `courses` (e.g., `exam_date`) to pull future tasks forward.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>POST /reschedule-plan Request Body</name>
+      <kind>REST API</kind>
+      <signature>{ "course_id": int, "reason": "TASK_MISSED" | "EARLY_COMPLETION" | "WELCOME_BACK_SPREAD" }</signature>
+      <path>src/backend/api/v1/reschedule.py</path>
+    </interface>
+    <interface>
+      <name>POST /reschedule-plan Response Body</name>
+      <kind>REST API</kind>
+      <signature>{ "success": boolean, "updated_sessions": int }</signature>
+      <path>src/backend/api/v1/reschedule.py</path>
+    </interface>
+    <interface>
+      <name>Supabase RLS Policies</name>
+      <kind>Database Policy</kind>
+      <signature>auth.uid() = user_id (for `courses` and `study_sessions` tables)</signature>
+      <path>supabase/migrations/*.sql</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit Tests (Backend): Create an extensive test suite for the rescheduling algorithm, focusing on early completion scenarios. Test with various inputs: plans with no room, ample room, varied task durations, etc. The algorithm should be testable in isolation.
+      Integration Tests (Backend): Test the `/reschedule-plan` endpoint with `reason: "EARLY_COMPLETION"`, mocking the database to provide diverse plan states and verifying the correctness of `UPDATE` queries.
+      E2E Tests: Simulate early completion of a study session in the frontend and verify that the calendar view on the dashboard updates automatically (via Realtime) to reflect the new, adjusted schedule (future tasks pulled forward).
+    </standards>
+    <locations>
+      Backend: `src/backend/tests/services/rescheduling_service_test.py`, `src/backend/tests/api/v1/reschedule_api_test.py` (or similar).
+      Frontend: `src/tests/e2e/early_completion_flow_test.ts` (or similar).
+    </locations>
+    <ideas>
+      <idea acId="1">Simulate completing a study session ahead of schedule in the frontend and verify that a call to `POST /reschedule-plan` is made with `reason: "EARLY_COMPLETION"`.</idea>
+      <idea acId="1">Backend unit test for the rescheduling algorithm to ensure it correctly pulls future 'Not Started' sessions into newly available slots upon early completion.</idea>
+      <idea acId="1">E2E test: complete a session early, verify the dashboard updates automatically (via Realtime) to reflect the new schedule, with future tasks appearing earlier.</idea>
+      <idea acId="performance">Profile the rescheduling algorithm with a large dataset (e.g., 200+ sessions) to ensure it meets the &lt;5 second performance requirement for early completion adjustments.</idea>
+    </ideas>
+  </tests>
+</story-context>

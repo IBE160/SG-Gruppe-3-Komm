@@ -1,0 +1,184 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>005</storyId>
+    <title>Implement Real-time Connection Resilience and Feedback for Dashboard Updates</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-4-005.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>student</asA>
+    <iWant>the dashboard to gracefully handle temporary interruptions in real-time updates and inform me when it's reconnected</iWant>
+    <soThat>my study plan always stays synchronized and I'm aware of the connection status.</soThat>
+    <tasks>
+      - Implement robust error handling for Supabase Realtime subscriptions.
+      - Implement automatic re-subscription logic for Realtime connections.
+      - Develop a UI component (e.g., a small banner or status indicator) to display real-time connection status.
+      - Integrate connection status feedback into the `DashboardManager`.
+      - Ensure manual updates during a connection loss are eventually consistent once reconnected.
+      - Implement a data synchronization mechanism upon Realtime reconnection to ensure UI reflects the latest state.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. The dashboard automatically attempts to re-subscribe to Supabase Realtime when a connection is lost.
+    2. The user is informed when the real-time connection status changes (e.g., "Connecting...", "Reconnected", "Connection Lost").
+    3. Dashboard functionality (e.g., manual status updates) remains available during real-time connection loss, falling back to non-real-time updates.
+    4. Upon reconnection, the dashboard's state is synchronized with the latest data from Supabase.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Overview</section>
+        <snippet>This document provides the technical specification for Epic 4: Dashboard &amp; Progress Tracking, emphasizing real-time capabilities and system resilience.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>System Architecture Alignment - Real-time Capabilities</section>
+        <snippet>This epic is a perfect candidate for using Supabase Realtime. The frontend can subscribe to changes, allowing the UI to update automatically without needing a page refresh.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Workflows and Sequencing - Update Task Status</section>
+        <snippet>If Realtime is active, Supabase pushes the change to all subscribed clients. The `onSessionsChange` callback fires, and the UI updates. As a fallback, optimistic updates provide instant feedback.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Non-Functional Requirements - Reliability/Availability</section>
+        <snippet>The frontend should be able to handle temporary disconnects from the Supabase Realtime service and automatically re-subscribe when the connection is restored.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>3. Component Diagram</section>
+        <snippet>The Next.js Frontend manages real-time data via Supabase. Handling connection stability and feedback is crucial for a robust user experience.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>5.2 Dynamic Rescheduling</section>
+        <snippet>The UI updates automatically to reflect the new schedule. This is a key benefit of using Supabase's real-time capabilities; the frontend can subscribe to changes in the `study_sessions` table and redraw the calendar dynamically.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>2.3 Core Experience Principles - Feedback is a Conversation</section>
+        <snippet>The system must provide immediate, clear, and often visual feedback in response to user actions. This applies directly to informing users about real-time connection status.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>src/services/DashboardManager.ts</path>
+        <kind>service</kind>
+        <symbol>DashboardManager</symbol>
+        <lines></lines>
+        <reason>Central service for managing Realtime subscriptions, handling connection status changes, re-subscription logic, and data synchronization.</reason>
+      </artifact>
+      <artifact>
+        <path>src/components/RealtimeConnectionStatusIndicator.tsx</path>
+        <kind>component</kind>
+        <symbol>RealtimeConnectionStatusIndicator</symbol>
+        <lines></lines>
+        <reason>New UI component to visually inform the user about the current real-time connection status (e.g., connecting, connected, disconnected).</reason>
+      </artifact>
+      <artifact>
+        <path>src/app/dashboard/page.tsx</path>
+        <kind>component</kind>
+        <symbol>Dashboard</symbol>
+        <lines></lines>
+        <reason>The main dashboard component where the connection status indicator will be integrated, and UI updates based on real-time data will be managed.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="Node">
+        <package name="@supabase/supabase-js" reason="For data fetching, updates, and real-time subscriptions, including connection management."/>
+        <package name="zustand" reason="For managing the client-side state of the dashboard, including real-time connection status."/>
+        <package name="react-big-calendar" reason="A component library for rendering the main calendar view, which needs to reflect real-time updates."/>
+        <package name="date-fns" reason="For date manipulation, potentially used in synchronization logic."/>
+        <package name="next" reason="Next.js framework for frontend."/>
+        <package name="react" reason="React library for UI."/>
+        <package name="react-dom" reason="React DOM for rendering."/>
+        <package name="shadcn-ui" reason="UI component library for consistent styling, including connection status indicators."/>
+        <package name="sentry" reason="Frontend monitoring service for logging connection errors and re-subscription attempts (or similar such as LogRocket)."/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Performance</type>
+      <description>Real-time reconnection attempts should be swift to minimize disruption, and data synchronization upon reconnection must be efficient.</description>
+    </constraint>
+    <constraint>
+      <type>Security</type>
+      <description>Real-time data synchronization and connection management must continue to respect existing RLS policies on Supabase tables.</description>
+    </constraint>
+    <constraint>
+      <type>Reliability/Availability</type>
+      <description>The frontend must gracefully handle temporary network disconnects, provide clear user feedback, and automatically re-establish Realtime connections.</description>
+    </constraint>
+    <constraint>
+      <type>Observability</type>
+      <description>Connection status changes, re-subscription attempts, and synchronization events should be logged to aid in debugging and performance monitoring.</description>
+    </constraint>
+    <constraint>
+      <type>Architecture</type>
+      <description>Adhere to the established Next.js Frontend architecture and Supabase integration patterns for managing real-time data flow.</description>
+    </constraint>
+    <constraint>
+      <type>Styling</type>
+      <description>User interface elements for connection status feedback should be consistent with the Shadcn UI framework and overall design system.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>IDashboardManager</name>
+      <kind>Typescript Interface</kind>
+      <signature>
+        getDashboardData(): Promise&lt;{ courses, sessions, error }&gt;;
+        updateSessionStatus(sessionId: number, newStatus: 'Not Started' | 'In Progress' | 'Completed' | 'Missed'): Promise&lt;{ error }&gt;;
+        onSessionsChange(callback: (payload: RealtimePayload) => void): Subscription;
+        // Extend to include methods for managing real-time connection status and re-subscription.
+      </signature>
+      <path>src/services/DashboardManager.ts</path>
+    </interface>
+    <interface>
+      <name>Supabase Realtime API</name>
+      <kind>API</kind>
+      <signature>supabase.channel('schema-changes').on(...).subscribe();</signature>
+      <path>@supabase/supabase-js</path>
+    </interface>
+    <interface>
+      <name>Supabase RLS Policies</name>
+      <kind>Database Policy</kind>
+      <signature>auth.uid() = user_id (for `courses`, `study_sessions`, `syllabus_topics` tables)</signature>
+      <path>supabase/migrations/*.sql</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit Tests: Test re-subscription logic for Supabase Realtime, data synchronization mechanisms upon reconnection, and individual components handling connection state.
+      Component Tests: Test the `RealtimeConnectionStatusIndicator` component in various visual states (e.g., "Connecting...", "Reconnected", "Connection Lost") and its integration with global state.
+      Integration/E2E Tests: Simulate network interruptions (e.g., disconnecting and reconnecting internet, Supabase server outage) to verify graceful handling, automatic re-subscription, and data consistency across the dashboard after reconnection.
+      User Experience Testing: Validate that user feedback for connection status changes is clear, non-intrusive, and effectively communicates the system's state.
+    </standards>
+    <locations>
+      Typically `__tests__` or `tests` directories within relevant feature modules, or a dedicated `tests/realtime-resilience` directory.
+    </locations>
+    <ideas>
+      <idea acId="1">Verify automatic re-subscription to Supabase Realtime when the network connection is briefly interrupted.</idea>
+      <idea acId="2">Test that the user interface correctly displays "Connection Lost" when the real-time connection is down and "Reconnected" when it's restored.</idea>
+      <idea acId="3">Simulate a connection loss and perform a manual status update; verify the update is eventually consistent after reconnection.</idea>
+      <idea acId="4">Test that the dashboard's data is fully synchronized and up-to-date after a real-time reconnection event, reflecting any changes made while offline.</idea>
+    </ideas>
+  </tests>
+</story-context>

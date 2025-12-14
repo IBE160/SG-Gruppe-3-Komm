@@ -1,0 +1,200 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>001</storyId>
+    <title>Implement Automatic Rescheduling for Missed Study Sessions</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-5-001.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>student</asA>
+    <iWant>my study plan to automatically adjust when I mark a session as 'Missed'</iWant>
+    <soThat>my schedule remains realistic and I can stay on track without manual effort.</soThat>
+    <tasks>
+      - Enhance the frontend's `updateSessionStatus` handler to make a `fire-and-forget` call to `POST /reschedule-plan` when a session is marked 'Missed'.
+        - Pass `course_id` and `reason: "TASK_MISSED"` in the request body.
+      - Implement the `POST /reschedule-plan` endpoint in the FastAPI Backend.
+        - Verify user authorization for the given `course_id`.
+        - Fetch all 'Not Started' study sessions for the course.
+        - Implement the core rescheduling algorithm to redistribute tasks.
+        - Perform a bulk `UPDATE` on `scheduled_date` for affected `study_sessions` in Supabase.
+      - Ensure the backend rescheduling algorithm completes within performance requirements (&lt; 5 seconds).
+      - Implement robust error handling and logging for the rescheduling process in the backend.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. When a user marks a study session as 'Missed' in the frontend, the remaining 'Not Started' sessions for that course are automatically rescheduled by the backend (AC1 from Tech Spec).
+       - The rescheduling logic prioritizes distributing tasks evenly across available time slots before the exam date.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Overview</section>
+        <snippet>This document specifies Epic 5: Dynamic Plan Adaptation, which implements smart features like automatic rescheduling of tasks when a user falls behind.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Objectives and Scope</section>
+        <snippet>In-Scope: Automatic rescheduling of remaining topics when a study session is marked as 'Missed'.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>System Architecture Alignment</section>
+        <snippet>This epic leverages the backend-centric model for complex business logic. The Next.js Frontend sends requests to a FastAPI Backend, which contains the core rescheduling logic and interacts with the Supabase Database.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - Services and Modules</section>
+        <snippet>FastAPI Backend contains the core rescheduling algorithm and exposes an endpoint to trigger it. Next.js Frontend triggers rescheduling events.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - APIs and Interfaces</section>
+        <snippet>The FastAPI Backend exposes a `POST /reschedule-plan` endpoint for triggering the rescheduling process, taking `course_id` and `reason` as parameters.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - Workflows and Sequencing</section>
+        <snippet>When a user marks a task as 'Missed', the frontend calls `POST /reschedule-plan`, and the backend reschedules the plan. The dashboard updates via real-time subscription.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Acceptance Criteria (Authoritative)</section>
+        <snippet>AC1: When a user marks a study session as 'Missed', the remaining 'Not Started' sessions for that course are automatically rescheduled.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>3. Component Diagram</section>
+        <snippet>The solution architecture highlights the FastAPI Backend's role in processing AI tasks and encapsulating complex business logic like rescheduling.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>5.2 Dynamic Rescheduling</section>
+        <snippet>This flow is triggered when a user marks a task as 'Missed'. The frontend updates the status in Supabase, which triggers a backend process to recalculate the schedule.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>2.1 Defining Experience</section>
+        <snippet>The defining experience is intelligent, adaptive scheduling. The application serves as a dynamic and responsive guide, which automatic rescheduling directly supports.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>src/backend/api/v1/reschedule.py</path>
+        <kind>endpoint</kind>
+        <symbol>POST /reschedule-plan</symbol>
+        <lines></lines>
+        <reason>New FastAPI backend endpoint to trigger the automatic rescheduling logic.</reason>
+      </artifact>
+      <artifact>
+        <path>src/backend/services/rescheduling_service.py</path>
+        <kind>service</kind>
+        <symbol>ReschedulingService</symbol>
+        <lines></lines>
+        <reason>Core backend service containing the rescheduling algorithm to redistribute tasks.</reason>
+      </artifact>
+      <artifact>
+        <path>src/services/DashboardManager.ts</path>
+        <kind>handler</kind>
+        <symbol>updateSessionStatus</symbol>
+        <lines></lines>
+        <reason>Existing frontend handler that will be enhanced to call the `POST /reschedule-plan` endpoint when a session is marked 'Missed'.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="Node">
+        <package name="axios" reason="Frontend: For making API calls to the FastAPI backend (e.g., to /reschedule-plan)."/>
+        <package name="date-fns" reason="Frontend: For date calculations, potentially used in determining rescheduling logic or display."/>
+        <package name="@supabase/supabase-js" reason="Frontend: For data fetching and status updates in `updateSessionStatus` handler."/>
+        <package name="next" reason="Frontend: Next.js framework for frontend."/>
+        <package name="react" reason="Frontend: React library for UI."/>
+        <package name="zustand" reason="Frontend: For managing client-side state."/>
+      </ecosystem>
+      <ecosystem type="Python">
+        <package name="fastapi" reason="Backend: For building the /reschedule-plan API endpoint."/>
+        <package name="psycopg2-binary" reason="Backend: For PostgreSQL database connection and interaction from FastAPI."/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Performance</type>
+      <description>The rescheduling algorithm on the backend must complete in under 5 seconds, even for a course with hundreds of study sessions.</description>
+    </constraint>
+    <constraint>
+      <type>Performance</type>
+      <description>The algorithm should be optimized to minimize the number of database queries (fetch upfront, calculate in memory, bulk update).</description>
+    </constraint>
+    <constraint>
+      <type>Security</type>
+      <description>The `/reschedule-plan` endpoint must be protected and verify that the requesting user owns the `course_id`.</description>
+    </constraint>
+    <constraint>
+      <type>Reliability/Availability</type>
+      <description>The rescheduling algorithm must be transactional. If any part of it fails, the user's study plan should not be left in a corrupted or partially updated state.</description>
+    </constraint>
+    <constraint>
+      <type>Observability</type>
+      <description>Log the execution time of the rescheduling algorithm. If the algorithm fails, log the error with `course_id` and plan state.</description>
+    </constraint>
+    <constraint>
+      <type>Data Model Contract</type>
+      <description>The rescheduling algorithm must only operate on study sessions with a status of 'Not Started' or 'Missed'.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>POST /reschedule-plan Request Body</name>
+      <kind>REST API</kind>
+      <signature>{ "course_id": int, "reason": "TASK_MISSED" | "WELCOME_BACK_SPREAD" }</signature>
+      <path>src/backend/api/v1/reschedule.py</path>
+    </interface>
+    <interface>
+      <name>POST /reschedule-plan Response Body</name>
+      <kind>REST API</kind>
+      <signature>{ "success": boolean, "updated_sessions": int }</signature>
+      <path>src/backend/api/v1/reschedule.py</path>
+    </interface>
+    <interface>
+      <name>Supabase RLS Policies</name>
+      <kind>Database Policy</kind>
+      <signature>auth.uid() = user_id (for `courses` and `study_sessions` tables)</signature>
+      <path>supabase/migrations/*.sql</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit Tests (Backend): Create an extensive test suite for the rescheduling algorithm, covering various scenarios such as plans with no room, ample room, many missed tasks, etc. The algorithm should be testable in isolation as a pure function.
+      Integration Tests (Backend): Test the `/reschedule-plan` endpoint, mocking the database to provide various plan states and verifying the generated `UPDATE` queries.
+      E2E Tests: Test the full flow of automatic rescheduling by marking a task as 'Missed' in the frontend and asserting that the calendar view updates correctly via real-time.
+    </standards>
+    <locations>
+      Backend: `src/backend/tests/services/rescheduling_service_test.py`, `src/backend/tests/api/v1/reschedule_api_test.py` (or similar).
+      Frontend: `src/tests/e2e/rescheduling_flow_test.ts` (or similar).
+    </locations>
+    <ideas>
+      <idea acId="1">Simulate marking a study session as 'Missed' in the frontend and verify that a call to `POST /reschedule-plan` is made with correct parameters.</idea>
+      <idea acId="1">Backend unit test for the rescheduling algorithm to ensure it correctly redistributes 'Not Started' sessions given various inputs (e.g., full schedule, empty slots, varied session durations).</idea>
+      <idea acId="1">E2E test: mark a session 'Missed', verify the dashboard updates automatically (via Realtime) to reflect the new schedule for other sessions in the same course.</idea>
+      <idea acId="security">Integration test the `/reschedule-plan` endpoint to ensure it properly enforces user authorization and `course_id` ownership.</idea>
+      <idea acId="performance">Profile the rescheduling algorithm with a large dataset (e.g., 200+ sessions) to ensure it meets the &lt;5 second performance requirement.</idea>
+    </ideas>
+  </tests>
+</story-context>

@@ -1,0 +1,180 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>004</storyId>
+    <title>Implement Comprehensive Error Handling and Observability for Dashboard Interactions</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-4-004.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user/developer</asA>
+    <iWant>to be informed of errors during dashboard interactions and for these errors to be logged</iWant>
+    <soThat>I can understand issues quickly and the development team can diagnose and resolve problems efficiently.</soThat>
+    <tasks>
+      - Define error states and corresponding user feedback mechanisms (e.g., toast notifications for critical errors, inline messages for validation).
+      - Integrate a frontend error logging service (if not already present).
+      - Implement error boundaries or similar mechanisms for robust UI error handling.
+      - Refactor `DashboardManager` and other relevant services to capture and log errors.
+      - Implement user-facing feedback for failed `updateSessionStatus` operations.
+      - Ensure logging includes necessary context for debugging (e.g., `sessionId`, new status attempted).
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. Critical errors during real-time subscription or data updates are displayed to the user as persistent, dismissible error messages.
+    2. Non-critical errors (e.g., minor data fetching issues) are logged to a frontend monitoring service without interrupting the user flow.
+    3. User receives clear, concise feedback for failed actions (e.g., status update failed).
+    4. Automated logging captures sufficient context (e.g., error type, component, timestamp, user ID) to diagnose issues.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Overview</section>
+        <snippet>This document provides the technical specification for Epic 4: Dashboard &amp; Progress Tracking, which includes non-functional requirements such as observability and reliability.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Non-Functional Requirements - Performance</section>
+        <snippet>Initial dashboard load should take less than 2 seconds, and UI updates less than 200ms. Error handling mechanisms should not degrade these performance targets.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Non-Functional Requirements - Reliability/Availability</section>
+        <snippet>The frontend should be able to handle temporary disconnects from the Supabase Realtime service and automatically re-subscribe, ensuring error feedback for such events is managed.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Non-Functional Requirements - Observability</section>
+        <snippet>Log any errors during real-time subscription or status updates to a frontend monitoring service. This is a direct requirement for comprehensive observability.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>3. Component Diagram</section>
+        <snippet>The Next.js Frontend interacts with Supabase for data and authentication. These interaction points are critical for error handling and logging.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>7. UX Pattern Decisions - Feedback Patterns</section>
+        <snippet>This section defines how the system communicates with the user regarding success, error, and loading states. Specific patterns for critical and non-critical error feedback are detailed.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>src/components/ErrorDisplayComponent.tsx</path>
+        <kind>component</kind>
+        <symbol>ErrorDisplayComponent</symbol>
+        <lines></lines>
+        <reason>New or enhanced component for displaying critical, persistent error messages to the user.</reason>
+      </artifact>
+      <artifact>
+        <path>src/services/FrontendMonitoringService.ts</path>
+        <kind>service</kind>
+        <symbol>FrontendMonitoringService</symbol>
+        <lines></lines>
+        <reason>Service responsible for logging non-critical errors and telemetry to a monitoring backend.</reason>
+      </artifact>
+      <artifact>
+        <path>src/services/DashboardManager.ts</path>
+        <kind>service</kind>
+        <symbol>DashboardManager</symbol>
+        <lines></lines>
+        <reason>Will be refactored to capture and log errors, and provide user-facing feedback for failed actions.</reason>
+      </artifact>
+      <artifact>
+        <path>src/utils/ErrorBoundary.tsx</path>
+        <kind>utility</kind>
+        <symbol>ErrorBoundary</symbol>
+        <lines></lines>
+        <reason>Component to gracefully handle UI errors and prevent application crashes, displaying a fallback UI.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="Node">
+        <package name="@supabase/supabase-js" reason="For data fetching, updates, and real-time subscriptions."/>
+        <package name="zustand" reason="For managing the client-side state of the dashboard (courses, sessions)."/>
+        <package name="react-big-calendar" reason="A component library for rendering the main calendar view."/>
+        <package name="date-fns" reason="For date manipulation required by the calendar."/>
+        <package name="next" reason="Next.js framework for frontend."/>
+        <package name="react" reason="React library for UI."/>
+        <package name="react-dom" reason="React DOM for rendering."/>
+        <package name="shadcn-ui" reason="UI component library for consistent styling."/>
+        <package name="sentry" reason="Example of a frontend monitoring service for error logging (or similar such as LogRocket)."/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Performance</type>
+      <description>Error handling and logging mechanisms should be optimized to avoid introducing performance bottlenecks in the dashboard interactions.</description>
+    </constraint>
+    <constraint>
+      <type>Security</type>
+      <description>Error messages and logs must not expose sensitive user data or internal system details.</description>
+    </constraint>
+    <constraint>
+      <type>Reliability/Availability</type>
+      <description>Robust error handling should improve the overall resilience of the application against various failure scenarios (e.g., network, API, data).</description>
+    </constraint>
+    <constraint>
+      <type>Observability</type>
+      <description>Logging should provide sufficient context (error type, component, timestamp, user ID) to diagnose issues efficiently without excessive noise.</description>
+    </constraint>
+    <constraint>
+      <type>Architecture</type>
+      <description>Error handling patterns should align with Next.js best practices and seamlessly integrate with Supabase interaction models.</description>
+    </constraint>
+    <constraint>
+      <type>Styling</type>
+      <description>Error messages and feedback should adhere to the established Shadcn UI components and design patterns for consistency.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>IDashboardManager</name>
+      <kind>Typescript Interface</kind>
+      <signature>
+        getDashboardData(): Promise&lt;{ courses, sessions, error }&gt;;
+        updateSessionStatus(sessionId: number, newStatus: 'Not Started' | 'In Progress' | 'Completed' | 'Missed'): Promise&lt;{ error }&gt;;
+        onSessionsChange(callback: (payload: RealtimePayload) => void): Subscription;
+        // Extend to include error types in returned promises or have dedicated error handling methods.
+      </signature>
+      <path>src/services/DashboardManager.ts</path>
+    </interface>
+    <interface>
+      <name>IFrontendMonitoringService</name>
+      <kind>Typescript Interface</kind>
+      <signature>logError(error: Error, context?: Record&lt;string, any&gt;): void;</signature>
+      <path>src/services/FrontendMonitoringService.ts</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit Tests: Test specific error handling logic, error logging functions, and individual error boundary components in isolation.
+      Component Tests: Test critical error display components, ensuring correct message rendering, dismiss behavior, and visual consistency with UI patterns.
+      Integration/E2E Tests: Simulate various error scenarios (e.g., API failures, network disconnects, invalid data responses) to verify proper error display and logging across different dashboard interactions (loading, status updates, detail views).
+      User Experience Testing: Validate that error messages are clear, concise, and actionable for end-users, and that non-critical errors do not disrupt workflow.
+    </standards>
+    <locations>
+      Typically `__tests__` or `tests` directories within relevant feature modules, or a dedicated `tests/error-handling` directory.
+    </locations>
+    <ideas>
+      <idea acId="1">Verify critical real-time subscription errors trigger a persistent, dismissible toast notification.</idea>
+      <idea acId="2">Test that minor data fetching issues are logged to the frontend monitoring service without displaying a disruptive message to the user.</idea>
+      <idea acId="3">Simulate a failed `updateSessionStatus` call and verify the user receives appropriate feedback (e.g., a temporary inline error message or revert of optimistic update).</idea>
+      <idea acId="4">Examine logs in the monitoring service to ensure captured errors include necessary context (e.g., component name, timestamp, user ID, error stack).</idea>
+      <idea>Test the behavior of `ErrorBoundary` components, ensuring they catch render errors and display a fallback UI.</idea>
+    </ideas>
+  </tests>
+</story-context>

@@ -1,0 +1,206 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>004</storyId>
+    <title>Implement Welcome Back Wizard Overdue Task Summary and Rescheduling Options</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-5-004.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>student</asA>
+    <iWant>the "Welcome Back" wizard to show me my overdue tasks and give me clear options to reschedule them</iWant>
+    <soThat>I can easily choose how to get back on track and see my updated plan immediately.</soThat>
+    <tasks>
+      - Enhance `WelcomeBackWizard` UI to display overdue task count.
+      - Implement UI elements for rescheduling options ("Spread it Out", "Intensive Catch-up", "Fresh Start").
+      - Implement `onClick` handlers for these options within the `WelcomeBackWizard`.
+        - On click, call `POST /reschedule-plan` with the correct `course_id` and `reason`.
+      - Implement frontend logic to close the wizard and navigate to the dashboard upon successful plan update.
+      - Implement visual feedback (e.g., loading spinner, animation) during the rescheduling process.
+      - Ensure backend `ReschedulingService` correctly interprets and executes the "Welcome Back" rescheduling reasons.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. The "Welcome Back" wizard summarizes the count of overdue tasks (AC4 from Tech Spec).
+    2. The wizard presents simple options for rescheduling overdue tasks: "Spread it Out", "Intensive Catch-up", "Fresh Start" (AC4 from Tech Spec).
+    3. Selecting an option triggers a call to `POST /reschedule-plan` with the appropriate `reason` (e.g., "WELCOME_BACK_SPREAD") (AC5 from Tech Spec).
+    4. Upon successful plan update, the wizard closes and the user is returned to the dashboard with the newly organized plan visible (AC5 from Tech Spec).
+    5. Visual feedback (e.g., animation of calendar reorganizing) is provided after option selection and before returning to dashboard.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Overview</section>
+        <snippet>This document specifies Epic 5: Dynamic Plan Adaptation, which implements the "Welcome Back" wizard to summarize overdue tasks and provide rescheduling options.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Objectives and Scope</section>
+        <snippet>In-Scope: The "Welcome Back" wizard will summarize overdue tasks and provide simple options for rescheduling (AC4), and successfully update the user's plan (AC5).</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - Workflows and Sequencing - "Welcome Back" Wizard</section>
+        <snippet>The wizard presents rescheduling options. Based on user choice, the frontend calls the `POST /reschedule-plan` endpoint. The backend executes rescheduling, and the frontend closes the wizard.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Detailed Design - APIs and Interfaces</section>
+        <snippet>The FastAPI Backend exposes a `POST /reschedule-plan` endpoint for triggering the rescheduling process, which will be called with reasons like "WELCOME_BACK_SPREAD" based on wizard options.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-5.md</path>
+        <title>Epic Technical Specification: Dynamic Plan Adaptation</title>
+        <section>Acceptance Criteria (Authoritative)</section>
+        <snippet>AC4: The wizard summarizes overdue tasks and provides simple options for rescheduling. AC5: Choosing an option successfully updates the plan and returns the user to the dashboard.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>3. Component Diagram</section>
+        <snippet>The Next.js Frontend manages client state and user interactions, coordinating with the FastAPI Backend for complex logic like rescheduling.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>5.2 Dynamic Rescheduling</section>
+        <snippet>This flow describes the backend's role in rescheduling tasks. The "Welcome Back" wizard will trigger this flow with specific parameters.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>2.2 The Defining Experience: The "Welcome Back" Wizard</section>
+        <snippet>This section details the critical interaction flow of the "Welcome Back" Wizard, including presenting overdue task summaries and strategic options for rescheduling.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>2.3 Core Experience Principles</section>
+        <snippet>The wizard adheres to principles like "Guidance over Control" and "Clarity over Clutter", guiding the user through rescheduling choices and providing immediate feedback.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>src/components/WelcomeBackWizard.tsx</path>
+        <kind>component</kind>
+        <symbol>WelcomeBackWizard</symbol>
+        <lines></lines>
+        <reason>Existing UI component to be enhanced to display overdue task summary, provide rescheduling options, and handle user selections.</reason>
+      </artifact>
+      <artifact>
+        <path>src/services/DashboardManager.ts</path>
+        <kind>service</kind>
+        <symbol>DashboardManager</symbol>
+        <lines></lines>
+        <reason>Client-side service responsible for calling the `POST /reschedule-plan` endpoint based on user selections in the "Welcome Back" wizard.</reason>
+      </artifact>
+      <artifact>
+        <path>src/backend/api/v1/reschedule.py</path>
+        <kind>endpoint</kind>
+        <symbol>POST /reschedule-plan</symbol>
+        <lines></lines>
+        <reason>Existing backend endpoint to be enhanced to interpret and execute rescheduling logic for "Welcome Back" reasons (Spread it Out, Intensive Catch-up, Fresh Start).</reason>
+      </artifact>
+      <artifact>
+        <path>src/backend/services/rescheduling_service.py</path>
+        <kind>service</kind>
+        <symbol>ReschedulingService</symbol>
+        <lines></lines>
+        <reason>Existing backend service to be enhanced to implement the specific rescheduling logic for each of the "Welcome Back" options.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="Node">
+        <package name="axios" reason="Frontend: For making API calls to the FastAPI backend (e.g., to /reschedule-plan) from the wizard."/>
+        <package name="date-fns" reason="Frontend: For date calculations related to overdue tasks."/>
+        <package name="@supabase/supabase-js" reason="Frontend: For fetching overdue tasks and user session management."/>
+        <package name="next" reason="Frontend: Next.js framework for frontend."/>
+        <package name="react" reason="Frontend: React library for UI."/>
+        <package name="zustand" reason="Frontend: For managing client-side state, including wizard visibility and overdue task count."/>
+        <package name="shadcn-ui" reason="Frontend: UI component library for consistent styling of the wizard."/>
+      </ecosystem>
+      <ecosystem type="Python">
+        <package name="fastapi" reason="Backend: For building the /reschedule-plan API endpoint."/>
+        <package name="psycopg2-binary" reason="Backend: For PostgreSQL database connection and interaction from FastAPI, particularly for rescheduling logic."/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>User Experience</type>
+      <description>The wizard must provide clear, simple, and empathetic choices for rescheduling, along with immediate visual feedback, to guide the user back to the dashboard smoothly.</description>
+    </constraint>
+    <constraint>
+      <type>Performance</type>
+      <description>The rescheduling logic triggered by the wizard options must be efficient and complete within acceptable timeframes to ensure a responsive user experience.</description>
+    </constraint>
+    <constraint>
+      <type>Security</type>
+      <description>Rescheduling requests initiated from the wizard must be properly authenticated and authorized, ensuring only the user's own plan is affected.</description>
+    </constraint>
+    <constraint>
+      <type>Data Consistency</type>
+      <description>Plan updates resulting from the wizard's options must be accurately reflected on the dashboard immediately after the wizard closes.</description>
+    </constraint>
+    <constraint>
+      <type>Backend Logic</type>
+      <description>The `ReschedulingService` must correctly interpret each of the "Welcome Back" reasons and apply the appropriate plan adjustment logic without data corruption.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>IWelcomeBackWizardProps</name>
+      <kind>Typescript Interface</kind>
+      <signature>overdueTaskCount: number; onOptionSelected: (option: 'spread' | 'intensive' | 'freshStart') => void;</signature>
+      <path>src/components/WelcomeBackWizard.tsx</path>
+    </interface>
+    <interface>
+      <name>POST /reschedule-plan Request Body</name>
+      <kind>REST API</kind>
+      <signature>{ "course_id": int, "reason": "TASK_MISSED" | "EARLY_COMPLETION" | "WELCOME_BACK_SPREAD" | "WELCOME_BACK_INTENSIVE" | "WELCOME_BACK_FRESH_START" }</signature>
+      <path>src/backend/api/v1/reschedule.py</path>
+    </interface>
+    <interface>
+      <name>POST /reschedule-plan Response Body</name>
+      <kind>REST API</kind>
+      <signature>{ "success": boolean, "updated_sessions": int }</signature>
+      <path>src/backend/api/v1/reschedule.py</path>
+    </interface>
+    <interface>
+      <name>Supabase RLS Policies</name>
+      <kind>Database Policy</kind>
+      <signature>auth.uid() = user_id (for `courses` and `study_sessions` tables)</signature>
+      <path>supabase/migrations/*.sql</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit Tests (Backend): Develop comprehensive unit tests for the `ReschedulingService` to ensure it correctly interprets each "Welcome Back" reason (Spread it Out, Intensive Catch-up, Fresh Start) and applies the appropriate rescheduling logic, handling various plan states and edge cases.
+      Component Tests (Frontend): Test the `WelcomeBackWizard` UI component's rendering of overdue task summaries, visual presentation of rescheduling options, and correct handling of user selections.
+      Integration Tests (Frontend-Backend): Test the full communication flow from a user selecting an option in the `WelcomeBackWizard` to the `POST /reschedule-plan` endpoint call, and verify the successful plan update.
+      E2E Tests: Simulate user login triggering the wizard, interact with different rescheduling options, and verify that the dashboard accurately reflects the updated plan upon the wizard's closure, including visual feedback.
+    </standards>
+    <locations>
+      Backend: `src/backend/tests/services/rescheduling_service_test.py`, `src/backend/tests/api/v1/reschedule_api_test.py` (or similar).
+      Frontend: `src/tests/components/WelcomeBackWizard_test.tsx`, `src/tests/e2e/welcome_back_rescheduling_flow_test.ts` (or similar).
+    </locations>
+    <ideas>
+      <idea acId="1">Component test: Verify the `WelcomeBackWizard` accurately displays the overdue task count (e.g., "You have 12 overdue tasks.").</idea>
+      <idea acId="2">Component test: Verify the wizard renders all three rescheduling options ("Spread it Out", "Intensive Catch-up", "Fresh Start") as interactive elements.</idea>
+      <idea acId="3">Integration test: Select "Spread it Out" in the wizard, verify `POST /reschedule-plan` is called with `reason: "WELCOME_BACK_SPREAD"`, and the backend returns success.</idea>
+      <idea acId="4">E2E test: Trigger the wizard, select "Intensive Catch-up", verify the wizard closes, the user returns to the dashboard, and the calendar shows the adjusted plan.</idea>
+      <idea acId="5">E2E test: Verify visual feedback (e.g., a loading spinner) is displayed while the plan is being updated after an option selection.</idea>
+    </ideas>
+  </tests>
+</story-context>
