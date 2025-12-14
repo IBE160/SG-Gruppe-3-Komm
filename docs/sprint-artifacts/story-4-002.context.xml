@@ -1,0 +1,184 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>002</storyId>
+    <title>Display Course Progress Bars</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-4-002.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>student</asA>
+    <iWant>to see my progress in each course as a progress bar on the dashboard</iWant>
+    <soThat>I can quickly understand my overall standing in each subject.</soThat>
+    <tasks>
+      - Implement a `CourseProgressBar` component.
+        - Fetch total and completed study sessions for each course.
+        - Calculate course progress percentage.
+        - Render a visual progress bar based on the calculated percentage.
+      - Integrate `CourseProgressBar` component into the dashboard view.
+      - Ensure real-time updates to `study_sessions` are reflected in course progress bars.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    1. The dashboard displays a progress bar for each course (AC2 from Tech Spec).
+       - The progress bar accurately reflects the ratio of completed study sessions to total study sessions for that course.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Overview</section>
+        <snippet>This document provides the technical specification for Epic 4: Dashboard &amp; Progress Tracking. This epic covers the primary user interface for daily interaction with the study planner. It's where users will visualize their generated schedule, track their progress, and update the status of their study tasks.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Objectives and Scope</section>
+        <snippet>In-Scope: Progress bars for each course, giving a visual overview of completion. This is a key objective for the Dashboard &amp; Progress Tracking epic.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>System Architecture Alignment</section>
+        <snippet>This epic realizes the "daily-use loop" described in the architecture and relies heavily on the frontend and its direct integration with Supabase. The Next.js Frontend will fetch all study_sessions and courses for the user directly from the Supabase Database and render them in the UI.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Detailed Design - Data Models and Contracts</section>
+        <snippet>This epic primarily reads from the courses and study_sessions tables. Course progress calculation will depend on the `status` column of the `study_sessions` table and the total number of sessions per course.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
+        <section>Acceptance Criteria (Authoritative)</section>
+        <snippet>AC2: The dashboard displays a progress bar for each course. This directly maps to the objective of story-4-002.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/architecture/solution-architecture.md</path>
+        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+        <section>4. Data Model (Supabase/PostgreSQL)</section>
+        <snippet>The data model defines `courses` and `study_sessions` tables. The `courses` table stores course information, and `study_sessions` tracks individual study blocks, including their status, which is crucial for progress calculation.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>1. Project Vision &amp; UX Strategy</section>
+        <snippet>The vision includes transforming academic stress into focused productivity, with the UX designed to empower users with control and confidence, which progress bars can help achieve.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/Fase-1/ux-design-specification.md</path>
+        <title>AI-Powered Personal Study Planner UX Design Specification</title>
+        <section>2. Core User Experience - Defining Experience</section>
+        <snippet>The defining experience is intelligent, adaptive scheduling. Progress bars contribute to the "Guidance over Control" principle by providing visual feedback on progress.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>src/components/CourseProgressBar.tsx</path>
+        <kind>component</kind>
+        <symbol>CourseProgressBar</symbol>
+        <lines></lines>
+        <reason>New component to visually display the progress of each course.</reason>
+      </artifact>
+      <artifact>
+        <path>src/app/dashboard/page.tsx</path>
+        <kind>component</kind>
+        <symbol>Dashboard</symbol>
+        <lines></lines>
+        <reason>The main dashboard component where `CourseProgressBar` will be integrated.</reason>
+      </artifact>
+      <artifact>
+        <path>src/services/DashboardManager.ts</path>
+        <kind>service</kind>
+        <symbol>DashboardManager</symbol>
+        <lines></lines>
+        <reason>Client-side service that will be updated to fetch and calculate course progress data.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem type="Node">
+        <package name="@supabase/supabase-js" reason="For data fetching, updates, and real-time subscriptions."/>
+        <package name="zustand" reason="For managing the client-side state of the dashboard (courses, sessions)."/>
+        <package name="react-big-calendar" reason="A component library for rendering the main calendar view."/>
+        <package name="date-fns" reason="For date manipulation required by the calendar."/>
+        <package name="next" reason="Next.js framework for frontend."/>
+        <package name="react" reason="React library for UI."/>
+        <package name="react-dom" reason="React DOM for rendering."/>
+        <package name="shadcn-ui" reason="UI component library for consistent styling."/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Performance</type>
+      <description>Initial dashboard load, including all sessions for the upcoming month, should take less than 2 seconds, and course progress calculation should not degrade this performance.</description>
+    </constraint>
+    <constraint>
+      <type>Performance</type>
+      <description>UI updates after changing a task's status should feel instantaneous (&lt; 200ms), and course progress bar updates should also be near-instantaneous.</description>
+    </constraint>
+    <constraint>
+      <type>Security</type>
+      <description>All data fetching for course progress is subject to the RLS policies on the `courses` and `study_sessions` tables, ensuring users only ever see their own data.</description>
+    </constraint>
+    <constraint>
+      <type>Reliability/Availability</type>
+      <description>The frontend should be able to handle temporary disconnects from the Supabase Realtime service and automatically re-subscribe, ensuring progress bars also update.</description>
+    </constraint>
+    <constraint>
+      <type>Observability</type>
+      <description>Log any errors during real-time subscription or data fetching/calculation for course progress.</description>
+    </constraint>
+    <constraint>
+      <type>Architecture</type>
+      <description>Next.js Frontend direct integration with Supabase for data fetching and updates for course progress.</description>
+    </constraint>
+    <constraint>
+      <type>Styling</type>
+      <description>Adhere to Shadcn UI components for a consistent and modern aesthetic for progress bars.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>IDashboardManager</name>
+      <kind>Typescript Interface</kind>
+      <signature>
+        getDashboardData(): Promise&lt;{ courses, sessions, error }&gt;;
+        updateSessionStatus(sessionId: number, newStatus: 'Not Started' | 'In Progress' | 'Completed' | 'Missed'): Promise&lt;{ error }&gt;;
+        onSessionsChange(callback: (payload: RealtimePayload) => void): Subscription;
+        // May need to extend for course progress specific data fetching
+      </signature>
+      <path>src/services/DashboardManager.ts</path>
+    </interface>
+    <interface>
+      <name>Supabase RLS Policies</name>
+      <kind>Database Policy</kind>
+      <signature>auth.uid() = user_id (for `courses` and `study_sessions` tables)</signature>
+      <path>supabase/migrations/*.sql</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit Tests: Test logic for calculating course progress based on completed and total study sessions.
+      Component Tests: Test the `CourseProgressBar` component in various visual states (e.g., 0%, 50%, 100% complete) and edge cases.
+      Integration/E2E Tests: Verify that real-time updates to `study_sessions` correctly impact the display and calculation of course progress bars on the dashboard.
+      Security Testing: Ensure RLS policies are enforced when fetching data for course progress calculations.
+    </standards>
+    <locations>
+      Typically `__tests__` or `tests` directories within relevant feature modules.
+    </locations>
+    <ideas>
+      <idea acId="1">Verify `CourseProgressBar` accurately displays progress based on `courses` and `study_sessions` data.</idea>
+      <idea acId="1">Test the progress bar's responsiveness to real-time changes in `study_sessions` status.</idea>
+      <idea acId="security">Verify that a user can only see progress for their own courses.</idea>
+    </ideas>
+  </tests>
+</story-context>
