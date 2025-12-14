@@ -1,0 +1,109 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>6</storyId>
+    <title>User Logout</title>
+    <status>Ready for Dev</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-1-006.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>logged-in user</asA>
+    <iWant>to be able to log out of my account</iWant>
+    <soThat>I can securely end my session and protect my private information on a shared device.</soThat>
+    <tasks>
+        - Task 1: Add a "Logout" button/menu item to a user profile `DropdownMenu` in the main navigation UI. (AC: 1)
+        - Task 2: Implement the `signOut` method in `AuthManager` to call `supabase.auth.signOut()`. (AC: 2)
+        - Task 3: Connect the UI "Logout" button to the `AuthManager.signOut` method. (AC: 2)
+        - Task 4: On successful sign out, ensure the global `zustand` auth state is cleared. (AC: 3)
+        - Task 5: Implement a redirect to the login page after the sign-out process is complete. (AC: 4)
+        - Task 6: Write a unit test for the `AuthManager.signOut` method.
+        - Task 7: Write an E2E test to confirm a logged-in user can log out and can no longer access a protected route like `/dashboard`. (AC: 5)
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - AC 1: Given I am logged into the application, Then a "Logout" button or menu item must be clearly visible and accessible (e.g., within a user profile dropdown in the main navigation).
+    - AC 2: Given I click the "Logout" button, When the action is triggered, Then the client-side `AuthManager.signOut()` function must be invoked.
+    - AC 3: Given the `signOut` call to Supabase is successful, Then the user's session (including any JWT stored in the client) must be cleared.
+    - AC 4: Given I have successfully logged out, When the application navigates, Then I must be redirected to the public home page or the login page.
+    - AC 5: Given I have logged out, Then I must not be able to access any protected routes (e.g., `/dashboard`) without logging in again.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>APIs and Interfaces</section>
+            <snippet>The `AuthManager` module will expose a `signOut()` method that wraps the `supabase.auth.signOut()` call.</snippet>
+        </doc>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Acceptance Criteria (Authoritative)</section>
+            <snippet>AC6: A logged-in user can successfully log out, terminating their session.</snippet>
+        </doc>
+        <doc>
+            <path>docs/architecture/solution-architecture.md</path>
+            <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+            <section>Component Diagram</section>
+            <snippet>Supabase Auth (GoTrue) is the authentication service responsible for managing user sign-up, login, password resets, and issuing JWTs for secure API access.</snippet>
+        </doc>
+        <doc>
+            <path>docs/Fase-1/ux-design-specification.md</path>
+            <title>UX Design Specification</title>
+            <section>Component Library</section>
+            <snippet>The "Logout" button should be implemented using the standard Shadcn UI component library, likely as part of a `DropdownMenu` associated with a user avatar.</snippet>
+        </doc>
+    </docs>
+    <dependencies>
+        <dependency ecosystem="npm">@supabase/supabase-js</dependency>
+        <dependency ecosystem="npm">zustand</dependency>
+        <dependency ecosystem="npm">shadcn-ui</dependency>
+        <dependency ecosystem="npm">react</dependency>
+        <dependency ecosystem="npm">next</dependency>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - All authentication logic must be handled through the `AuthManager` client-side service.
+    - The implementation must use the `supabase.auth.signOut()` method.
+    - The global `zustand` authentication state must be cleared upon successful logout.
+    - The user must be redirected to a public page after logging out.
+  </constraints>
+
+  <interfaces>
+    <interface>
+        <name>IAuthManager</name>
+        <kind>TypeScript Interface</kind>
+        <signature>
+interface IAuthManager {
+  signUp(credentials: { email, password }): Promise&lt;{ user, error }&gt;;
+  signIn(credentials: { email, password }): Promise&lt;{ session, error }&gt;;
+  signOut(): Promise&lt;{ error }&gt;;
+  sendPasswordReset(email: string): Promise&lt;{ error }&gt;;
+  resendVerification(email: string): Promise&lt;{ error }&gt;;
+  onAuthStateChange(callback: (session: Session | null) => void): Subscription;
+}
+        </signature>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+    </interface>
+  </interfaces>
+  
+  <tests>
+    <standards>Use a testing framework like Cypress or Playwright for E2E tests. Create unit tests for services like AuthManager, mocking external calls. Test UI components in isolation.</standards>
+    <locations>
+        - Unit/Service Tests: `src/services/__tests__/`
+        - Component Tests: `src/components/__tests__/`
+        - E2E Tests: `cypress/e2e/`
+    </locations>
+    <ideas>
+        - (AC 2) Unit test the `AuthManager.signOut` method to ensure it calls the Supabase client correctly and clears local state.
+        - (AC 1) Component test for the user profile dropdown to ensure the "Logout" button is present and clickable.
+        - (AC 4, 5) E2E test: Log in, then click the logout button, and verify that the user is redirected to the login page and can no longer access `/dashboard`.
+    </ideas>
+  </tests>
+</story-context>

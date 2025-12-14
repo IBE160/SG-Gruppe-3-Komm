@@ -1,0 +1,141 @@
+<context>
+  <story_id>story-3-005</story_id>
+  <story_title>Ensure End-to-End Study Plan Generation Performance (&lt; 10s)</story_title>
+  <epic_id>Epic 3</epic_id>
+  <epic_title>AI Study Plan Generation</epic_title>
+
+  <section_tech_spec_epic_3_relevance>
+    This story is the direct implementation of **AC8** from `tech-spec-epic-3.md`: "The end-to-end plan generation process completes in under 10 seconds."
+    It also aligns with the "Performance" section of the Non-Functional Requirements, emphasizing the `< 10 seconds` critical target, and the "Observability" section regarding logging durations.
+    The "Risks, Assumptions, Open Questions" section highlights "OpenAI API latency or variability" as a key risk, with "Add timeouts to the API call" as a mitigation.
+  </section_tech_spec_epic_3_relevance>
+
+  <section_architecture_relevance>
+    The end-to-end flow to be optimized and measured involves:
+    **Next.js Frontend --(API Call)--> FastAPI Backend --(OpenAI API Call)--> OpenAI Service**
+    **FastAPI Backend --(DB Operations)--> Supabase Database**
+    **Supabase Database --(Data Retrieval)--> Next.js Frontend**
+    Performance bottlenecks can occur at any stage. Timeouts should be configured for external calls (OpenAI) and potentially for the overall backend processing.
+  </section_architecture_relevance>
+
+  <section_ux_design_specification_relevance>
+    The "Feedback Patterns" section, specifically for "Loading Indicators" and "Error Feedback," is relevant.
+    -   "Loading Indicators": A spinner inside the button or a full-screen loader should be used during processing.
+    -   "Error Feedback": Persistent red toasts for critical errors. This applies directly to scenarios where timeouts or performance issues lead to a failure.
+  </section_ux_design_specification_relevance>
+
+  <code_snippets>
+    <python_fastapi_openai_timeout_example>
+      <![CDATA[
+# FastAPI Backend - relevant part of /generate-schedule or /parse-syllabus
+import openai
+import os
+from fastapi import HTTPException
+import httpx # Recommended for async HTTP requests with timeouts
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+async def call_openai_with_timeout(prompt: str, model: str, max_tokens: int, timeout: int = 7):
+    try:
+        # Using httpx for a robust, async HTTP client with timeout
+        # OpenAI's Python client might use requests internally, which supports timeout parameter
+        # If using openai.Completion.create or openai.ChatCompletion.create:
+        response = await openai.Completion.acreate( # or .acreate for async calls
+            model=model,
+            prompt=prompt,
+            max_tokens=max_tokens,
+            timeout=timeout # OpenAI Python client supports timeout
+        )
+        return response
+    except openai.error.Timeout as e:
+        raise HTTPException(status_code=504, detail=f"OpenAI API call timed out after {timeout} seconds: {e}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error calling OpenAI API: {e}")
+      ]]>
+    </python_fastapi_openai_timeout_example>
+
+    <typescript_frontend_axios_timeout_example>
+      <![CDATA[
+// Next.js Frontend - example in axios call
+import axios from 'axios';
+
+async function callBackendApi(endpoint: string, data: any, timeout: number = 9000): Promise<any> {
+  try {
+    const response = await axios.post(
+      endpoint,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${yourJwtToken}`,
+        },
+        timeout: timeout, // Timeout in milliseconds
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+      console.error('Backend API call timed out:', error.message);
+      // Specific error handling for timeout (AC4)
+      throw new Error('Operation timed out. Please try again.');
+    }
+    console.error('Error calling backend API:', error);
+    throw error;
+  }
+}
+      ]]>
+    </typescript_frontend_axios_timeout_example>
+
+    <python_fastapi_performance_logging_example>
+      <![CDATA[
+# FastAPI Backend - Example of timing operations
+import time
+import logging
+
+logger = logging.getLogger(__name__)
+
+async def some_long_operation():
+    start_time = time.perf_counter()
+    # ... operation code ...
+    end_time = time.perf_counter()
+    duration = (end_time - start_time) * 1000 # milliseconds
+    logger.info(f"Operation 'some_long_operation' took {duration:.2f} ms")
+    return "result"
+
+# Integrate into endpoints:
+# @router.post("/generate-schedule")
+# async def generate_schedule(...):
+#     start_total = time.perf_counter()
+#     # ... logic ...
+#     start_openai = time.perf_counter()
+#     openai_response = await call_openai_with_timeout(...)
+#     end_openai = time.perf_counter()
+#     logger.info(f"OpenAI call took {(end_openai - start_openai) * 1000:.2f} ms")
+#
+#     # ... more logic ...
+#     end_total = time.perf_counter()
+#     logger.info(f"End-to-end /generate-schedule took {(end_total - start_total) * 1000:.2f} ms")
+      ]]>
+    </python_fastapi_performance_logging_example>
+  </code_snippets>
+
+  <ui_ux_considerations>
+    -   When a timeout occurs or a critical error indicates performance issues, the frontend should display a persistent, red "toast" notification (as per UX Design Spec Feedback Patterns).
+    -   The error message should be clear, non-technical, and actionable (e.g., "Study plan generation timed out. Please try again later or manually add topics.").
+    -   Ensure loading indicators are still present for the duration of the timeout or until an error is displayed.
+  </ui_ux_considerations>
+
+  <developer_notes>
+    -   **Backend:**
+        -   Implement timeouts for all external HTTP requests, especially to the OpenAI API.
+        -   Add detailed timing and logging for critical path operations within `/parse-syllabus` and `/generate-schedule`.
+        -   Consider configuring Gunicorn/Uvicorn worker timeouts for the FastAPI application to prevent long-running processes.
+        -   Implement robust error handling that distinguishes between different types of failures (e.g., OpenAI timeout vs. internal logic error) to provide appropriate frontend feedback.
+    -   **Frontend:**
+        -   Configure `axios` (or equivalent) timeouts for all calls to the FastAPI backend that are part of the plan generation flow.
+        -   Ensure that timeout errors are caught and trigger the appropriate UX (error message, possibly reverting UI state).
+        -   Work closely with the QA team to define and implement the automated performance tests.
+    -   **Testing:**
+        -   Develop automated tests to simulate long-running OpenAI responses or backend delays to ensure timeout mechanisms and error handling function correctly.
+        -   Use performance testing tools (e.g., Locust, JMeter, k6) to simulate concurrent users and measure the end-to-end response time.
+  </developer_notes>
+</context>

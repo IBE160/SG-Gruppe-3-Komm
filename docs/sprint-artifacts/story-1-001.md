@@ -3,7 +3,7 @@
 - **Story Key:** `story-1-001`
 - **Epic:** User Authentication & Onboarding
 - **Title:** User Registration with Email and Password
-- **Status:** Ready for Dev
+- **Status:** ready-for-dev
 
 ---
 
@@ -49,3 +49,7 @@
     -   The "Password" and "Confirm Password" fields match.
 -   **Error Handling:** For this story, focus on the "happy path." A separate story will cover detailed error handling (e.g., user already exists, weak password, network errors). However, the UI should not crash on an unexpected error.
 -   **Dependencies:** This story is dependent on the initial setup of the Next.js project and the installation/configuration of `@supabase/supabase-js` and `zustand` for state management.
+---
+
+### Dev Agent Record
+- **Context Reference:** docs/sprint-artifacts/story-1-001.context.xml

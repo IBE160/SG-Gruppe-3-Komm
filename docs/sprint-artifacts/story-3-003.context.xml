@@ -1,0 +1,211 @@
+<context>
+  <story_id>story-3-003</story_id>
+  <story_title>User Can Trigger Study Plan Generation and View the Generated Plan</story_title>
+  <epic_id>Epic 3</epic_id>
+  <epic_title>AI Study Plan Generation</epic_title>
+
+  <section_tech_spec_epic_3_relevance>
+    This story is the culmination of the AI Study Plan Generation epic, directly implementing:
+    -   **AC5:** The system generates a complete study plan (a series of `study_sessions`) based on the topics and user preferences.
+    -   **AC6:** A loading indicator is shown while the AI is processing.
+    -   **AC7:** A clear error message is shown if plan generation fails for any reason.
+    -   **AC8:** The end-to-end plan generation process completes in under 10 seconds.
+    It relies on the FastAPI Backend's `POST /generate-schedule` endpoint which performs the core scheduling logic and Supabase persistence.
+  </section_tech_spec_epic_3_relevance>
+
+  <section_architecture_relevance>
+    As per `solution-architecture.md` and `tech-spec-epic-3.md`, the workflow for plan generation is:
+    **Next.js Frontend (collects all wizard data) --> FastAPI Backend (`POST /generate-schedule`) --> Supabase Database (persists `syllabus_topics` and `study_sessions`).**
+    The FastAPI Backend performs the scheduling and database writes. The Frontend then displays the results. Performance (under 10s) is critical for this end-to-end flow.
+  </section_architecture_relevance>
+
+  <section_ux_design_specification_relevance>
+    This story implements **Step 5: "Generation & Completion"** of the "Journey: Initial Study Plan Generation" wizard as described in the UX Design Specification (Section 5.1).
+    It involves:
+    -   A "Generate My Plan!" button.
+    -   Displaying a "progress indicator".
+    -   Closing the wizard and navigating to the dashboard, where the new plan is visible.
+    -   A brief success notification.
+    It adheres to UX patterns for "Loading Indicators" (button-specific and initial page load) and "Success Feedback".
+  </section_ux_design_specification_relevance>
+
+  <code_snippets>
+    <python_fastapi_endpoint name="/generate-schedule">
+      <![CDATA[
+# FastAPI Backend - main.py or api/endpoints.py
+from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel
+from typing import List, Dict, Optional
+import datetime
+from supabase_py import create_client, Client # Assuming you have a Supabase client configured
+
+router = APIRouter()
+
+# Assuming these models are already defined or imported from story-3-001 and story-3-002
+class Topic(BaseModel):
+    title: str
+    description: Optional[str] = None
+
+class UserPreferences(BaseModel):
+    hours_per_week: int
+    study_weekends: bool
+
+class GenerateScheduleRequestBody(BaseModel):
+    course_id: int
+    exam_date: datetime.date
+    topics: List[Topic]
+    user_preferences: UserPreferences
+
+# Initialize Supabase client (e.g., from environment variables)
+# SUPABASE_URL = os.getenv("SUPABASE_URL")
+# SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+# supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY) # Placeholder for actual client
+
+@router.post("/generate-schedule")
+async def generate_schedule(request: GenerateScheduleRequestBody, current_user: Dict = Depends(get_current_user_from_jwt)): # get_current_user_from_jwt is placeholder
+    # TODO: Implement RLS equivalent on backend for current_user and course_id
+    # Example: Check if current_user owns course_id
+
+    # 1. Store topics in syllabus_topics table
+    try:
+        # First, delete existing topics for this course to prevent duplicates on regeneration
+        # response, count = supabase.from('syllabus_topics').delete().eq('course_id', request.course_id).execute()
+        
+        # Insert new topics
+        # topics_to_insert = [{
+        #     "course_id": request.course_id,
+        #     "title": topic.title,
+        #     "description": topic.description
+        # } for topic in request.topics]
+        # response, count = supabase.from('syllabus_topics').insert(topics_to_insert).execute()
+        # if response.get('error'):
+        #     raise Exception(response['error']['message'])
+        # inserted_topic_ids = [t['id'] for t in response.get('data', [])] # Assuming Supabase returns IDs
+
+        # Placeholder: Associate topics with dummy IDs for scheduling if needed
+        topics_with_ids = [{"id": i+1, **topic.dict()} for i, topic in enumerate(request.topics)]
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save syllabus topics: {e}")
+
+    # 2. Implement the core scheduling algorithm
+    # This is the complex part, calculates study_sessions based on:
+    # - request.course_id
+    # - request.exam_date
+    # - topics (with their estimated effort implicitly or explicitly)
+    # - request.user_preferences (hours_per_week, study_weekends)
+    # The algorithm should output a list of study_session objects
+
+    generated_sessions = [] # Example: [{"course_id": ..., "topic_id": ..., "scheduled_date": ..., ...}]
+    
+    # Placeholder for actual scheduling logic
+    # For now, let's just create one dummy session
+    generated_sessions.append({
+        "course_id": request.course_id,
+        "topic_id": topics_with_ids[0]['id'] if topics_with_ids else None, # Link to a topic
+        "user_id": current_user['id'], # Assuming JWT provides user_id
+        "scheduled_date": datetime.date.today(),
+        "start_time": datetime.time(9, 0),
+        "end_time": datetime.time(10, 0),
+        "status": "Not Started"
+    })
+
+    # 3. Store generated_sessions in study_sessions table
+    try:
+        # Delete existing sessions for this course to prevent duplicates
+        # response, count = supabase.from('study_sessions').delete().eq('course_id', request.course_id).execute()
+
+        # Insert new sessions
+        # response, count = supabase.from('study_sessions').insert(generated_sessions).execute()
+        # if response.get('error'):
+        #     raise Exception(response['error']['message'])
+        # session_count = count
+
+        session_count = len(generated_sessions) # Placeholder
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save study sessions: {e}")
+
+
+    return {"success": True, "session_count": session_count}
+      ]]>
+    </python_fastapi_endpoint>
+
+    <typescript_frontend_api_call>
+      <![CDATA[
+// Next.js Frontend - example in a React component or service
+import axios from 'axios';
+
+interface Topic {
+  title: string;
+  description?: string;
+}
+
+interface UserPreferences {
+  hours_per_week: number;
+  study_weekends: boolean;
+}
+
+interface GenerateScheduleRequest {
+  course_id: number;
+  exam_date: string; // ISO format 'YYYY-MM-DD'
+  topics: Topic[];
+  user_preferences: UserPreferences;
+}
+
+interface GenerateScheduleResponse {
+  success: boolean;
+  session_count: number;
+}
+
+async function generateStudyPlan(data: GenerateScheduleRequest): Promise<GenerateScheduleResponse> {
+  try {
+    const response = await axios.post<GenerateScheduleResponse>(
+      '/api/generate-schedule', // Proxy to FastAPI backend or direct call
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${yourJwtToken}`, // Include user's JWT token
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error generating study plan:', error);
+    throw error; // Handle this in UI (AC7)
+  }
+}
+      ]]>
+    </typescript_frontend_api_call>
+  </code_snippets>
+
+  <ui_ux_considerations>
+    The UI for Step 5 ("Generation & Completion") should:
+    -   Present a final confirmation screen (e.g., summarizing inputs) with a prominent "Generate My Plan!" button.
+    -   Upon clicking the button, immediately:
+        -   Disable the button.
+        -   Display a clear and persistent progress indicator (e.g., a full-screen overlay with a spinner and a message like "Generating your personalized plan..."). This indicator should be visually engaging and manage user expectations regarding the 10-second NFR.
+    -   On successful response:
+        -   Close the wizard.
+        -   Navigate the user to the relevant dashboard or course page.
+        -   Display a brief success toast notification ("Your study plan has been generated!").
+    -   On error response:
+        -   Hide the loading indicator.
+        -   Display a clear and actionable error message (e.g., a persistent red toast) with suggestions (e.g., "Please try again later or contact support").
+  </ui_ux_considerations>
+
+  <developer_notes>
+    -   **Backend:**
+        -   Implement the `POST /generate-schedule` endpoint.
+        -   Develop the core scheduling algorithm logic to distribute `topics` into `study_sessions` based on `exam_date` and `user_preferences`. This algorithm must be robust and efficient.
+        -   Perform transactional inserts for `syllabus_topics` (if not already done) and `study_sessions` into Supabase.
+        -   Ensure `course_id` and `user_id` are correctly linked and RLS is respected.
+        -   Prioritize performance to meet the <10s NFR (AC8).
+        -   Implement comprehensive error handling for database operations and any internal logic.
+    -   **Frontend:**
+        -   Aggregate all data from previous wizard steps (`course_id`, `exam_date`, `topics`, `user_preferences`) and construct the request body for `POST /generate-schedule`.
+        -   Implement robust loading state management for the API call.
+        -   Handle navigation and success/error notifications post-API call.
+        -   Ensure the dashboard/course view can correctly fetch and render the newly generated `study_sessions`.
+  </developer_notes>
+</context>

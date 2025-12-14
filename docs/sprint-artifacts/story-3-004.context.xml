@@ -1,0 +1,103 @@
+<context>
+  <story_id>story-3-004</story_id>
+  <story_title>User Can Manually Input Syllabus Topics</story_title>
+  <epic_id>Epic 3</epic_id>
+  <epic_title>AI Study Plan Generation</epic_title>
+
+  <section_tech_spec_epic_3_relevance>
+    This story primarily implements **AC3** from `tech-spec-epic-3.md`: "The user has an option to input topics manually if AI parsing is not desired or fails."
+    This feature provides a crucial fallback mechanism for the AI Study Plan Generation workflow, ensuring that users can always create a plan regardless of AI service availability or accuracy.
+    Manually entered topics will use the same data structure as AI-extracted topics, which will then be passed to the `POST /generate-schedule` endpoint.
+  </section_tech_spec_epic_3_relevance>
+
+  <section_architecture_relevance>
+    As per `solution-architecture.md` and `tech-spec-epic-3.md`, the Next.js Frontend is responsible for capturing all user input related to plan generation. For manual topic input, the frontend will manage the topic data client-side. There is no direct backend API call for *submitting* manually entered topics; they are part of the larger payload for `POST /generate-schedule`.
+  </section_architecture_relevance>
+
+  <section_ux_design_specification_relevance>
+    This story enhances **Step 2: "Add Syllabus"** and **Step 3: "Confirm Topics"** of the "Journey: Initial Study Plan Generation" wizard as described in the UX Design Specification (Section 5.1).
+    -   In Step 2, it provides the "Paste Topics Manually" option.
+    -   In Step 3, it requires the UI to handle manually added topics (editing, deleting) in the same way as AI-extracted topics.
+    It should adhere to general UX patterns for "Form Patterns" and ensure "Clarity over Clutter".
+  </section_ux_design_specification_relevance>
+
+  <code_snippets>
+    <typescript_topic_data_structure>
+      <![CDATA[
+// Frontend Topic data structure - used for both AI-extracted and manually entered topics
+interface Topic {
+  id?: string; // Optional: client-side generated ID for React keys/management
+  title: string;
+  description?: string;
+}
+
+// Example of how topics might be managed in frontend state
+const [currentTopics, setCurrentTopics] = useState<Topic[]>([]);
+
+// Function to add a new manual topic
+const addManualTopic = (title: string, description?: string) => {
+  const newTopic: Topic = { id: uuidv4(), title, description }; // Assuming uuidv4 for temporary client-side ID
+  setCurrentTopics(prevTopics => [...prevTopics, newTopic]);
+};
+
+// Function to update a manual topic
+const updateManualTopic = (id: string, newTitle: string, newDescription?: string) => {
+  setCurrentTopics(prevTopics =>
+    prevTopics.map(topic =>
+      topic.id === id ? { ...topic, title: newTitle, description: newDescription } : topic
+    )
+  );
+};
+
+// Function to remove a manual topic
+const removeManualTopic = (id: string) => {
+  setCurrentTopics(prevTopics => prevTopics.filter(topic => topic.id !== id));
+};
+      ]]>
+    </typescript_topic_data_structure>
+
+    <json_generate_schedule_request_topics_payload>
+      <![CDATA[
+// Example payload for the 'topics' array within POST /generate-schedule
+{
+  "course_id": 123,
+  "exam_date": "2026-05-01",
+  "topics": [
+    {
+      "title": "Manually Added Topic 1",
+      "description": "Description for manual topic 1"
+    },
+    {
+      "title": "Manually Added Topic 2"
+    }
+  ],
+  "user_preferences": {
+    "hours_per_week": 10,
+    "study_weekends": true
+  }
+}
+      ]]>
+    </json_generate_schedule_request_topics_payload>
+  </code_snippets>
+
+  <ui_ux_considerations>
+    **Step 2: Add Syllabus**
+    -   Clearly present the choice between "Upload Syllabus" (AI parsing) and "Manually Add Topics". This could be a tabbed interface, radio buttons, or distinct sections.
+    -   If "Manually Add Topics" is selected:
+        -   Provide an "Add New Topic" button that dynamically adds a new input row/card for a topic title and description.
+        -   Each topic input should have inline edit/delete functionality.
+        -   Ensure clear visual separation and feedback.
+
+    **Step 3: Confirm Topics**
+    -   The UI in this step must be flexible enough to display and allow editing/deletion for both AI-extracted topics (from story-3-001) and manually added topics (from this story). The visual representation should be consistent regardless of the origin.
+  </ui_ux_considerations>
+
+  <developer_notes>
+    -   **Frontend:**
+        -   Design the UI flow in Step 2 to allow users to choose between AI parsing and manual input.
+        -   Implement client-side state management for the `Topic[]` array, ensuring it can handle additions, edits, and deletions of individual topics.
+        -   Ensure that the client-side topic data structure matches the `Topic` interface expected by the backend `POST /generate-schedule` endpoint.
+        -   Consider the UX for switching between AI parsing and manual input: e.g., if a user switches from AI to manual, should existing AI-parsed topics be cleared, or offer to convert them? (Initially, clearing is simpler).
+        -   The `uuidv4` function is suggested for generating unique client-side IDs for topics to help with list rendering in React (e.g., `key` props) and state management before they are persisted in the database.
+  </developer_notes>
+</context>

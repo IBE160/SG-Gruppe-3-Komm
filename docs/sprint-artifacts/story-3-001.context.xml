@@ -1,0 +1,187 @@
+<context>
+  <story_id>story-3-001</story_id>
+  <story_title>User Can Submit Syllabus and Review AI-Extracted Topics</story_title>
+  <epic_id>Epic 3</epic_id>
+  <epic_title>AI Study Plan Generation</epic_title>
+
+  <section_tech_spec_epic_3_relevance>
+    This story covers the initial phases of the "AI Study Plan Generation" workflow, specifically:
+    -   **AC1:** The AI can parse unstructured syllabus text and identify a list of topics.
+    -   **AC2:** The user can review, edit, and confirm the AI-extracted topics before plan generation.
+    It directly involves the FastAPI Backend's `POST /parse-syllabus` endpoint and its interaction with the OpenAI Service.
+    The response contract between FastAPI and OpenAI, and FastAPI and Frontend for topic extraction, is critical.
+  </section_tech_spec_epic_3_relevance>
+
+  <section_architecture_relevance>
+    As per `solution-architecture.md`, the interaction for AI-powered features follows the path:
+    **Next.js Frontend --> FastAPI Backend --> OpenAI Service.**
+    The FastAPI Backend acts as a secure intermediary, housing the OpenAI API key and performing the prompt construction and validation of the OpenAI response.
+    The frontend is responsible for gathering syllabus input and displaying the AI-extracted topics.
+  </section_architecture_relevance>
+
+  <section_ux_design_specification_relevance>
+    This story implements "Journey: Initial Study Plan Generation" (5.1 Critical User Paths) steps:
+    -   **Step 2: Add Syllabus:** UI for inputting syllabus content.
+    -   **Step 3: Confirm Topics:** UI for displaying and allowing editing of AI-extracted topics.
+    It also adheres to general UX patterns for "Loading Indicators" and "Error Feedback".
+  </section_ux_design_specification_relevance>
+
+  <code_snippets>
+    <python_fastapi_endpoint name="/parse-syllabus">
+      <![CDATA[
+# FastAPI Backend - main.py or api/endpoints.py
+from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel
+from typing import List, Dict
+import openai
+import os # For API key
+
+router = APIRouter()
+
+# Example Request Body
+class SyllabusParseRequest(BaseModel):
+    syllabus_text: str
+    course_id: int # Assuming course_id is needed for context/security
+
+# Example Response Body for topics
+class Topic(BaseModel):
+    title: str
+    description: str = None
+
+class TopicsResponse(BaseModel):
+    topics: List[Topic]
+
+# OpenAI API client initialization (ensure API key is loaded securely)
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+@router.post("/parse-syllabus", response_model=TopicsResponse)
+async def parse_syllabus(request: SyllabusParseRequest, current_user: Dict = Depends(get_current_user_from_jwt)): # get_current_user_from_jwt is a placeholder for actual auth
+    # TODO: Implement RLS equivalent on backend for current_user and course_id
+    # Example: Check if current_user owns course_id
+
+    try:
+        # Construct prompt for OpenAI
+        prompt = f"""
+        Extract key study topics from the following syllabus text.
+        For each topic, provide a concise title and a brief description.
+        Return the output as a JSON array of objects, where each object has 'title' and 'description' keys.
+
+        Syllabus:
+        {request.syllabus_text}
+
+        JSON Output:
+        """
+        
+        response = openai.Completion.create( # Or openai.ChatCompletion.create for chat models
+            model="text-davinci-003", # Use appropriate model (e.g., gpt-3.5-turbo, gpt-4)
+            prompt=prompt,
+            max_tokens=500,
+            temperature=0.7,
+            response_format={"type": "json_object"} # If supported by model
+        )
+        
+        # Parse and validate OpenAI's JSON response
+        # This part is critical for robustness
+        # Assuming response.choices[0].text contains the JSON string
+        raw_json_output = response.choices[0].text.strip()
+        parsed_topics = json.loads(raw_json_output) # Needs 'import json'
+        
+        # Further validation to ensure it matches TopicsResponse schema
+        # e.g., using pydantic's parse_obj or similar
+        topics_response = TopicsResponse(topics=parsed_topics.get("topics", []))
+
+        return topics_response
+
+    except openai.error.OpenAIError as e:
+        raise HTTPException(status_code=500, detail=f"OpenAI API error: {e}")
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Failed to parse AI response as JSON.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
+      ]]>
+    </python_fastapi_endpoint>
+
+    <typescript_frontend_api_call>
+      <![CDATA[
+// Next.js Frontend - example in a React component or service
+import axios from 'axios';
+
+interface Topic {
+  title: string;
+  description?: string;
+}
+
+interface SyllabusParseResponse {
+  topics: Topic[];
+}
+
+async function parseSyllabus(syllabusText: string, courseId: number): Promise<SyllabusParseResponse> {
+  try {
+    const response = await axios.post<SyllabusParseResponse>(
+      '/api/parse-syllabus', // Proxy to FastAPI backend or direct call
+      { syllabus_text: syllabusText, course_id: courseId },
+      {
+        headers: {
+          Authorization: `Bearer ${yourJwtToken}`, // Include user's JWT token
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error parsing syllabus:', error);
+    throw error; // Handle this in UI (AC6)
+  }
+}
+      ]]>
+    </typescript_frontend_api_call>
+
+    <json_openai_response_contract>
+      <![CDATA[
+{
+  "topics": [
+    {
+      "title": "Introduction to Algorithms",
+      "description": "Overview of algorithm design principles and analysis."
+    },
+    {
+      "title": "Data Structures",
+      "description": "Study of common data structures like arrays, linked lists, trees, and graphs."
+    }
+  ]
+}
+      ]]>
+    </json_openai_response_contract>
+  </code_snippets>
+
+  <ui_ux_considerations>
+    **Step 2: Add Syllabus**
+    -   Provide a large, resizable textarea for pasting syllabus text.
+    -   Include a clear "Upload File" button that opens a file picker, accepting `.txt`, `.md`, and potentially other formats (PDF parsing would be client-side or handled by backend logic if sent as file).
+    -   "Next" button to proceed.
+
+    **Step 3: Confirm Topics**
+    -   Display the AI-extracted topics as a list of editable cards or rows.
+    -   Each topic should clearly show its title and description.
+    -   Provide inline editing capabilities (e.g., click to edit, or input fields for each).
+    -   Include a "Delete" button/icon for each topic.
+    -   Add an "Add Topic Manually" button (related to AC3, for a later story, but present to allow for completeness).
+    -   "Confirm Topics" button to proceed.
+
+    **Loading & Error States:**
+    -   Show a spinner or skeleton loader during the `parseSyllabus` API call.
+    -   Display error messages clearly and prominently if the API call fails (e.g., a red toast notification or inline error message within the wizard).
+  </ui_ux_considerations>
+
+  <developer_notes>
+    -   **Backend:**
+        -   Implement robust error handling for OpenAI API calls (timeouts, rate limits, malformed responses).
+        -   Validate the structure of the JSON response from OpenAI.
+        -   Ensure secure handling of the OpenAI API key (environment variables).
+        -   Implement user authentication and authorization checks (e.g., JWT validation and RLS equivalent for `course_id`).
+    -   **Frontend:**
+        -   Design a responsive UI for the wizard steps (input and review).
+        -   Manage loading and error states gracefully.
+        -   Implement state management for the extracted topics, allowing for client-side editing and deletion before final confirmation.
+        -   For file upload, consider client-side reading of text files to send as raw text to backend.
+  </developer_notes>
+</context>

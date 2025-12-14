@@ -1,16 +1,28 @@
 # Sprint Status Tracking
-# This file tracks the development status of all epics.
+# This file tracks the development status of all epics and stories.
 #
 # Status Definitions:
-#   - backlog: The epic has been defined but no technical specification has been created.
-#   - contexted: The technical specification for the epic has been generated.
-#   - in_progress: Development has started on one or more stories within the epic.
-#   - completed: All stories within the epic are complete and the epic is done.
+#   - backlog: The epic/story has been defined but no technical specification/context has been created.
+#   - contexted: The technical specification/context for the epic/story has been generated.
+#   - in_progress: Development has started on one or more stories within the epic, or the story is ready for dev.
+#   - completed: All stories within the epic are complete and the epic is done, or the story is done.
 
 development_status:
   epic-1:
     title: "User Authentication & Onboarding"
-    status: contexted
+    status: in_progress
+  story-1-001:
+    title: "User Registration with Email and Password"
+    status: in_progress
+  story-1-002:
+    title: "Email Verification After Registration"
+    status: in_progress
+  story-1-003:
+    title: "Resend Verification Email"
+    status: in_progress
+  story-1-004:
+    title: "Secure User Login"
+    status: in_progress
   epic-2:
     title: "Course Management"
     status: contexted
@@ -20,6 +32,9 @@ development_status:
   epic-4:
     title: "Dashboard & Progress Tracking"
     status: contexted
+  story-4-001:
+    title: "Dashboard Initial Load and Basic Status Update"
+    status: ready-for-dev
   epic-5:
     title: "Dynamic Plan Adaptation"
     status: contexted

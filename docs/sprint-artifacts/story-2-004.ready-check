@@ -1,0 +1,19 @@
+# Ready Check: story-2-004 - User Can View and Restore Soft-Deleted Courses
+
+**Final Verdict: READY FOR DEV**
+
+## Summary of Checks:
+
+-   **Story Definition (story-2-004.md):** The user story is clearly defined, adheres to the INVEST principles, and includes specific, testable acceptance criteria covering the viewing and restoration of soft-deleted courses.
+-   **Story Validation (story-2-004.validation.md):** The story has been formally validated as "READY", confirming its independence, value, estimability, appropriate size, and testability.
+-   **Story Context (story-2-004.context.xml):** The context file provides all necessary technical details, architectural alignment, relevant code snippets (including interface, table schema, RLS, and Supabase filtering/restore examples), and practical UI/UX considerations.
+-   **Story Context Validation (story-2-004.context-validation.md):** The context has been validated as "READY", ensuring it is comprehensive, accurate, and unambiguous for developers.
+-   **Cross-Reference with Tech Spec (Epic 2):** The story directly addresses AC8 of Epic 2, and the technical details are consistent with the epic's specification.
+-   **Cross-Reference with Solution Architecture:** The story aligns with the overall system architecture, particularly the use of Supabase for data and RLS.
+-   **Cross-Reference with UX Design Specification:** The story's UI/UX considerations are consistent with the general principles and patterns defined in the UX Design Specification, specifically regarding feedback and confirmation patterns.
+
+## Conclusion:
+
+All prerequisites for development have been met for `story-2-004`. The story is clearly defined, validated, and supported by thorough technical and UX context. Developers can confidently proceed with the implementation of the viewing and restoring functionality for soft-deleted courses.
+
+**Minimum Required Changes:** None.

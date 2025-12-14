@@ -1,0 +1,99 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>3</storyId>
+    <title>Resend Verification Email</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-1-003.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user who has not yet verified their email</asA>
+    <iWant>to be able to request a new verification email</iWant>
+    <soThat>I can complete my account registration if the original email was lost or delayed.</soThat>
+    <tasks>
+        - Task 1: Create a UI component or page state for an unverified user, which includes the "Resend Verification Email" button. (AC: 1)
+        - Task 2: Implement the `resendVerification` method in the `AuthManager` service to call the appropriate Supabase auth method. (AC: 2)
+        - Task 3: Connect the button's onClick event to the `AuthManager.resendVerification` method, including logic to disable the button and show a loading state during the API call. (AC: 2)
+        - Task 4: Implement a success toast notification to inform the user that a new email has been sent. (AC: 4)
+        - Task 5: Write a unit test for the `AuthManager.resendVerification` method, mocking the Supabase client.
+        - Task 6: Write a component test for the UI state for unverified users, verifying the button's presence and behavior.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - AC 1: Given I am on a page that informs me my email is unverified (e.g., after a failed login attempt), Then a "Resend Verification Email" button or link must be clearly visible.
+    - AC 2: Given I click the "Resend Verification Email" button, When the action is triggered, Then the client-side `AuthManager.resendVerification(email)` function must be invoked with my email address.
+    - AC 3: Given the `resendVerification` call to Supabase is successful, When I check my email inbox, Then I must find a new verification email from the application.
+    - AC 4: Given I have requested to resend the verification email, When the UI updates, Then a non-intrusive toast notification must appear, stating "A new verification email has been sent."
+    - AC 5: Given I click the link in the newly received email, Then my account must be successfully verified, as per the flow defined in `story-1-002`.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>APIs and Interfaces</section>
+            <snippet>The `AuthManager` module will expose methods that wrap Supabase calls, including `resendVerification(email: string): Promise&lt;{ error }&gt;;`.</snippet>
+        </doc>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Reliability/Availability</section>
+            <snippet>Email delivery for verification and password resets depends on the underlying email provider configured in Supabase. The system should include a "Resend Verification" feature as a fallback.</snippet>
+        </doc>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Acceptance Criteria (Authoritative)</section>
+            <snippet>AC3: A user who has not verified their email is shown an option to resend the verification email.</snippet>
+        </doc>
+        <doc>
+            <path>docs/Fase-1/ux-design-specification.md</path>
+            <title>UX Design Specification</title>
+            <section>Feedback Patterns</section>
+            <snippet>Non-intrusive "toast" notifications will be used. They will appear for 3-4 seconds and then fade automatically to confirm a successful action.</snippet>
+        </doc>
+    </docs>
+    <dependencies>
+        <dependency ecosystem="npm">@supabase/supabase-js</dependency>
+        <dependency ecosystem="npm">zustand</dependency>
+        <dependency ecosystem="npm">shadcn-ui</dependency>
+        <dependency ecosystem="npm">react</dependency>
+        <dependency ecosystem="npm">next</dependency>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - The implementation must use the appropriate `resend` method from the `@supabase/supabase-js` client library.
+    - The "Resend" button should be disabled and show a loading spinner while the API call is in progress.
+    - A success toast notification must be displayed on successful API response.
+    - The feature depends on a UI state that recognizes an unverified user, likely stemming from a failed login attempt.
+  </constraints>
+
+  <interfaces>
+    <interface>
+        <name>IAuthManager.resendVerification</name>
+        <kind>TypeScript Method Signature</kind>
+        <signature>resendVerification(email: string): Promise&lt;{ error }&gt;;</signature>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+    </interface>
+  </interfaces>
+  
+  <tests>
+    <standards>Use testing frameworks like Cypress or Playwright for E2E tests. Create unit tests for services and component tests for UI elements.</standards>
+    <locations>
+        - Unit/Service Tests: `src/services/__tests__/`
+        - Component Tests: `src/components/__tests__/`
+        - E2E Tests: `cypress/e2e/`
+    </locations>
+    <ideas>
+        - (AC1, 2) Integration test: attempt login with unverified user, see the "Resend" button, click it, and verify the `AuthManager` method is called.
+        - (AC3) E2E test: mock the Supabase resend call and verify that a new (mocked) email is "sent".
+        - (AC4) Component test the display of the success toast notification after the button is clicked.
+    </ideas>
+  </tests>
+</story-context>

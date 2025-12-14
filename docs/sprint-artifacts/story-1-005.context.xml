@@ -1,0 +1,115 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>5</storyId>
+    <title>Password Recovery (Forgot Password)</title>
+    <status>Ready for Dev</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-1-005.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>user who has forgotten my password</asA>
+    <iWant>to request a password reset link to be sent to my email address</iWant>
+    <soThat>I can regain access to my account by setting a new password.</soThat>
+    <tasks>
+        - Task 1: Add a "Forgot Password?" link to the login page UI. (AC: 1)
+        - Task 2: Create a new page/route at `/auth/forgot-password` with a form for email input. (AC: 2)
+        - Task 3: Implement the `sendPasswordReset` method in `AuthManager` to call `supabase.auth.resetPasswordForEmail()`. (AC: 3)
+        - Task 4: Connect the form to the `AuthManager.sendPasswordReset` method and implement a loading state on the submit button.
+        - Task 5: Display a success toast notification upon a successful API response, using the generic text recommended in the story notes for security. (AC: 7)
+        - Task 6: Create a new page/route at `/auth/update-password` to handle the password update flow triggered by the email link. (AC: 5, 6)
+        - Task 7: Implement the UI for the new password form on the update page. (AC: 6)
+        - Task 8: Write a unit test for the `AuthManager.sendPasswordReset` method.
+        - Task 9: Write an E2E test for the full password reset flow. (AC: All)
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - AC 1: Given I am on the login page, Then a "Forgot Password?" link must be clearly visible.
+    - AC 2: Given I click the "Forgot Password?" link, When the UI updates, Then I must be presented with a form asking for my registered email address.
+    - AC 3: Given I enter my registered email address and submit the form, When the action is triggered, Then the client-side `AuthManager.sendPasswordReset(email)` function must be invoked.
+    - AC 4: Given the `sendPasswordReset` call to Supabase is successful, When I check my email inbox, Then I must find an email from the application containing a unique, single-use password reset link.
+    - AC 5: Given I click the password reset link in the email, Then I must be redirected to a secure page within the application dedicated to setting a new password.
+    - AC 6: Given I am on the password reset page, When I enter and confirm a new password that meets the application's security requirements, Then my account credentials in Supabase must be securely updated with the new password.
+    - AC 7: Given my password has been successfully reset, Then I must be redirected to the login page with a success notification (e.g., a toast) stating, "Your password has been updated. Please log in."
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Workflows and Sequencing</section>
+            <snippet>Password Reset: User enters their email in the "Forgot Password" form. `AuthManager` calls `supabase.auth.resetPasswordForEmail(email)`. Supabase sends a password reset link to the user's email. The user clicks the link, is taken to a reset page, and provides a new password.</snippet>
+        </doc>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Security</section>
+            <snippet>Password reset links will be single-use and expire after a short period (Supabase default is 24 hours).</snippet>
+        </doc>
+        <doc>
+            <path>docs/architecture/solution-architecture.md</path>
+            <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+            <section>Component Diagram</section>
+            <snippet>Supabase Auth (GoTrue) is the authentication service responsible for managing user sign-up, login, password resets, and issuing JWTs.</snippet>
+        </doc>
+        <doc>
+            <path>docs/Fase-1/ux-design-specification.md</path>
+            <title>UX Design Specification</title>
+            <section>Feedback Patterns</section>
+            <snippet>Success Feedback: Non-intrusive "toast" notifications will be used (e.g., in the bottom-right corner). They will appear for 3-4 seconds and then fade automatically to confirm a successful action.</snippet>
+        </doc>
+    </docs>
+    <dependencies>
+        <dependency ecosystem="npm">@supabase/supabase-js</dependency>
+        <dependency ecosystem="npm">zustand</dependency>
+        <dependency ecosystem="npm">shadcn-ui</dependency>
+        <dependency ecosystem="npm">react</dependency>
+        <dependency ecosystem="npm">next</dependency>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - All authentication logic must be handled through the `AuthManager` client-side service.
+    - The implementation must use the `supabase.auth.resetPasswordForEmail()` method.
+    - UI components must be from the Shadcn UI library.
+    - New routes `/auth/forgot-password` and `/auth/update-password` must be created.
+    - For security, display a generic success message even if the email does not exist in the system to prevent user enumeration.
+  </constraints>
+
+  <interfaces>
+    <interface>
+        <name>IAuthManager</name>
+        <kind>TypeScript Interface</kind>
+        <signature>
+interface IAuthManager {
+  signUp(credentials: { email, password }): Promise&lt;{ user, error }&gt;;
+  signIn(credentials: { email, password }): Promise&lt;{ session, error }&gt;;
+  signOut(): Promise&lt;{ error }&gt;;
+  sendPasswordReset(email: string): Promise&lt;{ error }&gt;;
+  resendVerification(email: string): Promise&lt;{ error }&gt;;
+  onAuthStateChange(callback: (session: Session | null) => void): Subscription;
+}
+        </signature>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+    </interface>
+  </interfaces>
+  
+  <tests>
+    <standards>Use a testing framework like Cypress or Playwright for E2E tests. Create unit tests for services like AuthManager, mocking external calls. Test UI components in isolation.</standards>
+    <locations>
+        - Unit/Service Tests: `src/services/__tests__/`
+        - Component Tests: `src/components/__tests__/`
+        - E2E Tests: `cypress/e2e/`
+    </locations>
+    <ideas>
+        - (AC 3) Unit test the `AuthManager.sendPasswordReset` method to ensure it calls the Supabase client with the correct email.
+        - (AC 2) Integration test of the forgot password form to ensure it's displayed correctly.
+        - (AC 4) E2E test: Request a password reset and check for a (mocked) email.
+        - (AC 5, 6, 7) E2E test: Complete the full flow from clicking the reset link, entering a new password, and being redirected to the login page with a success toast.
+    </ideas>
+  </tests>
+</story-context>

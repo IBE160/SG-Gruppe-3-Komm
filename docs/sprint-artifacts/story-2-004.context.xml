@@ -1,0 +1,88 @@
+<context>
+  <story_id>story-2-004</story_id>
+  <story_title>User Can View and Restore Soft-Deleted Courses</story_title>
+  <epic_id>Epic 2</epic_id>
+  <epic_title>Course Management</epic_title>
+
+  <section_tech_spec_epic_2_relevance>
+    This story directly addresses Acceptance Criteria 8 from `tech-spec-epic-2.md`: "The system provides a mechanism to restore a soft-deleted course (e.g., from a 'Trash' view)."
+    The implementation should leverage the `restoreCourse` method defined in the `ICourseManager` interface.
+    The `courses` table uses the `deleted_at TIMESTAMPTZ` column to track soft-deleted status.
+  </section_tech_spec_epic_2_relevance>
+
+  <section_architecture_relevance>
+    As per `solution-architecture.md`, the Next.js frontend will communicate directly with Supabase via `supabase-js`.
+    All database operations for courses are protected by Row Level Security (RLS) policies to ensure users can only modify their own courses.
+    The `restoreCourse` operation will be an `UPDATE` query that sets the `deleted_at` timestamp back to `NULL`.
+  </section_architecture_relevance>
+
+  <code_snippets>
+    <typescript_interface name="ICourseManager">
+      <![CDATA[
+interface ICourseManager {
+  // ... (other methods)
+  restoreCourse(courseId: number): Promise<{ error: any }>;
+  // ... (other methods)
+}
+      ]]>
+    </typescript_interface>
+
+    <sql_table_definition name="public.courses">
+      <![CDATA[
+CREATE TABLE public.courses (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    syllabus TEXT,
+    exam_date DATE,
+    deleted_at TIMESTAMPTZ, -- Crucial for soft delete/restore
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+      ]]>
+    </sql_table_definition>
+
+    <sql_rls_policy name="Enable all access for own courses">
+      <![CDATA[
+CREATE POLICY "Enable all access for own courses" ON public.courses FOR ALL USING (auth.uid() = user_id);
+      ]]>
+    </sql_rls_policy>
+
+    <javascript_supabase_filter_example_deleted_courses>
+      <![CDATA[
+// Example of fetching soft-deleted courses for the "Trash" view
+const { data: deletedCourses, error } = await supabase
+  .from('courses')
+  .select('*')
+  .not('deleted_at', 'is', null); // Filter for deleted courses
+      ]]>
+    </javascript_supabase_filter_example_deleted_courses>
+
+    <javascript_supabase_restore_example>
+      <![CDATA[
+// Example of restoring a course
+const { data, error } = await supabase
+  .from('courses')
+  .update({ deleted_at: null })
+  .eq('id', courseId);
+      ]]>
+    </javascript_supabase_restore_example>
+  </code_snippets>
+
+  <ui_ux_considerations>
+    The UI for this story should:
+    -   Provide a clear entry point to the "Trash" or "Archived" view from the main Course Management page.
+    -   The "Trash" view should clearly list soft-deleted courses, perhaps with an indication of when they were deleted.
+    -   Each entry in the "Trash" view should have an easily discoverable "Restore" button or action.
+    -   Upon successful restoration, the course should visually move from the "Trash" view back to the active course list.
+    -   A non-intrusive success notification (toast) after restoration is recommended.
+    -   Since restoration is a non-destructive action, a high-friction confirmation is not required.
+  </ui_ux_considerations>
+
+  <developer_notes>
+    -   Ensure the `restoreCourse` method performs an `UPDATE` operation on the `public.courses` table, setting the `deleted_at` column to `NULL`.
+    -   Implement the "Trash" view by querying `courses` where `deleted_at IS NOT NULL`.
+    -   Verify that the main active course list correctly displays restored courses and continues to hide soft-deleted ones.
+    -   Thoroughly test RLS: ensure a user cannot restore a course belonging to another user.
+    -   Consider error handling and displaying user-friendly messages for failed restore operations.
+  </developer_notes>
+</context>

@@ -1,0 +1,113 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1</storyId>
+    <title>User Registration with Email and Password</title>
+    <status>Ready for Dev</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-1-001.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>new visitor to the platform</asA>
+    <iWant>to create an account using my email address and a password</iWant>
+    <soThat>I can establish a unique identity and prepare to access personalized features of the application.</soThat>
+    <tasks>
+        - Task 1: Create the registration UI form using Shadcn UI components (Input, Button, Label). (AC: 1)
+        - Task 2: Implement client-side validation for email format and matching passwords, triggering onBlur. (AC: 1)
+        - Task 3: Create an `AuthManager` service that encapsulates the Supabase client. (AC: 2)
+        - Task 4: Implement the `signUp` method in `AuthManager` to call `supabase.auth.signUp()`. (AC: 2, 3)
+        - Task 5: Connect the UI form's "Sign Up" button to the `AuthManager.signUp` method. (AC: 2)
+        - Task 6: Display a success toast notification upon successful registration API response. (AC: 4)
+        - Task 7: Write a unit test for the `AuthManager.signUp` method, mocking the supabase client.
+        - Task 8: Write a component test for the registration form to verify validation and submission.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - AC 1: Given I am on the registration page, Then the page must display a form containing fields for "Email," "Password," and "Confirm Password," along with a "Sign Up" button.
+    - AC 2: Given I have filled the form with a valid, unused email and matching passwords, When I click the "Sign Up" button, Then the client-side `AuthManager.signUp` function is invoked with the provided credentials.
+    - AC 3: Given the `signUp` function is called successfully, When Supabase processes the request, Then it must send a verification email to the address provided by the user.
+    - AC 4: Given the registration request was submitted successfully, When the UI updates, Then a clear message must be displayed on the screen instructing the user to check their email to complete the registration process.
+    - AC 5: Given a successful registration, When inspecting the backend, Then a new record corresponding to the user must exist in the `auth.users` table, and its `confirmed_at` field must be null.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>APIs and Interfaces</section>
+            <snippet>Interaction will be primarily with the `supabase-js` client library. The `AuthManager` module will expose methods that wrap these calls.</snippet>
+        </doc>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Workflows and Sequencing</section>
+            <snippet>New User Registration: User fills out and submits the registration form in the Next.js app. The `AuthManager` calls `supabase.auth.signUp({ email, password })`. Supabase creates the user in the `auth.users` table (with `confirmed_at` as null) and sends a verification email.</snippet>
+        </doc>
+        <doc>
+            <path>docs/architecture/solution-architecture.md</path>
+            <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+            <section>Data Model (Supabase/PostgreSQL)</section>
+            <snippet>The `public.users` table stores user information and is linked to `auth.users` via a `UUID` primary key that is a foreign key to `auth.users(id)`. Row Level Security is enabled.</snippet>
+        </doc>
+        <doc>
+            <path>docs/Fase-1/ux-design-specification.md</path>
+            <title>UX Design Specification</title>
+            <section>Form Patterns</section>
+            <snippet>Forms will use "floating labels." The label will appear inside the input field as a placeholder and will animate to a position above the field when the user focuses on it. Form field validation will be triggered `onBlur`.</snippet>
+        </doc>
+    </docs>
+    <dependencies>
+        <dependency ecosystem="npm">@supabase/supabase-js</dependency>
+        <dependency ecosystem="npm">zustand</dependency>
+        <dependency ecosystem="npm">shadcn-ui</dependency>
+        <dependency ecosystem="npm">react</dependency>
+        <dependency ecosystem="npm">next</dependency>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - All authentication logic must be managed by Supabase Auth.
+    - User sessions will be managed via JWTs issued by Supabase.
+    - Client-side authentication logic must be wrapped in an `AuthManager` service.
+    - All UI components must be from the Shadcn UI library.
+    - Form validation must trigger onBlur.
+    - Success feedback should use non-intrusive toast notifications.
+  </constraints>
+
+  <interfaces>
+    <interface>
+        <name>IAuthManager</name>
+        <kind>TypeScript Interface</kind>
+        <signature>
+interface IAuthManager {
+  signUp(credentials: { email, password }): Promise&lt;{ user, error }&gt;;
+  signIn(credentials: { email, password }): Promise&lt;{ session, error }&gt;;
+  signOut(): Promise&lt;{ error }&gt;;
+  sendPasswordReset(email: string): Promise&lt;{ error }&gt;;
+  resendVerification(email: string): Promise&lt;{ error }&gt;;
+  onAuthStateChange(callback: (session: Session | null) => void): Subscription;
+}
+        </signature>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+    </interface>
+  </interfaces>
+  
+  <tests>
+    <standards>Use a testing framework like Cypress or Playwright for E2E tests. Create unit tests for services like AuthManager, mocking external calls. Test UI components in isolation.</standards>
+    <locations>
+        - Unit/Service Tests: `src/services/__tests__/`
+        - Component Tests: `src/components/__tests__/`
+        - E2E Tests: `cypress/e2e/`
+    </locations>
+    <ideas>
+        - (AC1, 2) Integration test of the registration form submission.
+        - (AC2) Unit test the `AuthManager.signUp` method to ensure it calls the Supabase client correctly.
+        - (AC3) E2E test: register and check for a (mocked) verification email.
+        - (AC5) Write a database test to confirm a new user is created in `auth.users` with a null `confirmed_at` value after signup.
+    </ideas>
+  </tests>
+</story-context>

@@ -1,0 +1,18 @@
+# Ready Check: story-2-003 - User Can Soft-Delete a Course
+
+**Final Verdict: READY FOR DEV**
+
+## Summary of Checks:
+
+-   **Story Definition (story-2-003.md):** The user story is clearly defined, adheres to the INVEST principles, and includes specific, testable acceptance criteria covering the soft-delete functionality, including the high-friction confirmation modal requirement.
+-   **Story Validation (story-2-003.validation.md):** The story has been formally validated as "READY", confirming its independence, value, estimability, appropriate size, and testability.
+-   **Story Context (story-2-003.context.xml):** The context file provides all necessary technical details, architectural alignment, relevant code snippets (including interface, table schema, RLS, and Supabase filtering example), and practical UI/UX considerations, including the high-friction confirmation.
+-   **Cross-Reference with Tech Spec (Epic 2):** The story directly addresses AC6 and AC7 of Epic 2, and the technical details are consistent with the epic's specification.
+-   **Cross-Reference with Solution Architecture:** The story aligns with the overall system architecture, particularly the use of Supabase for data and RLS.
+-   **Cross-Reference with UX Design Specification:** Crucially, the story and its context now fully incorporate the "high-friction confirmation modal" pattern for critical destructive actions, as detailed in the UX Design Specification, ensuring a consistent and empathetic user experience.
+
+## Conclusion:
+
+All prerequisites for development have been met for `story-2-003`. The story is clearly defined, validated, and supported by thorough technical and UX context. Developers can confidently proceed with the implementation of the soft-delete functionality for courses.
+
+**Minimum Required Changes:** None.

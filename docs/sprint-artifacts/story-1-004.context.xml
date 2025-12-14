@@ -1,0 +1,98 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>4</storyId>
+    <title>Secure User Login</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-1-004.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>registered and verified user</asA>
+    <iWant>to log in to my account securely using my email and password</iWant>
+    <soThat>I can access my personalized dashboard and study plans.</soThat>
+    <tasks>
+        - Task 1: Create the Login UI form using Shadcn UI components (Input, Button, Label). (AC: 1)
+        - Task 2: Implement the `signIn` method in the `AuthManager` service to call `supabase.auth.signInWithPassword()`. (AC: 2)
+        - Task 3: Connect the form's "Log In" button to the `AuthManager.signIn` method and handle the loading state. (AC: 2)
+        - Task 4: Upon successful login, update the global `zustand` store with the user's session object. (AC: 3)
+        - Task 5: Implement client-side routing to redirect the user to the dashboard page after a successful login. (AC: 4)
+        - Task 6: Implement UI error handling on the form to display specific messages for "Invalid login credentials" and "Please verify your email". (AC: 5, 6)
+        - Task 7: Write a unit test for the `AuthManager.signIn` method, mocking the Supabase client and testing success and failure cases.
+        - Task 8: Write a component test for the Login form, verifying its behavior in different states (initial, loading, error).
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - AC 1: Given I am on the application's login page, Then the UI must display a form with fields for "Email" and "Password," and a "Log In" button.
+    - AC 2: Given I have entered my correct credentials for a verified account, When I click the "Log In" button, Then the client-side `AuthManager.signIn(credentials)` function must be invoked.
+    - AC 3: Given the `signIn` call to Supabase is successful, Then the application must receive a valid JWT session, which is stored securely in the client.
+    - AC 4: Given I have successfully logged in, When the application navigates, Then I must be redirected to my personal dashboard page.
+    - AC 5: Given I attempt to log in with incorrect credentials, Then the login must fail, and a clear error message (e.g., "Invalid login credentials") must be displayed on the login form.
+    - AC 6: Given I attempt to log in with a correct password but an unverified email address, Then the login must fail, and a message must be displayed informing me that my email needs to be verified, as per `story-1-002` and `story-1-003`.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>APIs and Interfaces</section>
+            <snippet>The `AuthManager` module will expose a `signIn(credentials: { email, password }): Promise&lt;{ session, error }&gt;;` method.</snippet>
+        </doc>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Workflows and Sequencing</section>
+            <snippet>User Login: User submits the login form. `AuthManager` calls `supabase.auth.signInWithPassword({ email, password })`. Supabase verifies credentials and returns a JWT session. `AuthManager` stores the session and redirects the user to the dashboard.</snippet>
+        </doc>
+        <doc>
+            <path>docs/Fase-1/ux-design-specification.md</path>
+            <title>UX Design Specification</title>
+            <section>Error Feedback</section>
+            <snippet>For form validation errors, specific error messages will appear inline, directly beneath the relevant input field, providing immediate and contextual guidance.</snippet>
+        </doc>
+    </docs>
+    <dependencies>
+        <dependency ecosystem="npm">@supabase/supabase-js</dependency>
+        <dependency ecosystem="npm">zustand</dependency>
+        <dependency ecosystem="npm">shadcn-ui</dependency>
+        <dependency ecosystem="npm">react</dependency>
+        <dependency ecosystem="npm">next</dependency>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Must use the `supabase.auth.signInWithPassword()` method via the `AuthManager` service.
+    - On successful login, the user session must be stored in the `zustand` global state.
+    - On successful login, the user must be redirected to the dashboard.
+    - The UI must show distinct error messages for invalid credentials versus an unverified email.
+    - All UI must be built with Shadcn UI components.
+  </constraints>
+
+  <interfaces>
+    <interface>
+        <name>IAuthManager.signIn</name>
+        <kind>TypeScript Method Signature</kind>
+        <signature>signIn(credentials: { email, password }): Promise&lt;{ session, error }&gt;;</signature>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+    </interface>
+  </interfaces>
+  
+  <tests>
+    <standards>Use Cypress or Playwright for E2E tests, and Jest/RTL for unit and component tests.</standards>
+    <locations>
+        - Unit/Service Tests: `src/services/__tests__/`
+        - Component Tests: `src/components/__tests__/`
+        - E2E Tests: `cypress/e2e/`
+    </locations>
+    <ideas>
+        - (AC 2, 3, 4) E2E test for a successful login flow, including the redirect to the dashboard.
+        - (AC 5) E2E test for a failed login attempt with incorrect credentials, verifying the error message.
+        - (AC 6) E2E test for a failed login attempt with an unverified email, verifying the specific error message and the presence of a "Resend verification" link/button.
+        - Unit test the `AuthManager.signIn` method, mocking both successful and failed responses from Supabase.
+    </ideas>
+  </tests>
+</story-context>

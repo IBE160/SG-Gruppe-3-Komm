@@ -1,0 +1,114 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>2</storyId>
+    <title>Email Verification After Registration</title>
+    <status>Ready for Dev</status>
+    <generatedAt>2025-12-14</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-1-002.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>newly registered user</asA>
+    <iWant>to verify my email address by clicking a link sent to me</iWant>
+    <soThat>I can confirm my identity and secure my account for full application access.</soThat>
+    <tasks>
+        - Task 1: Implement client-side routing to handle the redirect URL from Supabase after email verification (e.g., /auth/verify to /login). (AC: 3)
+        - Task 2: Implement UI to display a message indicating successful email verification (e.g., toast notification). (AC: 5)
+        - Task 3: Implement logic to prevent login for unverified users and display an appropriate message. (AC: 4)
+        - Task 4: Unit test client-side handling of the verification callback.
+        - Task 5: E2E test the full email verification flow (register, receive email, click link, redirect, login attempt).
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - AC 1: Given I have just registered for a new account (story-1-001 completed successfully), When I check the email address I used for registration, Then I must find an email from the application containing a clear verification link.
+    - AC 2: Given I click the verification link in the email, When the application processes the link, Then my account's status in `auth.users` table must be updated to `confirmed`.
+    - AC 3: Given my email address has been successfully verified, When the application responds to the verification, Then I should be redirected to a login page or directly to the dashboard (if auto-login after verification is implemented, which is out of scope for this story but a future enhancement consideration).
+    - AC 4: Given I attempt to log in with an unverified email address and correct password, Then the system must prevent login and display a clear message indicating that my email needs to be verified.
+    - AC 5: Given my email has been successfully verified, Then a non-intrusive toast notification must appear, stating "Email verified! You can now log in."
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Workflows and Sequencing</section>
+            <snippet>New User Registration: User fills out and submits the registration form in the Next.js app. The `AuthManager` calls `supabase.auth.signUp({ email, password })`. Supabase creates the user in the `auth.users` table (with `confirmed_at` as null) and sends a verification email.</snippet>
+        </doc>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Security</section>
+            <snippet>Email verification is mandatory. Users cannot log in until their email is verified, preventing sign-ups with fraudulent email addresses.</snippet>
+        </doc>
+        <doc>
+            <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+            <title>Epic Technical Specification: User Authentication &amp; Onboarding</title>
+            <section>Acceptance Criteria (Authoritative)</section>
+            <snippet>AC2: After registering, the user receives an email with a verification link. AC4: A registered and verified user can log in with their email and password.</snippet>
+        </doc>
+        <doc>
+            <path>docs/architecture/solution-architecture.md</path>
+            <title>AI-Powered Personal Study Planner - Solution Architecture</title>
+            <section>Data Model (Supabase/PostgreSQL)</section>
+            <snippet>The `public.users` table stores user information and is linked to `auth.users` via a `UUID` primary key that is a foreign key to `auth.users(id)`. Row Level Security is enabled.</snippet>
+        </doc>
+        <doc>
+            <path>docs/Fase-1/ux-design-specification.md</path>
+            <title>UX Design Specification</title>
+            <section>Feedback Patterns</section>
+            <snippet>Non-intrusive "toast" notifications will be used. They will appear for 3-4 seconds and then fade automatically to confirm a successful action.</snippet>
+        </doc>
+    </docs>
+    <dependencies>
+        <dependency ecosystem="npm">@supabase/supabase-js</dependency>
+        <dependency ecosystem="npm">zustand</dependency>
+        <dependency ecosystem="npm">shadcn-ui</dependency>
+        <dependency ecosystem="npm">react</dependency>
+        <dependency ecosystem="npm">next</dependency>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Primary reliance on Supabase's built-in email verification mechanism.
+    - Security of verification process is largely handled by Supabase.
+    - The Next.js application must handle the redirect URL provided by Supabase after verification.
+    - Toast notifications must be used for success feedback, appearing for 3-4 seconds.
+  </constraints>
+
+  <interfaces>
+    <interface>
+        <name>IAuthManager</name>
+        <kind>TypeScript Interface</kind>
+        <signature>
+interface IAuthManager {
+  signUp(credentials: { email, password }): Promise&lt;{ user, error }&gt;;
+  signIn(credentials: { email, password }): Promise&lt;{ session, error }&gt;;
+  signOut(): Promise&lt;{ error }&gt;;
+  sendPasswordReset(email: string): Promise&lt;{ error }&gt;;
+  resendVerification(email: string): Promise&lt;{ error }&gt;;
+  onAuthStateChange(callback: (session: Session | null) => void): Subscription;
+}
+        </signature>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+    </interface>
+  </interfaces>
+  
+  <tests>
+    <standards>Use testing frameworks like Cypress or Playwright for E2E tests. Create unit tests for client-side routing and UI components.</standards>
+    <locations>
+        - Unit/Service Tests: `src/services/__tests__/`
+        - Component Tests: `src/components/__tests__/`
+        - E2E Tests: `cypress/e2e/`
+    </locations>
+    <ideas>
+        - (AC1, 2) E2E test the full email verification flow (register, receive email, click verification link, observe status change).
+        - (AC3) Unit test client-side routing logic for handling the Supabase redirect.
+        - (AC4) Integration test a login attempt with an unverified email address to ensure it fails with the correct message.
+        - (AC5) Component test the display of the success toast notification.
+    </ideas>
+  </tests>
+</story-context>

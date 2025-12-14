@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<context story_id="story-2-001">
+    <objective>
+        Implement the foundational "Create" and "Read" functionality for courses. This involves creating a UI form for adding a new course and displaying the list of all active courses for the authenticated user.
+    </objective>
+
+    <source_of_truth>
+        - Epic 2 Tech Spec: `docs/sprint-artifacts/tech-spec-epic-2.md`
+        - Solution Architecture: `docs/architecture/solution-architecture.md`
+        - UX Design Specification: `docs/Fase-1/ux-design-specification.md`
+    </source_of_truth>
+
+    <technical_guidance>
+        <architecture>
+            - This is a client-side implementation within the Next.js frontend.
+            - All database interactions should go through the `@supabase/supabase-js` client library directly, as outlined in the solution architecture. No FastAPI backend involvement is needed for this story.
+        </architecture>
+        
+        <services>
+            - **`CourseManager` (Client-side Service):** This existing (or to-be-created) module will be updated.
+                - Implement `createCourse(courseData: { name: string, syllabus: string })`. This method should perform an `INSERT` into the `public.courses` table.
+                - Implement `getCourses()`. This method should perform a `SELECT` on `public.courses`, filtering by the current `user_id` and ensuring `deleted_at IS NULL`.
+            - **State Management:** Use the project's established state management solution (`zustand`) to manage and provide the course list to the UI components.
+        </services>
+
+        <ui>
+            - **Add Course Form:** Create a new React component for the course creation form, following the "Guided Wizard" pattern described in the UX spec if applicable for this initial step. The form must capture `name` and `syllabus`.
+            - **Course List View:** Create or update the component on the dashboard responsible for rendering the list of courses returned by `CourseManager.getCourses()`.
+            - **Styling:** Adhere to the `Shadcn UI` component library and the "Zen Focus" design direction.
+        </ui>
+
+        <database>
+            - **Table:** `public.courses`
+            - **Action:** `INSERT` for `createCourse`, `SELECT` for `getCourses`.
+            - **Schema Prerequisite:** The `public.courses` table MUST be updated to include a `syllabus TEXT` column to store the raw syllabus content. This is a necessary prerequisite for development to begin.
+            - **Security:** All queries are automatically protected by the pre-defined Row Level Security (RLS) policy `Enable all access for own courses`. No additional security logic is needed in the client-side queries.
+        </database>
+
+        <testing>
+            - **Unit Tests:** Write unit tests for the `CourseManager` service methods (`createCourse`, `getCourses`), mocking the `supabase-js` client.
+            - **Integration/E2E Test:** Create a test that:
+                1. Fills out and submits the "Add Course" form.
+                2. Verifies the new course appears in the course list.
+                3. Confirms the data is correctly persisted in the Supabase database.
+        </testing>
+    </technical_guidance>
+
+    <acceptance_criteria_mapping>
+        - **AC1 (Create Course Form):** Requires a new UI component for the form.
+        - **AC2 (Form Submission):** Implemented in the form's `onSubmit` handler, calling `CourseManager.createCourse`.
+        - **AC3 (Database Record):** Handled by the `createCourse` implementation using `supabase-js`.
+        - **AC4 (Display in List):** Handled by the dashboard component subscribing to the `zustand` state updated by `getCourses`.
+        - **AC5 (List Filtering):** Implemented in the `getCourses` method's `SELECT` query.
+        - **AC6 (Prompt for Plan Generation):** A UI event triggered after the `createCourse` promise resolves successfully.
+    </acceptance_criteria_mapping>
+</context>

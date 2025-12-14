@@ -1,0 +1,107 @@
+<context>
+  <story_id>story-3-002</story_id>
+  <story_title>User Can Specify Study Availability and Preferences</story_title>
+  <epic_id>Epic 3</epic_id>
+  <epic_title>AI Study Plan Generation</epic_title>
+
+  <section_tech_spec_epic_3_relevance>
+    This story implements **AC4** from `tech-spec-epic-3.md`: "The user can specify their study availability (e.g., hours per week)."
+    The output of this story directly feeds into the `user_preferences` object in the request body for the FastAPI Backend's `POST /generate-schedule` endpoint.
+    Specifically, the `hours_per_week` and potentially `study_weekends` parameters within that object.
+  </section_tech_spec_epic_3_relevance>
+
+  <section_architecture_relevance>
+    As per `solution-architecture.md` and `tech-spec-epic-3.md`, the Next.js Frontend is responsible for capturing user input for plan generation. These preferences will be passed to the FastAPI Backend which contains the core scheduling logic.
+  </section_architecture_relevance>
+
+  <section_ux_design_specification_relevance>
+    This story implements **Step 4: "Set Your Pace"** of the "Journey: Initial Study Plan Generation" wizard as described in the UX Design Specification (Section 5.1).
+    It involves presenting "Simple, friendly questions like 'How many hours can you study per week?' and 'Do you study on weekends?'" and allowing the user to "Adjusts sliders or inputs their preferences."
+    General UX patterns for "Form Patterns (User-to-System Communication)", particularly for input validation and labels, should be followed.
+  </section_ux_design_specification_relevance>
+
+  <code_snippets>
+    <typescript_fastapi_request_body_snippet>
+      <![CDATA[
+// Relevant part of the request body for POST /generate-schedule
+interface GenerateScheduleRequestBody {
+  course_id: number;
+  exam_date: string; // ISO format 'YYYY-MM-DD'
+  topics: Array<{ title: string, description?: string }>; // From previous wizard step
+  user_preferences: {
+    hours_per_week: number;
+    study_weekends: boolean; // Example preference
+    // Add other preferences as needed (e.g., break times, study intensity)
+  };
+}
+      ]]>
+    </typescript_fastapi_request_body_snippet>
+
+    <python_fastapi_endpoint_snippet>
+      <![CDATA[
+# FastAPI Backend - relevant part of /generate-schedule endpoint
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
+from typing import List, Optional, Dict
+import datetime
+
+router = APIRouter()
+
+class UserPreferences(BaseModel):
+    hours_per_week: int
+    study_weekends: bool = False # Default to false if not provided
+
+class GenerateScheduleRequestBody(BaseModel):
+    course_id: int
+    exam_date: datetime.date
+    topics: List[dict] # Simplified for snippet, actual Topic model is more detailed
+    user_preferences: UserPreferences
+
+@router.post("/generate-schedule")
+async def generate_schedule(request: GenerateScheduleRequestBody, current_user: Dict = Depends(get_current_user_from_jwt)):
+    # Access preferences: request.user_preferences.hours_per_week, request.user_preferences.study_weekends
+    # ... scheduling logic ...
+    return {"success": True, "session_count": 50}
+      ]]>
+    </python_fastapi_endpoint_snippet>
+
+    <typescript_frontend_state_example>
+      <![CDATA[
+// Next.js Frontend - example React state management
+interface StudyPreferences {
+  hours_per_week: number;
+  study_weekends: boolean;
+}
+
+// In a React component or Zustand store
+const [studyPreferences, setStudyPreferences] = useState<StudyPreferences>({
+  hours_per_week: 10,
+  study_weekends: false,
+});
+
+// UI elements would update this state
+// e.g., <Slider value={studyPreferences.hours_per_week} onValueChange={newValue => setStudyPreferences(prev => ({ ...prev, hours_per_week: newValue }))} />
+      ]]>
+    </typescript_frontend_state_example>
+  </code_snippets>
+
+  <ui_ux_considerations>
+    The UI for Step 4 ("Set Your Pace") should:
+    -   Present a clear, uncluttered interface for capturing user preferences.
+    -   Use appropriate Shadcn UI components like `Slider` for `hours_per_week` and `Switch` or `Checkbox` for `study_weekends`.
+    -   Provide clear labels and instructions for each input.
+    -   Implement real-time feedback for input validation (e.g., if `hours_per_week` is outside a sensible range).
+    -   Include "Previous" and "Next" buttons for wizard navigation.
+    -   Ensure responsiveness across desktop and tablet screen sizes.
+  </ui_ux_considerations>
+
+  <developer_notes>
+    -   **Frontend:**
+        -   Implement client-side validation for study preferences before allowing progression.
+        -   Ensure the captured preferences are correctly structured and available for the `POST /generate-schedule` API call.
+        -   Leverage Shadcn UI components for a consistent look and feel.
+    -   **Backend (for future stories):**
+        -   The scheduling algorithm will consume these `user_preferences` to determine `study_session` distribution.
+        -   Ensure the `UserPreferences` Pydantic model in FastAPI correctly reflects the data sent from the frontend.
+  </developer_notes>
+</context>
