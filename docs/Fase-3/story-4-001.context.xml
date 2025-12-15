@@ -1,258 +1,104 @@
-<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+<story-context id="story-4-001.context.xml" v="1.0">
   <metadata>
     <epicId>4</epicId>
     <storyId>001</storyId>
     <title>Dashboard Initial Load and Basic Status Update</title>
-    <status>ready-for-dev</status>
-    <generatedAt>2025-12-14</generatedAt>
+    <status>drafted</status>
+    <generatedAt>søndag 14. desember 2025</generatedAt>
     <generator>BMAD Story Context Workflow</generator>
-    <sourceStoryPath>docs/sprint-artifacts/story-4-001.md</sourceStoryPath>
+    <sourceStoryPath>sprint-artifacts/story-4-001.md</sourceStoryPath>
   </metadata>
 
   <story>
-    <asA>student</asA>
+    <asA>a student</asA>
     <iWant>to see my study activities on a dashboard and update their status</iWant>
-    <soThat>I can easily track my progress and keep my study plan up-to-date.</soThat>
+    <soThat>I can easily track my daily progress</soThat>
     <tasks>
-      - Implement dashboard component to display study activities.
-        - Fetch initial study session data from Supabase.
-        - Render study activities in a calendar view.
-      - Implement `StudyTaskCard` component for displaying individual study activities.
-        - Design interactive element to update status.
-        - Integrate status update logic with `DashboardManager.updateSessionStatus`.
-      - Implement `DashboardManager` service to handle data fetching and status updates.
-        - `getDashboardData()` to fetch initial courses and sessions.
-        - `updateSessionStatus(sessionId, newStatus)` to send updates to Supabase.
-        - Integrate Supabase Realtime for `study_sessions` table changes.
-      - Ensure all data interactions are subject to RLS policies.
-      - Implement optimistic updates for task status changes in the UI.
+      <task id="1">Implement initial Dashboard component for displaying study activities. (AC: #1)
+        <subtask>Fetch `study_sessions` for the current user from Supabase.</subtask>
+        <subtask>Render `StudyTaskCard` components for each session.</subtask>
+      </task>
+      <task id="2">Develop the `StudyTaskCard` component to display individual study activities. (AC: #1)
+        <subtask>Implement visual states for 'Not Started', 'In Progress', 'Completed', 'Missed'.</subtask>
+      </task>
+      <task id="3">Implement functionality to update study activity status via `StudyTaskCard`. (AC: #2)
+        <subtask>Implement click handler for status cycling (`Not Started` -> `In Progress` -> `Completed`).</subtask>
+        <subtask>Implement "x" icon for marking as 'Missed' (on hover).</subtask>
+      </task>
+      <task id="4">Integrate `DashboardManager.updateSessionStatus` to persist status changes to Supabase. (AC: #3)
+        <subtask>Ensure status updates are transactional and durable.</subtask>
+      </task>
+      <task id="5">Add unit tests for `StudyTaskCard` component states and interactions.</task>
+      <task id="6">Add integration tests for dashboard loading and status update persistence.</task>
     </tasks>
   </story>
 
   <acceptanceCriteria>
-    1. The dashboard displays a calendar view of the user's study activities (AC1 from Tech Spec).
-    2. A user can update the status of a study activity ('Not Started', 'Completed', 'Missed') (AC4 from Tech Spec).
-    3. Progress updates are saved automatically and are persistent across sessions (AC5 from Tech Spec).
-    4. Changes made to the study plan are reflected on the dashboard in near real-time without requiring a page refresh (AC6 from Tech Spec).
+    <criterion id="1">The dashboard successfully loads and displays a calendar view of the user's study activities.
+      <source>tech-spec-epic-4.md#AC1</source>
+    </criterion>
+    <criterion id="2">A user can update the status of a study activity (e.g., 'Not Started', 'In Progress', 'Completed', 'Missed') by interacting with the `StudyTaskCard` component.
+      <source>tech-spec-epic-4.md#AC4</source>
+      <source>ux-design-specification.md#Component:StudyTaskCard</source>
+    </criterion>
+    <criterion id="3">Changes to a study activity's status are saved automatically and are persistent across sessions.
+      <source>tech-spec-epic-4.md#AC5</source>
+    </criterion>
   </acceptanceCriteria>
 
   <artifacts>
     <docs>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>Overview</section>
-        <snippet>This document provides the technical specification for Epic 4: Dashboard &amp; Progress Tracking. This epic covers the primary user interface for daily interaction with the study planner. It's where users will visualize their generated schedule, track their progress, and update the status of their study tasks.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>Objectives and Scope</section>
-        <snippet>In-Scope: A main dashboard view featuring a calendar of study activities. Progress bars for each course, giving a visual overview of completion. The ability to click on a daily activity to view its details. Functionality to update the status of a study activity (e.g., 'Not Started', 'Completed', 'Missed'). Automatic and persistent saving of progress updates.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>System Architecture Alignment</section>
-        <snippet>This epic realizes the "daily-use loop" described in the architecture and relies heavily on the frontend and its direct integration with Supabase. The Next.js Frontend will fetch all study_sessions for the user directly from the Supabase Database and render them in the UI.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>Detailed Design - Services and Modules</section>
-        <snippet>Key services include Next.js Frontend (dashboard, calendar, StudyTaskCard), DashboardManager (client-side service for data fetch/updates), StudyTaskCard Component (interactive component for study sessions).</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>Detailed Design - Data Models and Contracts</section>
-        <snippet>This epic primarily reads from the courses and study_sessions tables and performs updates on the status column of the study_sessions table. Status values: 'Not Started', 'In Progress', 'Completed', 'Missed'.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>Detailed Design - APIs and Interfaces</section>
-        <snippet>All interactions are via the supabase-js client. Example interface for DashboardManager includes getDashboardData(), updateSessionStatus(), onSessionsChange().</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>Workflows and Sequencing - Dashboard Load</section>
-        <snippet>User navigates to dashboard. DashboardManager fetches data, frontend renders calendar with StudyTaskCard components. DashboardManager subscribes to real-time updates.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>Workflows and Sequencing - Update Task Status</section>
-        <snippet>User clicks StudyTaskCard, calls DashboardManager.updateSessionStatus. Service sends UPDATE to Supabase. Realtime updates UI. Optimistic update is a fallback.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
-        <title>Epic Technical Specification: Dashboard &amp; Progress Tracking</title>
-        <section>Acceptance Criteria (Authoritative)</section>
-        <snippet>AC1: dashboard calendar view. AC2: course progress bar. AC3: click for details. AC4: update status. AC5: persistent saving. AC6: real-time updates.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/architecture/solution-architecture.md</path>
-        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
-        <section>1. Introduction</section>
-        <snippet>Outlines the solution architecture for the AI-Powered Personal Study Planner, prioritizing stability, scalability, and developer productivity, leveraging proven, modern technologies.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/architecture/solution-architecture.md</path>
-        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
-        <section>2. System Context Diagram</section>
-        <snippet>Shows the overall system landscape, its users (Student), and its key external dependencies: Next.js Web App, OpenAI GPT-4, and Supabase.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/architecture/solution-architecture.md</path>
-        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
-        <section>3. Component Diagram</section>
-        <snippet>Breaks down the "AI Personal Study Planner" into major logical components: Next.js Frontend, FastAPI Backend, Supabase (Postgres), Supabase Auth, OpenAI Service.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/architecture/solution-architecture.md</path>
-        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
-        <section>4. Data Model (Supabase/PostgreSQL)</section>
-        <snippet>Describes the data model with tables like users, courses, syllabus_topics, and study_sessions. Highlights Row Level Security (RLS) policies for data privacy, ensuring users only access their own data.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/architecture/solution-architecture.md</path>
-        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
-        <section>5. Core Data Flows - Dashboard Load</section>
-        <snippet>Describes the Dashboard Load process: User navigates to dashboard, frontend fetches data, renders components, and subscribes to real-time updates.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/architecture/solution-architecture.md</path>
-        <title>AI-Powered Personal Study Planner - Solution Architecture</title>
-        <section>6. Architectural Decisions</section>
-        <snippet>Discusses decisions like Frontend/Backend Separation (Next.js/FastAPI), leveraging Supabase (BaaS for DB, Auth, real-time), and Centralized AI Logic in Backend (preventing API key exposure).</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/Fase-1/ux-design-specification.md</path>
-        <title>AI-Powered Personal Study Planner UX Design Specification</title>
-        <section>1. Project Vision &amp; UX Strategy</section>
-        <snippet>Vision: Transform academic stress into focused productivity. Core Experience: Effortless daily check-in, dynamic rescheduling. Desired Emotional Goal: Empowered, in control, calm, confident.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/Fase-1/ux-design-specification.md</path>
-        <title>AI-Powered Personal Study Planner UX Design Specification</title>
-        <section>2. Core User Experience - Defining Experience</section>
-        <snippet>Core User Action: Daily check-in (view dashboard, update task status). Interaction must be fast, simple, satisfying. Most Effortless Interaction: "Welcome Back" wizard for adaptive planning.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/Fase-1/ux-design-specification.md</path>
-        <title>AI-Powered Personal Study Planner UX Design Specification</title>
-        <section>6. Component Library - StudyTaskCard</section>
-        <snippet>Custom component to display a study task. Purpose: Fast, satisfying status updates. Anatomy: Course Title, Task Title, Status Indicator, Action Area (entire card). States: Not Started, In Progress, Completed, Missed. Behavior: Click to cycle status, hover for 'Missed' action.</snippet>
-      </artifact>
-      <artifact>
-        <path>docs/Fase-1/ux-design-specification.md</path>
-        <title>AI-Powered Personal Study Planner UX Design Specification</title>
-        <section>7. UX Pattern Decisions - Feedback Patterns</section>
-        <snippet>Success: Non-intrusive toast notifications. Error: Persistent red toast (critical), inline messages (form validation). Loading: Skeleton loader (page), button spinner (action-specific).</snippet>
-      </artifact>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-4.md" title="Epic Technical Specification: Dashboard &amp; Progress Tracking" section="Overview" snippet="This document provides the technical specification for Epic 4: Dashboard &amp; Progress Tracking. This epic covers the primary user interface for daily interaction with the study planner. It's where users will visualize their generated schedule, track their progress, and update the status of their study tasks. The goal is to create a dashboard that is clear, motivating, and makes the daily check-in loop fast and satisfying. The implementation is primarily frontend-focused, leveraging Supabase's real-time capabilities to keep the view in sync."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-4.md" title="Epic Technical Specification: Dashboard &amp; Progress Tracking" section="Objectives and Scope" snippet="A main dashboard view featuring a calendar of study activities. Progress bars for each course, giving a visual overview of completion. The ability to click on a daily activity to view its details. Functionality to update the status of a study activity (e.g., 'Not Started', 'Completed', 'Missed'). Automatic and persistent saving of progress updates."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-4.md" title="Epic Technical Specification: Dashboard &amp; Progress Tracking" section="System Architecture Alignment" snippet="This epic realizes the 'daily-use loop' described in the architecture and relies heavily on the frontend and its direct integration with Supabase. The Next.js Frontend will fetch all study_sessions for the user directly from the Supabase Database and render them in the UI. When a user updates a task's status, the frontend will send an UPDATE query directly to Supabase."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-4.md" title="Epic Technical Specification: Dashboard &amp; Progress Tracking" section="Detailed Design" snippet="This epic reads from the courses and study_sessions tables. The key interaction is updating the status field of the study_sessions table. All interactions are via the `supabase-js` client."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-4.md" title="Epic Technical Specification: Dashboard &amp; Progress Tracking" section="Acceptance Criteria (Authoritative)" snippet="AC1: The dashboard displays a calendar view of the user's study activities. AC4: A user can update the status of a study activity ('Not Started', 'Completed', 'Missed'). AC5: Progress updates are saved automatically and are persistent across sessions."/>
+
+      <doc path="docs/architecture/solution-architecture.md" title="AI-Powered Personal Study Planner - Solution Architecture" section="3. Component Diagram" snippet="The Next.js Frontend is the client-side application running in the user's browser. It renders the UI, manages client state, handles user interactions, communicates with backend services. Supabase (Postgres) is the primary data store. Supabase Auth is the authentication service."/>
+      <doc path="docs/architecture/solution-architecture.md" title="AI-Powered Personal Study Planner - Solution Architecture" section="4. Data Model (Supabase/PostgreSQL)" snippet="The data model is designed to be simple, relational, and secure, with Row Level Security (RLS) enabled on all tables to ensure data privacy. CREATE TABLE public.study_sessions (... status TEXT NOT NULL DEFAULT 'Not Started' CHECK (status IN ('Not Started', 'In Progress', 'Completed', 'Missed')), ...); CREATE POLICY 'Enable all access for own sessions' ON public.study_sessions FOR ALL USING (auth.uid() = user_id);"/>
+
+      <doc path="docs/Fase-1/ux-design-specification.md" title="ibe160 UX Design Specification" section="2.1 Defining Experience" snippet="The most frequent and central user action is the daily check-in. The user will view their dashboard, identify the day's tasks, and update their status (e.g., `Completed`, `Missed`). This interaction must be exceptionally fast, simple, and satisfying to encourage daily engagement."/>
+      <doc path="docs/Fase-1/ux-design-specification.md" title="ibe160 UX Design Specification" section="6.2 Custom Component Definitions#Component:StudyTaskCard" snippet="Purpose: To display a single study task for the day and provide a fast, satisfying, and low-effort way for the user to update its status. Primary Interaction (Clicking the Card): A single click on the card will cycle the status from `Not Started` -> `In Progress` -> `Completed`. Secondary Interaction (Marking as Missed): To prevent accidental negative marking, marking a task as `Missed` will require a more deliberate action, such as clicking a small 'x' icon that appears only on hover."/>
     </docs>
     <code>
-      <artifact>
-        <path>src/app/dashboard/page.tsx</path>
-        <kind>component</kind>
-        <symbol>Dashboard</symbol>
-        <lines></lines>
-        <reason>The main dashboard component responsible for rendering study activities.</reason>
-      </artifact>
-      <artifact>
-        <path>src/components/StudyTaskCard.tsx</path>
-        <kind>component</kind>
-        <symbol>StudyTaskCard</symbol>
-        <lines></lines>
-        <reason>Interactive component for displaying and updating a single study session.</reason>
-      </artifact>
-      <artifact>
-        <path>src/services/DashboardManager.ts</path>
-        <kind>service</kind>
-        <symbol>DashboardManager</symbol>
-        <lines></lines>
-        <reason>Client-side service for fetching dashboard data and handling session status updates.</reason>
-      </artifact>
+      <file path="src/components/dashboard/Dashboard.tsx" kind="component" reason="Main dashboard component for displaying study activities"/>
+      <file path="src/components/study-task-card/StudyTaskCard.tsx" kind="component" reason="Interactive component for displaying and updating a single study session"/>
+      <file path="src/services/dashboard-manager.ts" kind="service" reason="Client-side service to fetch dashboard data and handle status updates"/>
+      <file path="src/stores/zustand-store.ts" kind="store" reason="Existing Zustand store to be modified for study_sessions state"/>
     </code>
     <dependencies>
-      <ecosystem type="Node">
-        <package name="@supabase/supabase-js" reason="For data fetching, updates, and real-time subscriptions."/>
-        <package name="zustand" reason="For managing the client-side state of the dashboard (courses, sessions)."/>
-        <package name="react-big-calendar" reason="A component library for rendering the main calendar view."/>
-        <package name="date-fns" reason="For date manipulation required by the calendar."/>
-        <package name="next" reason="Next.js framework for frontend."/>
-        <package name="react" reason="React library for UI."/>
-        <package name="react-dom" reason="React DOM for rendering."/>
-      </ecosystem>
+      <dependency name="@supabase/supabase-js" version="^2.x.x" type="NPM Package" reason="For data fetching, updates, and real-time subscriptions."/>
+      <dependency name="zustand" version="^4.x.x" type="NPM Package" reason="For managing the client-side state of the dashboard (courses, sessions)."/>
+      <dependency name="react-big-calendar" version="^1.x.x" type="NPM Package" reason="A component library for rendering the main calendar view."/>
+      <dependency name="date-fns" version="^2.x.x" type="NPM Package" reason="For date manipulation required by the calendar."/>
     </dependencies>
   </artifacts>
 
   <constraints>
-    <constraint>
-      <type>Performance</type>
-      <description>Initial dashboard load, including all sessions for the upcoming month, should take less than 2 seconds.</description>
-    </constraint>
-    <constraint>
-      <type>Performance</type>
-      <description>UI updates after changing a task's status should feel instantaneous (&lt; 200ms), leveraging optimistic updates and real-time events.</description>
-    </constraint>
-    <constraint>
-      <type>Security</type>
-      <description>All data fetching is subject to the RLS policies on the `courses` and `study_sessions` tables, ensuring users only ever see their own data.</description>
-    </constraint>
-    <constraint>
-      <type>Reliability/Availability</type>
-      <description>The frontend should be able to handle temporary disconnects from the Supabase Realtime service and automatically re-subscribe when the connection is restored.</description>
-    </constraint>
-    <constraint>
-      <type>Observability</type>
-      <description>Log any errors during real-time subscription or status updates to a frontend monitoring service.</description>
-    </constraint>
-    <constraint>
-      <type>Architecture</type>
-      <description>Next.js Frontend direct integration with Supabase for data fetching and updates.</description>
-    </constraint>
-    <constraint>
-      <type>Styling</type>
-      <description>Adhere to Shadcn UI components for a consistent and modern aesthetic.</description>
-    </constraint>
+    <constraint>Next.js Frontend will directly interact with Supabase for `study_sessions` data (fetch and update).</constraint>
+    <constraint>Row Level Security (RLS) on `study_sessions` table ensures data isolation per user.</constraint>
+    <constraint>The `status` field in `study_sessions` table uses an enum `('Not Started', 'In Progress', 'Completed', 'Missed')`.</constraint>
+    <constraint>Client-side state management for dashboard will use Zustand.</constraint>
+    <constraint>`@supabase/supabase-js` will be used for all Supabase interactions.</constraint>
+    <constraint>New components will follow existing component structure in `src/components/`.</constraint>
+    <constraint>New services will follow existing service structure in `src/services/`.</constraint>
+    <constraint>State management will integrate with the existing Zustand store.</constraint>
   </constraints>
   <interfaces>
-    <interface>
-      <name>IDashboardManager</name>
-      <kind>Typescript Interface</kind>
-      <signature>
-        getDashboardData(): Promise&lt;{ courses, sessions, error }&gt;;
-        updateSessionStatus(sessionId: number, newStatus: 'Not Started' | 'In Progress' | 'Completed' | 'Missed'): Promise&lt;{ error }&gt;;
-        onSessionsChange(callback: (payload: RealtimePayload) => void): Subscription;
-      </signature>
-      <path>src/services/DashboardManager.ts</path>
-    </interface>
-    <interface>
-      <name>Supabase RLS Policies</name>
-      <kind>Database Policy</kind>
-      <signature>auth.uid() = user_id</signature>
-      <path>supabase/migrations/*.sql</path>
-    </interface>
+    <interface name="DashboardManager" kind="service" signature="interface IDashboardManager { getDashboardData(): Promise<{ courses, sessions, error }>; updateSessionStatus(sessionId: number, newStatus: 'Not Started' | 'In Progress' | 'Completed' | 'Missed'): Promise<{ error }>; onSessionsChange(callback: (payload: RealtimePayload) => void): Subscription; }" path="src/services/dashboard-manager.ts"/>
   </interfaces>
   <tests>
-    <standards>
-      Unit Tests: Test logic for calculating course progress and Zustand store state update logic.
-      Component Tests: Extensively test the `StudyTaskCard` component in all its visual states and the calendar component to ensure it renders events correctly.
-      Integration/E2E Tests: Test the full flow (load dashboard, change status, UI update). Use Supabase's testing tools to test real-time integration (update DB, assert client receives notification).
-      Security Testing: Ensure all data interactions are subject to RLS policies.
-    </standards>
+    <standards>Unit tests for Zustand store and `StudyTaskCard` component. Integration/E2E tests for dashboard load and status update persistence. Focus on happy path for MVP.</standards>
     <locations>
-      Typically `__tests__` or `tests` directories within relevant feature modules.
+      <location>src/__tests__/</location> <!-- Assuming a common test directory based on typical project structure -->
+      <location>tests/unit/</location>
+      <location>tests/integration/</location>
     </locations>
     <ideas>
-      <idea acId="1">Verify calendar view displays study activities correctly for different date ranges.</idea>
-      <idea acId="4">Test `StudyTaskCard` status cycling (Not Started -> In Progress -> Completed) and Missed state.</idea>
-      <idea acId="5">Confirm status updates persist in Supabase after app restart/reload.</idea>
-      <idea acId="6">Integrate a test that modifies `study_sessions` in the DB directly and asserts UI reflects changes in real-time.</idea>
-      <idea acId="security">Verify RLS prevents unauthorized users from accessing/modifying `study_sessions` data.</idea>
+      <idea ac_id="1">Visual regression test of the dashboard layout after initial load.</idea>
+      <idea ac_id="2">E2E test: Click on a `StudyTaskCard` to cycle through status updates, verify visual change and persistence.</idea>
+      <idea ac_id="2">E2E test: Click on 'x' icon to mark as 'Missed', verify visual change and persistence.</idea>
+      <idea ac_id="3">Integration test: Verify status update persists after a page reload.</idea>
     </ideas>
   </tests>
 </story-context>

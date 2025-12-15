@@ -6,56 +6,78 @@ Status: ready-for-dev
 
 As a student,
 I want to see my study activities on a dashboard and update their status,
-so that I can easily track my progress and keep my study plan up-to-date.
+so that I can easily track my daily progress.
 
 ## Acceptance Criteria
 
-1. The dashboard displays a calendar view of the user's study activities (AC1 from Tech Spec).
-2. A user can update the status of a study activity ('Not Started', 'Completed', 'Missed') (AC4 from Tech Spec).
-3. Progress updates are saved automatically and are persistent across sessions (AC5 from Tech Spec).
-4. Changes made to the study plan are reflected on the dashboard in near real-time without requiring a page refresh (AC6 from Tech Spec).
+1.  The dashboard successfully loads and displays a calendar view of the user's study activities.
+    (Source: tech-spec-epic-4.md#AC1)
+2.  A user can update the status of a study activity (e.g., 'Not Started', 'Completed', 'Missed') by interacting with the `StudyTaskCard` component.
+    (Source: tech-spec-epic-4.md#AC4, ux-design-specification.md#Component:StudyTaskCard)
+3.  Changes to a study activity's status are saved automatically and are persistent across sessions.
+    (Source: tech-spec-epic-4.md#AC5)
 
 ## Tasks / Subtasks
 
-- [ ] Implement dashboard component to display study activities.
-  - [ ] Fetch initial study session data from Supabase.
-  - [ ] Render study activities in a calendar view.
-- [ ] Implement `StudyTaskCard` component for displaying individual study activities.
-  - [ ] Design interactive element to update status.
-  - [ ] Integrate status update logic with `DashboardManager.updateSessionStatus`.
-- [ ] Implement `DashboardManager` service to handle data fetching and status updates.
-  - [ ] `getDashboardData()` to fetch initial courses and sessions.
-  - [ ] `updateSessionStatus(sessionId, newStatus)` to send updates to Supabase.
-  - [ ] Integrate Supabase Realtime for `study_sessions` table changes.
-- [ ] Ensure all data interactions are subject to RLS policies.
-- [ ] Implement optimistic updates for task status changes in the UI.
+-   [ ] Implement initial Dashboard component for displaying study activities. (AC: #1)
+    -   [ ] Fetch `study_sessions` for the current user from Supabase.
+    -   [ ] Render `StudyTaskCard` components for each session.
+-   [ ] Develop the `StudyTaskCard` component to display individual study activities. (AC: #1)
+    -   [ ] Implement visual states for 'Not Started', 'In Progress', 'Completed', 'Missed'.
+-   [ ] Implement functionality to update study activity status via `StudyTaskCard`. (AC: #2)
+    -   [ ] Implement click handler for status cycling (`Not Started` -> `In Progress` -> `Completed`).
+    -   [ ] Implement "x" icon for marking as 'Missed' (on hover).
+-   [ ] Integrate `DashboardManager.updateSessionStatus` to persist status changes to Supabase. (AC: #3)
+    -   [ ] Ensure status updates are transactional and durable.
+-   [ ] Add unit tests for `StudyTaskCard` component states and interactions.
+-   [ ] Add integration tests for dashboard loading and status update persistence.
 
 ## Dev Notes
 
-- Relevant architecture patterns and constraints: This story heavily relies on the "daily-use loop" described in the Solution Architecture, focusing on the Next.js Frontend's direct integration with Supabase for data fetching and updates. Supabase Realtime is crucial for AC6.
-- Source tree components to touch: Next.js Frontend components (Dashboard, StudyTaskCard), client-side services (DashboardManager).
-- Testing standards summary: Unit tests for logic in Zustand store and course progress calculation. Component tests for StudyTaskCard in all states. Integration/E2E tests for full flow, especially real-time updates.
+-   **Relevant architecture patterns and constraints:**
+    -   The Next.js Frontend will directly interact with Supabase for `study_sessions` data (fetch and update).
+    -   Row Level Security (RLS) on `study_sessions` table ensures data isolation per user.
+    -   The `status` field in `study_sessions` table uses an enum `('Not Started', 'In Progress', 'Completed', 'Missed')`.
+    -   Client-side state management for dashboard will use Zustand.
+    -   `@supabase/supabase-js` will be used for all Supabase interactions.
+    (Source: docs/architecture/solution-architecture.md#3. Component Diagram, docs/architecture/solution-architecture.md#4. Data Model, docs/sprint-artifacts/tech-spec-epic-4.md#System Architecture Alignment)
+
+-   **Source tree components to touch:**
+    -   `src/components/dashboard/Dashboard.tsx` (new)
+    -   `src/components/study-task-card/StudyTaskCard.tsx` (new)
+    -   `src/services/dashboard-manager.ts` (new)
+    -   `src/stores/zustand-store.ts` (modify for `study_sessions` state)
+
+-   **Testing standards summary:**
+    -   Unit tests for Zustand store and `StudyTaskCard` component.
+    -   Integration/E2E tests for dashboard load and status update persistence.
+    -   Focus on happy path for MVP.
+    (Source: docs/sprint-artifacts/tech-spec-epic-4.md#Test Strategy Summary)
 
 ### Project Structure Notes
 
-- Alignment with unified project structure (paths, modules, naming): Adhere to Next.js project structure, organize components and services logically.
-- Detected conflicts or variances (with rationale): None apparent at this stage.
+-   New components will follow existing component structure in `src/components/`.
+-   New services will follow existing service structure in `src/services/`.
+-   State management will integrate with the existing Zustand store.
+(Source: docs/Fase-1/ux-design-specification.md#6.1 Component Strategy)
 
 ### References
 
-- [Source: docs/sprint-artifacts/tech-spec-epic-4.md#Overview]
-- [Source: docs/sprint-artifacts/tech-spec-epic-4.md#System-Architecture-Alignment]
-- [Source: docs/sprint-artifacts/tech-spec-epic-4.md#Detailed-Design]
-- [Source: docs/sprint-artifacts/tech-spec-epic-4.md#Acceptance-Criteria-Authoritative]
-- [Source: docs/architecture/solution-architecture.md#2.-System-Context-Diagram-(C4-Level-1)]
-- [Source: docs/architecture/solution-architecture.md#3.-Component-Diagram-(C4-Level-2)]
-- [Source: docs/Fase-1/ux-design-specification.md#6.2-Custom-Component-Definitions]
+-   [Source: docs/architecture/solution-architecture.md#3. Component Diagram]
+-   [Source: docs/architecture/solution-architecture.md#4. Data Model]
+-   [Source: docs/sprint-artifacts/tech-spec-epic-4.md#Overview]
+-   [Source: docs/sprint-artifacts/tech-spec-epic-4.md#Objectives and Scope]
+-   [Source: docs/sprint-artifacts/tech-spec-epic-4.md#System Architecture Alignment]
+-   [Source: docs/sprint-artifacts/tech-spec-epic-4.md#Detailed Design]
+-   [Source: docs/sprint-artifacts/tech-spec-epic-4.md#Acceptance Criteria (Authoritative)]
+-   [Source: docs/sprint-artifacts/tech-spec-epic-4.md#Test Strategy Summary]
+-   [Source: docs/Fase-1/ux-design-specification.md#2.1 Defining Experience]
+-   [Source: docs/Fase-1/ux-design-specification.md#6.2 Custom Component Definitions#Component:StudyTaskCard]
 
 ## Dev Agent Record
 
 ### Context Reference
-
-<!-- Context Path: docs/sprint-artifacts/story-4-001.context.xml --><!-- Path(s) to story context XML will be added here by context workflow -->
+- [x] sprint-artifacts/story-4-001.context.xml
 
 ### Agent Model Used
 
@@ -66,3 +88,10 @@ gemini-1.5-flash
 ### Completion Notes List
 
 ### File List
+NEW: src/components/dashboard/Dashboard.tsx
+NEW: src/components/study-task-card/StudyTaskCard.tsx
+NEW: src/services/dashboard-manager.ts
+MODIFIED: src/stores/zustand-store.ts
+
+## Change Log
+
